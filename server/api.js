@@ -16,6 +16,7 @@ var config_json = require('../config/config.json');
 var package_json = require('../package.json');
 
 var state_pop_json = require('../data/state_pop.json');
+var places_json = require('../data/gnis_places.json');
 
 var http = require("http");
 var https = require("https");
@@ -230,6 +231,8 @@ function processSearch(json) {
     
     var result_json;
 
+    var location;
+
     for (var i = 0; i < process_json.results.length; i++) {
         
         result_json = process_json.results[i];
@@ -237,7 +240,7 @@ function processSearch(json) {
         delete result_json['@epoch'];
         delete result_json['@id'];
         
-        result_json.affected_population_census = 746262;
+        //result_json.affected_population_census = 746262;
         
         
         //result_json.affected_population_crowd = getPopCrowd('def');
@@ -247,6 +250,33 @@ function processSearch(json) {
         result_json.recall_location = [85, -105];
         
         //console.log('\n\n result_json  ' + JSON.stringify(result_json));
+
+
+        var distribution_pattern = process_json.results[i].distribution_pattern;
+	    //var affected_areas = find_match(distribution_pattern);
+	    
+	    var total_pop = 0;
+	    
+     	var match_array = new Array();
+		for (var k in state_pop_json.state_pop) {
+			//console.log(k+","+JSON.stringify(state_pop_json.state_pop[k].pop));
+			if(distribution_pattern.indexOf(k)!=-1){
+            	match_array.push(k);
+            	total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
+           	}
+           	if(distribution_pattern.indexOf(JSON.stringify(state_pop_json.state_pop[k].name))!=-1){
+            	match_array.push(state_pop_json.state_pop[k].name);
+            	total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
+           	}
+		}
+		location = process_json.results[i].city.concat(",").concat(process_json.results[i].state);
+		//console.log("location="+location);
+		//console.log("match_array="+match_array);
+		//console.log("total_pop="+total_pop);
+	    result_json.affected_population_census = total_pop;
+	    result_json.affected_state = match_array;
+	    result_json.recall_location = places_json.gnis_places[location];
+
         
         process_json.results[i] = result_json;
     }

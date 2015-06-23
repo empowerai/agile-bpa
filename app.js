@@ -44,6 +44,8 @@ console.log('config_json.port : '+ config_json.app_port );
 console.log('config_json.fda_host : '+ config_json.fda_host );
 console.log('config_json.fda_key : '+ config_json.fda_key );
 
+console.log('config_json.db_url : '+ config_json.db_url );
+
 // **********************************************************
 // log using morgan
 

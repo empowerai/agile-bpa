@@ -24,9 +24,6 @@ var js2xmlparser = require('js2xmlparser');
 var moment = require('moment');
 var pg = require('pg');
 
-//console.log('\n\n colorado population :  ' + JSON.stringify(state_pop_json.state_pop.CO.pop) );
-
-
 // **********************************************************
 //database
 

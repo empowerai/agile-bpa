@@ -92,6 +92,22 @@ app.get('/api/filter.:ext', function(req, res){
 	server_api.requestFilter(req,res);
 });
 
+app.get('/api/crowd', function(req, res){
+	server_api.requestCrowd(req,res);
+});
+
+app.get('/api/crowd.:ext', function(req, res){
+	server_api.requestCrowd(req,res);
+});
+
+app.post('/api/crowd', function(req, res){
+	server_api.insertCrowd(req,res);
+});
+
+app.post('/api/crowd.:ext', function(req, res){
+	server_api.insertCrowd(req,res);
+});
+
 // **********************************************************
 // error
 

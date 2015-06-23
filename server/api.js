@@ -246,11 +246,11 @@ function processSearch(json) {
         result_json.affected_state = ['AL','NY','MD','VA'];
         result_json.recall_location = [85, -105];
         
-        //console.log('\n\n result_json  ' + JSON.stringify(result_json));
+        console.log('\n\n result_json  ' + JSON.stringify(result_json));
 
 
         var distribution_pattern = process_json.results[i].distribution_pattern;
-	    //var affected_areas = find_match(distribution_pattern);
+	    console.log('\distribution_pattern  ' + distribution_pattern);
 	    
 	    var total_pop = 0;
 	    
@@ -268,8 +268,9 @@ function processSearch(json) {
 	            	match_array.push(k);
 	            	total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
 	           	}
-	           	if(distribution_pattern.indexOf(JSON.stringify(state_pop_json.state_pop[k].name))!=-1){
-	            	match_array.push(state_pop_json.state_pop[k].name);
+	           	
+	           	if(distribution_pattern.indexOf(state_pop_json.state_pop[k].name)!=-1){
+	            	match_array.push(k);
 	            	total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
 	           	}
 			}	

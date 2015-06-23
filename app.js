@@ -73,7 +73,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/', express.static(__dirname + '/client'));
 
 app.get('/api', function(req, res){
-	//server_api.requestSearch(req,res);
+	server_api.requestSearch(req,res);
 });
 
 app.get('/api/search', function(req, res){
@@ -90,6 +90,22 @@ app.get('/api/filter', function(req, res){
 
 app.get('/api/filter.:ext', function(req, res){
 	server_api.requestFilter(req,res);
+});
+
+app.get('/api/crowd', function(req, res){
+	server_api.requestCrowd(req,res);
+});
+
+app.get('/api/crowd.:ext', function(req, res){
+	server_api.requestCrowd(req,res);
+});
+
+app.post('/api/crowd', function(req, res){
+	server_api.insertCrowd(req,res);
+});
+
+app.post('/api/crowd.:ext', function(req, res){
+	server_api.insertCrowd(req,res);
 });
 
 // **********************************************************

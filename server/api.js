@@ -255,17 +255,26 @@ function processSearch(json) {
 	    var total_pop = 0;
 	    
      	var match_array = new Array();
-		for (var k in state_pop_json.state_pop) {
-			//console.log(k+","+JSON.stringify(state_pop_json.state_pop[k].pop));
-			if(distribution_pattern.indexOf(k)!=-1){
-            	match_array.push(k);
-            	total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
-           	}
-           	if(distribution_pattern.indexOf(JSON.stringify(state_pop_json.state_pop[k].name))!=-1){
-            	match_array.push(state_pop_json.state_pop[k].name);
-            	total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
-           	}
-		}
+     	if(distribution_pattern.indexOf("Nationwide")!=-1){
+     		for (var k in state_pop_json.state_pop) {
+     			match_array.push(k);
+	            total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
+     		}
+     	}
+     	else {
+     		for (var k in state_pop_json.state_pop) {
+				//console.log(k+","+JSON.stringify(state_pop_json.state_pop[k].pop));
+				if(distribution_pattern.indexOf(k)!=-1){
+	            	match_array.push(k);
+	            	total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
+	           	}
+	           	if(distribution_pattern.indexOf(JSON.stringify(state_pop_json.state_pop[k].name))!=-1){
+	            	match_array.push(state_pop_json.state_pop[k].name);
+	            	total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
+	           	}
+			}	
+     	}
+		
 		location = process_json.results[i].city.concat(",").concat(process_json.results[i].state);
 		//console.log("location="+location);
 		//console.log("match_array="+match_array);

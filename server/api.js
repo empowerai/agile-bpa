@@ -22,6 +22,7 @@ var http = require("http");
 var https = require("https");
 var url = require('url');
 var js2xmlparser = require('js2xmlparser');
+var json_2_csv = require('json-2-csv');
 var moment = require('moment');
 var pg = require('pg');
 
@@ -246,16 +247,16 @@ function processSearch(json) {
         result_json.affected_state = ['AL','NY','MD','VA'];
         result_json.recall_location = [85, -105];
         
-        console.log('\n\n result_json  ' + JSON.stringify(result_json));
+        //console.log('\n\n result_json  ' + JSON.stringify(result_json));
 
 
         var distribution_pattern = process_json.results[i].distribution_pattern;
-	    console.log('\distribution_pattern  ' + distribution_pattern);
+	    //console.log('\distribution_pattern  ' + distribution_pattern);
 	    
 	    var total_pop = 0;
 	    
      	var match_array = new Array();
-     	if(distribution_pattern.indexOf("Nationwide")!=-1){
+     	if(distribution_pattern.toLowerCase().indexOf("nation")!=-1){
      		for (var k in state_pop_json.state_pop) {
      			match_array.push(k);
 	            total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
@@ -308,7 +309,7 @@ function requestSearch(req, res) {
     var s_date = req.query.date;
     var s_state = req.query.state;
     var s_class = req.query.class;
-    
+   
     var search = '';
     
     if (s_food) {
@@ -317,30 +318,7 @@ function requestSearch(req, res) {
     }
     if (s_date) {
         if (search != '') { search += '+AND+';}
-        
-        /*
-        var s_date_start, s_date_end, s_date_range;
-        
-        s_date_end = moment().format('YYYY-MM-DD');
-        
-        if (s_date == 'week') {
-            s_date_start = moment().subtract('days', 7).format('YYYY-MM-DD');   
-        }
-        else if (s_date == 'month') {
-            s_date_start = moment().subtract('months', 1).format('YYYY-MM-DD');   
-        }
-        else if (s_date == 'quarter') {
-            s_date_start = moment().subtract('months', 3).format('YYYY-MM-DD');    
-        }
-        else if (s_date == 'year') {            
-            s_date_start = moment().subtract('years', 1).format('YYYY-MM-DD');   
-        }
-
-        s_date_range = s_date_start +'+TO+'+ s_date_end;
-        
-        search += '(recall_initiation_date:['+ s_date_range +'])'; 
-        */
-        
+       
         search += '(recall_initiation_date:['+ s_date +'-01-01+TO+'+ s_date +'-12-31])'; 
     }
     if (s_state) {
@@ -358,6 +336,7 @@ function requestSearch(req, res) {
         
         search += '(classification:'+ s_class_i +')';                      
     }
+
 	
     console.log('\n\n search : ' + search );    
         
@@ -392,6 +371,12 @@ function requestSearch(req, res) {
 					process_data.meta.version = package_json.version;
 				}
 				
+				console.log("count:"+process_data.results.length);
+
+				process_data.counts = {
+					'result_count': process_data.results.length
+				}; 
+
 				process_data.status = {
 					'status': 200,
 					'type': 'OK'
@@ -399,18 +384,67 @@ function requestSearch(req, res) {
 			
 				// response_out		
 				var response_out = secureJSON(process_data);
-				
-				if (ext == 'xml') {
-					response_out = js2xmlparser('api', response_out);
-					res.setHeader('Content-Type', 'text/xml');
+
+				if (ext == 'csv') {
+                    
+                    var csv_data = JSON.parse(response_out).results;
+                    
+                    console.log('\n\n csv_data : ' + csv_data );	
+
+                    var header_array = new Array();	
+					for (var i = 0; i < process_data.results.length; i++) {
+						header_array.push(Object.keys(process_data.results)[i]);
+    				}
+                    
+                    var csv_options = {
+                        KEYS : ['recall_number', 'reason_for_recall', 'status', 'distribution_pattern', 'product_quantity', 'recall_initiation_date', 'state',
+                               'event_id', 'product_type', 'product_description', 'country', 'city', 'recalling_firm', 'report_date', 'voluntary_mandated', 'classification', 
+                               'code_info', 'initial_firm_notification', 'affected_state', 'recall_location', 'affected_population_census' ],
+                        DELIMITER : {
+                            WRAP : '"'
+                        }
+                    };
+                    
+                    json_2_csv.json2csv(csv_data, function(err, csv) {
+                        
+                        if (err) {
+                            
+                            console.log('\n\n requestSearch res csv err ');	
+                            responseError(req, res, err);
+                            return;
+                            
+                        }
+                        else {
+                            
+                            //console.log('\n\n csv : ' + csv );	
+                            
+                            res.setHeader('Content-Type', 'text/csv');
+                            
+                            res.header("Access-Control-Allow-Origin", "*");
+                            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
+
+                            res.send(csv);
+                            console.log('\n\n res.send csv response_out ');	
+                            return;
+                        }
+
+                    }, csv_options);
+                     
 				}
+                else {
 				
-				res.header("Access-Control-Allow-Origin", "*");
-				res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
-				
-				res.send(response_out);
-                console.log('\n\n res.send response_out ');	
-				return;
+					if (ext == 'xml') {
+						response_out = js2xmlparser('api', response_out);
+						res.setHeader('Content-Type', 'text/xml');
+					}
+					
+					res.header("Access-Control-Allow-Origin", "*");
+					res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
+					
+					res.send(response_out);
+	                console.log('\n\n res.send response_out ');	
+					return;
+				}
 			}
 			catch (err) {
 				console.log('\n\n requestSearch res err ');	
@@ -425,6 +459,285 @@ function requestSearch(req, res) {
 		return;
 	});
 };
+
+// **********************************************************
+// requestCounts
+
+function requestCounts(req, res) {
+
+	console.log('\n\n requestCounts  ');
+
+	var ext = req.params.ext;	
+	console.log('\n\n ext : ' + ext );
+	
+	var query = req.query.q;
+	var filter = req.query.f;
+    
+    var s_food = req.query.food;
+    var s_date = req.query.date;
+    var s_state = req.query.state;
+    var s_class = req.query.class;
+    var s_count = req.query.count;
+
+    var count_type = "class";
+    
+    var search = '';
+    
+    if (s_food) {
+        if (search != '') { search += '+AND+';}
+        search += '(product_description:'+ s_food +')';                      
+    }
+    if (s_date) {
+        if (search != '') { search += '+AND+';}
+       
+        search += '(recall_initiation_date:['+ s_date +'-01-01+TO+'+ s_date +'-12-31])'; 
+    }
+    if (s_state) {
+        if (search != '') { search += '+AND+';}
+        //search += '(state:'+ s_state +')';  
+        search += '(distribution_pattern:'+ s_state +'+'+ state_pop_json.state_pop[s_state].name +')';  
+    }
+    if (s_class) {
+        if (search != '') { search += '+AND+';}
+        
+        var s_class_i = '';
+        for (var i = 0; i < s_class; i++) {
+            s_class_i += 'I';
+        }
+        
+        search += '(classification:'+ s_class_i +')';                      
+    }
+
+    if (search != '') { search += '&';}
+
+    if (s_count) {
+    	// for getting count on recall_initiation_date
+    	if(s_count.toLowerCase().indexOf("class")!=-1){
+    		count_type = "class";
+    	}
+    	else if(s_count.toLowerCase().indexOf("date")!=-1){
+    		count_type = "date";
+    		
+    	}	
+    	else if(s_count.toLowerCase().indexOf("status")!=-1){
+    		count_type = "status";
+    	}
+    }
+    if(count_type=='date'){
+		search += 'count=recall_initiation_date';                      
+    }
+    else if (count_type=='status') {
+    	search += 'count=status';
+    }
+    else {
+    	search += 'count=classification';	
+    }
+	
+    console.log('\n\n searchCount : ' + search );    
+        
+	console.log('\n\n query : ' + query );
+	console.log('\n\n filter : ' + filter );
+	
+	var request_fda = config_json.fda_protocol +'://'+ config_json.fda_host +'/'+ config_json.fda_path +'?api_key='+ config_json.fda_key +'&limit=1000&search='+ search;
+	console.log('\n\n request_fda : ' + request_fda );	
+	
+	https.get(request_fda, function (http_res) {
+		var data = '';	
+		http_res.on("data", function (chunk) {
+			data += chunk;
+		});
+
+		http_res.on("end", function () {				
+			
+			try {
+			
+				var json_data = JSON.parse(data);				
+				var process_data = processCounts(json_data, count_type);				;				
+
+				if (process_data.error) {
+					var err_msg = 'requestSearch process error';
+					responseError(req, res, err_msg);
+					return;
+				} 
+				
+				if (process_data.meta) {
+					process_data.meta.name = package_json.name;
+					process_data.meta.description = package_json.description;
+					process_data.meta.version = package_json.version;
+				}
+				
+				console.log("count:"+process_data.results.length);
+
+				process_data.status = {
+					'status': 200,
+					'type': 'OK'
+				};               
+			
+				// response_out		
+				var response_out = secureJSON(process_data);
+
+				if (ext == 'csv') {
+                    
+                    var csv_data = JSON.parse(response_out).results;
+                    
+                    console.log('\n\n csv_data : ' + csv_data );
+
+                    var header_array = new Array();	
+					for (var i = 0; i < process_data.results.length; i++) {
+						header_array.push(Object.keys(process_data.results)[i]);
+    				}
+                    
+                    var csv_options = {
+                        KEYS : header_array.toString(),
+                        DELIMITER : {
+                            WRAP : '"'
+                        }
+                    };
+                    
+                    json_2_csv.json2csv(csv_data, function(err, csv) {
+                        
+                        if (err) {
+                            
+                            console.log('\n\n requestSearch res csv err ');	
+                            responseError(req, res, err);
+                            return;
+                            
+                        }
+                        else {
+                            
+                            //console.log('\n\n csv : ' + csv );	
+                            
+                            res.setHeader('Content-Type', 'text/csv');
+                            
+                            res.header("Access-Control-Allow-Origin", "*");
+                            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
+
+                            res.send(csv);
+                            console.log('\n\n res.send csv response_out ');	
+                            return;
+                        }
+
+                    }, csv_options);
+                     
+				}
+                else {
+				
+					if (ext == 'xml') {
+						response_out = js2xmlparser('api', response_out);
+						res.setHeader('Content-Type', 'text/xml');
+					}
+					
+					res.header("Access-Control-Allow-Origin", "*");
+					res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
+					
+					res.send(response_out);
+	                console.log('\n\n res.send response_out ');	
+					return;
+				}
+			}
+			catch (err) {
+				console.log('\n\n requestCounts res err ');	
+				responseError(req, res, err);
+				return;
+			}			
+		});
+		
+	}).on("error", function(err){		
+		console.log('\n\n requestCounts on error');	
+		responseError(req, res, err);
+		return;
+	});
+};
+
+function processCounts(json, type) {
+
+	console.log('\n\n processCounts  ');
+	
+	var process_json = json;	
+    
+    var result_json;
+
+    var location;
+
+    var class1 = 0;
+    var class2 = 0;
+    var class3 = 0;
+
+    var return_json = {};
+
+    //return_json.meta = process_json.meta;
+
+    if(type=='class'){
+    	for (var i = 0; i < process_json.results.length; i++) {
+        
+	        result_json = process_json.results[i];
+	       
+	        console.log('\n\n result_json. term: ' + result_json.term);
+	        console.log('\n\n result_json  count: ' + result_json.count);
+			
+			if(result_json.term=='i'){
+				class1 = result_json.count;
+			}
+			else if(result_json.term=='ii'){
+				class2 = result_json.count;
+			}
+			else if(result_json.term=='iii'){
+				class3 = result_json.count;
+			}
+	    }
+	    
+		return_json.results = {
+			'class1': class1,
+			'class2': class2,
+			'class3': class3	
+		};
+    }
+    else if(type=='status'){
+    	for (var i = 0; i < process_json.results.length; i++) {
+        
+	        result_json = process_json.results[i];
+	       
+	        console.log('\n\n result_json. term: ' + result_json.term);
+	        console.log('\n\n result_json  count: ' + result_json.count);
+			
+			if(result_json.term=='ongoing'){
+				class1 = result_json.count;
+			}
+			else if(result_json.term=='terminated'){
+				class2 = result_json.count;
+			}
+			else if(result_json.term=='completed'){
+				class3 = result_json.count;
+			}
+	    }
+	    
+		return_json.results = {
+			'ongoing': class1,
+			'terminated': class2,
+			'completed': class3	
+		};
+    }
+    else {
+    	var date_array = new Array();
+    	var count_array = new Array();
+    	for (var i = 0; i < process_json.results.length; i++) {
+    		//console.
+    		//return_json = process_json.results[i];
+    		date_array.push(process_json.results[i].time);
+			count_array.push(process_json.results[i].count);
+    	}	
+    	//console.log("date_array="+date_array);
+    	//console.log("count_array="+count_array);
+
+    	return_json.results = {
+			'date': date_array,
+			'count': count_array
+		};
+    }
+    
+    
+	return return_json;
+}
 
 // **********************************************************
 // processFilter
@@ -589,6 +902,7 @@ function responseError(req, res, err) {
 // exports
 
 exports.requestSearch = requestSearch;
+exports.requestCounts = requestCounts;
 exports.requestFilter = requestFilter;
 exports.requestCrowd = requestCrowd;
 exports.insertCrowd = insertCrowd;

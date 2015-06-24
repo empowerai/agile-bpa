@@ -86,6 +86,10 @@ app.get('/api/search.:ext', function(req, res){
 	server_api.requestSearch(req,res);
 });
 
+app.get('/api/count.:ext', function(req, res){
+	server_api.requestCounts(req,res);
+});
+
 app.get('/api/filter', function(req, res){
 	server_api.requestFilter(req,res);
 });

@@ -1,0 +1,77 @@
+/*
+     __  ___  _____     _   _____  __    
+  /\ \ \/ __\ \_   \   /_\ /__   \/ _\   
+ /  \/ / /     / /\/  //_\\  / /\/\ \    
+/ /\  / /___/\/ /_   /  _  \/ /   _\ \   
+\_\ \/\____/\____/   \_/ \_/\/    \__/   
+                                         
+*/
+
+/* style.css */
+
+/* global */
+body { color: #45000B; font-family: arial, sans-serif; }
+h1 { color: #ffffff; font-size: 22px;  }
+h2 { color: #ffffff; font-size: 14px;  }
+a, a:hover, a:focus { color: #45000B; text-decoration: none; }
+label { font-size: 13px; font-weight: normal; }
+
+/* head*/
+header { color: #ffffff; background-color: #630011; margin-bottom: 10px;  }
+header a { color: #ffffff; }
+header a:hover, header a:focus { color: #CFCFCF; text-decoration: none;}
+.head-logo { padding: 2px; height: 35px; width: 35px; background: #ffffff; }
+.head-title {padding-left: 10px;}
+
+/* foot */
+footer { color: #ffffff; background-color: #630011; margin-top: 10px; padding-bottom: 25px; padding-top: 25px }
+footer a { color: #ffffff; }
+footer a:hover, footer a:focus { color: #CFCFCF; text-decoration: underline;}
+
+/* form */
+form { position: relative; }
+.form-control, .form-control:focus { box-shadow: none; height: 36px; }
+.input-group { width: 100%; }
+.input-group .form-control:first-child { border-right: none; border-bottom: none; border-radius: 0; height: 36px; padding-right: 32px; }
+.form-control:focus { border-color: #CCC; }
+
+/* button */
+.btn-group .active { background-color: #013A58; }
+.input-group-btn button { background-color: #FFF; border-left: none; border-radius: 0; font-size: 17px; }
+.input-group-btn:last-child > .btn { border-bottom: 0; margin-left: 0; padding-bottom: 5px; }
+.input-group .divider { border-left: 1px solid #CCCCCC; height: 25px; position: absolute; top: 6px; z-index: 9; }
+
+/* section */
+.panel { border: none; border-radius: 0; box-shadow: none; margin-bottom: 0; }
+.panel-body { padding: 5px 0; background-color: #eeeeef; }
+
+/* map */
+#map { height: 666px; }
+.map-container { position: relative; }
+
+.btn-geo-current { border: 1px solid rgba(0, 0, 0, 0.4); border-radius: 3px; left: 10px; padding: 2px; position: absolute; top: 110px; z-index: 9; width: 28px; height: 26px; background: #ffffff; }
+.btn-geo-nation { border: 1px solid rgba(0, 0, 0, 0.4); border-radius: 3px; left: 10px; padding: 2px; position: absolute; top: 145px; z-index: 10; width: 28px; height: 26px; background: #ffffff; }
+
+/* responsive */
+@media only screen and (min-width : 320px) and (max-width : 479px) {
+	#map { height: 67vh; min-height: 200px; }
+	.col-full { padding-left: 0; padding-right: 0; }
+	.panel { margin: 20px 0 15px; }
+	h1 { font-size: 16px; margin-top: 12px; }
+	h2 { font-size: 11px; white-space: nowrap; }
+	.panel { margin: 20px 0 15px; }
+}
+ @media only screen and (min-width : 480px) and (max-width : 767px) {
+	#map { height: 67vh; min-height: 200px; }
+	.col-full { padding-left: 0; padding-right: 0; }
+	.panel { margin: 20px 0 10px; }
+	footer .pull-right { float: none !important; }
+}
+ @media (min-width: 768px) and (max-width : 991px) {
+	#map { height: 67vh; min-height: 200px; }
+	.col-full { padding-left: 0; padding-right: 0; }
+	.panel { margin-top: 20px; }
+}
+ @media (min-width: 992px) {
+
+}

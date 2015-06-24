@@ -43,7 +43,7 @@ hr.light {
 .fda-accent4-bg { background-color: #993333; }
 .font1, .font1 h3 { font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif; }
 .font2, .font2 h3 { font-family: Merriweather,'Helvetica Neue',Arial,sans-serif; }
-p.font-display { letter-spacing: 4px;}
+p.font-display { letter-spacing: 2px;}
 h3.font1 , h3.font2  { font-size: 44px;}
 .fda-swatch dt { float: left;}
 .fda-swatch dd {   text-align: left;  margin-left: 60px; }

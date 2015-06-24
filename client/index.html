@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
 <!--
      __  ___  _____     _   _____  __    
   /\ \ \/ __\ \_   \   /_\ /__   \/ _\   
@@ -14,7 +17,89 @@
     <title>
         NCI ATS - Agile BPA - FDA Recall Impact 
     </title>
+	
+	<meta name="description" content="NCI ATS - Agile BPA - FDA Recall Impact">
+	<meta charset="utf-8">	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="author" href="/humans.txt" type="text/plain" />
+
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="//api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css" />	
+
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="apple-touch-icon" sizes="57x57" href="/image/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/image/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/image/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/image/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/image/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/image/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/image/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/image/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/image/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/image/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/image/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/image/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/image/favicon-16x16.png">
+	
 </head>
 <body>
-NCI ATS - Agile BPA - FDA Recall Impact
+<header>
+    <nav class="container" role="navigation">
+        <div class="row">
+            <div class="col-xs-10 col-sm-9"> 				
+                <h1><a href="/" class="logo"><img src="/image/nciinc_logo_large.png" alt="NCI ATS" class="head-logo" /></a><a href="/" class="head-title">NCI ATS - Agile BPA - FDA Recall Impact</a></h1>
+            </div>
+            <div class="col-xs-2 col-sm-3"> 			
+				<div class="pull-right"> 
+					<a href="/about" class="und">About</a> - <a href="/faq" class="und">FAQ</a> - <a href="/style" class="und">Style</a> - <a href="/api" class="und">API</a>
+				</div>
+			</div>
+        </div>
+    </nav>
+</header>
+<main class="container">
+    <div class="row">
+        <div class="col-md-7 col-lg-8 col-full">
+			<!--
+            <form id="form-map" action="/">                
+			</form>
+			-->
+            <div class="map-container">
+                <button class="btn-geo-current btn btn-default st" type="button" id="btn-geo-current" data-toggle="tooltip" data-placement="right" title="Current Location">CL<span class="sr-only">Current Location</span></button>
+                <button class="btn-geo-nation btn btn-default st" type="button" id="btn-geo-nation" data-toggle="tooltip" data-placement="right" title="Nationwide">NW<span class="sr-only">Nationwide</span></button>
+                <div id="map"></div>              
+            </div>
+        </div>
+        <div class="col-md-5 col-lg-4">
+            <div class="panel panel-default">
+                
+            </div>
+        </div>
+    </div>
+</main>
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6"> 
+				<span>NCI ATS - Agile BPA - FDA Recall Impact</span>	
+			</div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="pull-right"> 
+					<a href="/about" class="und">About</a> - <a href="/faq" class="und">FAQ</a> - <a href="/style" class="und">Style</a> - <a href="/api" class="und">API</a>
+				</div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="//api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.js"></script>
+
+<script src="/js/ui.js"></script>
+
 </body>
+</html>

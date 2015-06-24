@@ -390,6 +390,11 @@ function requestSearch(req, res) {
                     var csv_data = JSON.parse(response_out).results;
                     
                     console.log('\n\n csv_data : ' + csv_data );	
+
+                    var header_array = new Array();	
+					for (var i = 0; i < process_data.results.length; i++) {
+						header_array.push(Object.keys(process_data.results)[i]);
+    				}
                     
                     var csv_options = {
                         KEYS : ['recall_number', 'reason_for_recall', 'status', 'distribution_pattern', 'product_quantity', 'recall_initiation_date', 'state',
@@ -507,19 +512,25 @@ function requestCounts(req, res) {
 
     if (s_count) {
     	// for getting count on recall_initiation_date
-    	if(s_count.toLowerCase().indexOf("date")!=-1){
-    		//console.log("date count request");
-    		count_type = "date";
-    		search += 'count=recall_initiation_date';                      
-    	}
-    	else if(s_count.toLowerCase().indexOf("class")!=-1){
-    		//console.log("class count request");
+    	if(s_count.toLowerCase().indexOf("class")!=-1){
     		count_type = "class";
-    		search += 'count=classification';                      
+    	}
+    	else if(s_count.toLowerCase().indexOf("date")!=-1){
+    		count_type = "date";
+    		
     	}	
+    	else if(s_count.toLowerCase().indexOf("status")!=-1){
+    		count_type = "status";
+    	}
+    }
+    if(count_type=='date'){
+		search += 'count=recall_initiation_date';                      
+    }
+    else if (count_type=='status') {
+    	search += 'count=status';
     }
     else {
-    	search += 'count=classification';
+    	search += 'count=classification';	
     }
 	
     console.log('\n\n searchCount : ' + search );    
@@ -564,18 +575,65 @@ function requestCounts(req, res) {
 			
 				// response_out		
 				var response_out = secureJSON(process_data);
-				
-				if (ext == 'xml') {
-					response_out = js2xmlparser('api', response_out);
-					res.setHeader('Content-Type', 'text/xml');
+
+				if (ext == 'csv') {
+                    
+                    var csv_data = JSON.parse(response_out).results;
+                    
+                    console.log('\n\n csv_data : ' + csv_data );
+
+                    var header_array = new Array();	
+					for (var i = 0; i < process_data.results.length; i++) {
+						header_array.push(Object.keys(process_data.results)[i]);
+    				}
+                    
+                    var csv_options = {
+                        KEYS : header_array.toString(),
+                        DELIMITER : {
+                            WRAP : '"'
+                        }
+                    };
+                    
+                    json_2_csv.json2csv(csv_data, function(err, csv) {
+                        
+                        if (err) {
+                            
+                            console.log('\n\n requestSearch res csv err ');	
+                            responseError(req, res, err);
+                            return;
+                            
+                        }
+                        else {
+                            
+                            //console.log('\n\n csv : ' + csv );	
+                            
+                            res.setHeader('Content-Type', 'text/csv');
+                            
+                            res.header("Access-Control-Allow-Origin", "*");
+                            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
+
+                            res.send(csv);
+                            console.log('\n\n res.send csv response_out ');	
+                            return;
+                        }
+
+                    }, csv_options);
+                     
 				}
+                else {
 				
-				res.header("Access-Control-Allow-Origin", "*");
-				res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
-				
-				res.send(response_out);
-                console.log('\n\n res.send response_out ');	
-				return;
+					if (ext == 'xml') {
+						response_out = js2xmlparser('api', response_out);
+						res.setHeader('Content-Type', 'text/xml');
+					}
+					
+					res.header("Access-Control-Allow-Origin", "*");
+					res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
+					
+					res.send(response_out);
+	                console.log('\n\n res.send response_out ');	
+					return;
+				}
 			}
 			catch (err) {
 				console.log('\n\n requestCounts res err ');	
@@ -627,12 +685,36 @@ function processCounts(json, type) {
 				class3 = result_json.count;
 			}
 	    }
-
 	    
 		return_json.results = {
 			'class1': class1,
 			'class2': class2,
 			'class3': class3	
+		};
+    }
+    else if(type=='status'){
+    	for (var i = 0; i < process_json.results.length; i++) {
+        
+	        result_json = process_json.results[i];
+	       
+	        console.log('\n\n result_json. term: ' + result_json.term);
+	        console.log('\n\n result_json  count: ' + result_json.count);
+			
+			if(result_json.term=='ongoing'){
+				class1 = result_json.count;
+			}
+			else if(result_json.term=='terminated'){
+				class2 = result_json.count;
+			}
+			else if(result_json.term=='completed'){
+				class3 = result_json.count;
+			}
+	    }
+	    
+		return_json.results = {
+			'ongoing': class1,
+			'terminated': class2,
+			'completed': class3	
 		};
     }
     else {

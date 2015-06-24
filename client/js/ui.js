@@ -125,6 +125,7 @@ var q_food = '';
 var q_state = '';
 var q_date = '';
 var q_class = '';
+var q_status = '';
 
 $("#select_food").on("change", function() {
 	q_food = $("#select_food").val();
@@ -144,14 +145,19 @@ $("#select_date").on("change", function() {
 $("#select_class").on("change", function() {
 	q_class = $("#select_class").val();
 	loadMarkers();	
-});	
+});
+
+$("#select_status").on("change", function() {
+	q_status = $("#select_status").val();
+	loadMarkers();	
+});		
 
 var data_json;
 var selected_json;
 
 function loadMarkers() {
 		
-	var api_url = '/api/search.json?food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'';
+	var api_url = '/api/search.json?food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'&status='+q_status;
 	
 	console.log('api_url : '+ api_url);
 	

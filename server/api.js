@@ -312,6 +312,7 @@ function requestSearch(req, res) {
     var s_date = req.query.date;
     var s_state = req.query.state;
     var s_class = req.query.class;
+	var s_status = req.query.status;
    
     var search = '';
     
@@ -364,12 +365,13 @@ function requestSearch(req, res) {
         
         search += '(classification:'+ s_class_i +')';                      
     }
-
-	
-    console.log('\n\n search : ' + search );    
+	if (s_status) {
+        if (search != '') { search += '+AND+';}       
         
-	console.log('\n\n query : ' + query );
-	console.log('\n\n filter : ' + filter );
+        search += '(status:'+ s_status +')';                      
+    }
+	
+    console.log('\n\n search : ' + search ); 
 	
 	var request_fda = config_json.fda_protocol +'://'+ config_json.fda_host +'/'+ config_json.fda_path +'?api_key='+ config_json.fda_key +'&limit=100&search='+ search;
 	console.log('\n\n request_fda : ' + request_fda );	

@@ -255,7 +255,7 @@ function processSearch(json) {
 	    var total_pop = 0;
 	    
      	var match_array = new Array();
-     	if(distribution_pattern.indexOf("Nationwide")!=-1){
+     	if(distribution_pattern.toLowerCase().indexOf("nation")!=-1){
      		for (var k in state_pop_json.state_pop) {
      			match_array.push(k);
 	            total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);

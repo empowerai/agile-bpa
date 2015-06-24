@@ -17,14 +17,14 @@ a, a:hover, a:focus { color: #45000B; text-decoration: none; }
 label { font-size: 13px; font-weight: normal; }
 
 /* head*/
-header { color: #ffffff; background-color: #630011; margin-bottom: 10px;  }
+header { color: #ffffff; background-color: #00539B; margin-bottom: 10px;  }
 header a { color: #ffffff; }
 header a:hover, header a:focus { color: #CFCFCF; text-decoration: none;}
 .head-logo { padding: 2px; height: 35px; width: 35px; background: #ffffff; }
 .head-title {padding-left: 10px;}
 
 /* foot */
-footer { color: #ffffff; background-color: #630011; margin-top: 10px; padding-bottom: 25px; padding-top: 25px }
+footer { color: #ffffff; background-color: #6699CC; margin-top: 10px; padding-bottom: 25px; padding-top: 25px }
 footer a { color: #ffffff; }
 footer a:hover, footer a:focus { color: #CFCFCF; text-decoration: underline;}
 
@@ -51,6 +51,8 @@ form { position: relative; }
 
 .btn-geo-current { border: 1px solid rgba(0, 0, 0, 0.4); border-radius: 3px; left: 10px; padding: 2px; position: absolute; top: 110px; z-index: 9; width: 28px; height: 26px; background: #ffffff; }
 .btn-geo-nation { border: 1px solid rgba(0, 0, 0, 0.4); border-radius: 3px; left: 10px; padding: 2px; position: absolute; top: 145px; z-index: 10; width: 28px; height: 26px; background: #ffffff; }
+
+
 
 /* responsive */
 @media only screen and (min-width : 320px) and (max-width : 479px) {

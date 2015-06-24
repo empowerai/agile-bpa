@@ -64,11 +64,6 @@ $(function() {
 	// geocoder
 	geocoder = L.mapbox.geocoder('mapbox.places-v1');
 
-	/*
-	$("#input-loc-search").on("click", function(e) {
-		e.preventDefault();
-	});
-	*/
 	
 	// current location
 	$('#btn-geo-current').click(function(event) {
@@ -126,8 +121,6 @@ function highlightState(states_array) {
 }
 
 
-
-
 var q_food = '';
 var q_state = '';
 var q_date = '';
@@ -179,6 +172,25 @@ function loadMarkers() {
 
 }
 
+function getIconColor(m_class) {
+    var m_color = '#FAF75C';
+    if (m_class == 'Class I') { m_color = '#00539B'; }
+    if (m_class == 'Class II') { m_color = '#A3C658'; }
+    if (m_class == 'Class III') { m_color = '#E2C752'; }
+    
+    return m_color;
+}
+
+function getIconSymbol(m_status) {
+    var m_symbol = 'circle-stroked';
+    if (m_status == 'Ongoing') { m_symbol = 'circle-stroked'; }
+    if (m_status == 'Terminated') { m_symbol = 'cross'; }
+    if (m_status == 'Completed') { m_symbol = 'circle'; }
+    
+    return m_symbol;
+}
+
+
 function setMarkers() {
 	
 	//console.log('data_json.results : '+ JSON.stringify(data_json.results) );
@@ -201,26 +213,77 @@ function setMarkers() {
 		for (var i = 0; i < data_json.results.length; i++) {
 		
 			try {
-				var lat = data_json.results[i].recall_location.lat;
-				var lon = data_json.results[i].recall_location.long;
-				
+				var m_lat = data_json.results[i].recall_location.lat;
+				var m_lon = data_json.results[i].recall_location.long;
+                
+                var m_class = data_json.results[i].classification;
+                var m_status = data_json.results[i].status;
+                
+                var m_icon = L.mapbox.marker.icon({
+                    'marker-color': getIconColor(m_class),
+                    'marker-size': 'medium',
+                    'marker-symbol': getIconSymbol(m_status)
+                });
+                
+    
+                
+                console.log('m_icon : '+ JSON.stringify(m_icon.options) );
+                
+                //m_icon.options.shadowSize = 0;
+                
 				var result_json = data_json.results[i];
 				
-				if ((lat != 0) && (lon != 0)) {
+				if ((m_lat != 0) && (m_lon != 0)) {
 				
 					//console.log('lat : '+ JSON.stringify(lat) );		
 					
-					var new_marker = L.marker([lat,lon], data_json.results[i])
+					var new_marker = L.marker([m_lat,m_lon], data_json.results[i])
 						.on('click',function(e) {
 						
-							console.log('e.target._leaflet_id : '+ e.target._leaflet_id );
-							console.log('this : '+ JSON.stringify(this.options) );
+                            
+                            //console.log('e.target._leaflet_id : '+ e.target._leaflet_id );
+							//console.log('this : '+ JSON.stringify(this.options) );
 							
 							selected_json = this.options;
-							
+                            
+                            var c_class = selected_json.classification;
+                            var c_status = selected_json.status;
+                            
+                            console.log('c_class : '+ c_class );	
+                            console.log('c_status : '+ c_status );	
+                            
+                            markers.eachLayer(function(marker) {
+                                //var properties = marker.feature.properties;
+                                console.log('marker !!!!!!! : '+ JSON.stringify(marker.options.icon.options) );
+                                
+                                //marker.options.icon.options.iconSize = [30,70];
+                                
+                                var reset_marker = marker.options.icon.options;
+                                
+                                //console.log('reset_marker !!!!!!! : '+ JSON.stringify(reset_marker) );
+                                
+                                reset_marker.iconSize = [30,70];
+                                reset_marker.iconAnchor = [15,35];
+                                reset_marker.popupAnchor = [0,-35];
+                                
+                                marker.setIcon(L.icon(
+                                    reset_marker
+                                ));
+                                
+                            });
+                            
+                            this.setIcon(L.mapbox.marker.icon({
+                                'marker-color': getIconColor(c_class),
+                                'marker-size': 'large',
+                                'marker-symbol': getIconSymbol(c_status)
+                            }));
+                            
 							clickMarkers();							
 					
 						});
+                    
+                    new_marker.setIcon(m_icon);
+                    
 						//.addTo(map);
 						
 					markers.addLayer(new_marker);
@@ -238,7 +301,7 @@ function setMarkers() {
 
 function clickMarkers() {
 	
-	console.log('selected_json : '+ JSON.stringify(selected_json) );	
+	//console.log('selected_json : '+ JSON.stringify(selected_json) );	
 	
 	$("#api_recall_number").text(selected_json.recall_number);
 	$("#api_recalling_firm").text(selected_json.recalling_firm);

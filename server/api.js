@@ -22,6 +22,7 @@ var http = require("http");
 var https = require("https");
 var url = require('url');
 var js2xmlparser = require('js2xmlparser');
+var json_2_csv = require('json-2-csv');
 var moment = require('moment');
 var pg = require('pg');
 
@@ -383,18 +384,62 @@ function requestSearch(req, res) {
 			
 				// response_out		
 				var response_out = secureJSON(process_data);
-				
-				if (ext == 'xml') {
-					response_out = js2xmlparser('api', response_out);
-					res.setHeader('Content-Type', 'text/xml');
+
+				if (ext == 'csv') {
+                    
+                    var csv_data = JSON.parse(response_out).results;
+                    
+                    console.log('\n\n csv_data : ' + csv_data );	
+                    
+                    var csv_options = {
+                        KEYS : ['recall_number', 'reason_for_recall', 'status', 'distribution_pattern', 'product_quantity', 'recall_initiation_date', 'state',
+                               'event_id', 'product_type', 'product_description', 'country', 'city', 'recalling_firm', 'report_date', 'voluntary_mandated', 'classification', 
+                               'code_info', 'initial_firm_notification', 'affected_state', 'recall_location', 'affected_population_census' ],
+                        DELIMITER : {
+                            WRAP : '"'
+                        }
+                    };
+                    
+                    json_2_csv.json2csv(csv_data, function(err, csv) {
+                        
+                        if (err) {
+                            
+                            console.log('\n\n requestSearch res csv err ');	
+                            responseError(req, res, err);
+                            return;
+                            
+                        }
+                        else {
+                            
+                            //console.log('\n\n csv : ' + csv );	
+                            
+                            res.setHeader('Content-Type', 'text/csv');
+                            
+                            res.header("Access-Control-Allow-Origin", "*");
+                            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
+
+                            res.send(csv);
+                            console.log('\n\n res.send csv response_out ');	
+                            return;
+                        }
+
+                    }, csv_options);
+                     
 				}
+                else {
 				
-				res.header("Access-Control-Allow-Origin", "*");
-				res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
-				
-				res.send(response_out);
-                console.log('\n\n res.send response_out ');	
-				return;
+					if (ext == 'xml') {
+						response_out = js2xmlparser('api', response_out);
+						res.setHeader('Content-Type', 'text/xml');
+					}
+					
+					res.header("Access-Control-Allow-Origin", "*");
+					res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
+					
+					res.send(response_out);
+	                console.log('\n\n res.send response_out ');	
+					return;
+				}
 			}
 			catch (err) {
 				console.log('\n\n requestSearch res err ');	

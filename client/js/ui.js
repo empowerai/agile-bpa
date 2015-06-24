@@ -11,6 +11,24 @@
 // ui.js
 
 var map;
+var states;
+var ready = false;
+
+var style_off = {
+    fillColor: '#ffffff',
+    fillOpacity: 0.0,
+	color: '#ffffff',
+    opacity: 0.0,
+    weight: 1
+};
+
+var style_highlight = {
+    fillColor: '#FF9100',
+    fillOpacity: 0.5,
+	color: '#FF9100',
+    opacity: 0.9,
+    weight: 2
+};
 
 $(function() {
 	
@@ -68,7 +86,51 @@ $(function() {
 	// load markers
 	loadMarkers();
 	
+	// load states
+	states = L.mapbox.featureLayer()
+		.loadURL('/data/state.geojson')		
+		.on('ready', readyState);
+		
+	//console.log('states.features.length : '+ states.features.length);
+		
+	//var states.
+	
 });
+
+function readyState() {
+	states.setStyle(style_off).addTo(map);
+	ready = true;
+}
+
+function highlightState(states_array) {
+	//console.log('states.features.length : '+ states.features.length);
+	//console.log('states : '+ JSON.stringify(states) );
+	
+	states.setStyle(style_off);
+	
+	states.eachLayer(function(layer) {
+		
+		//$.inArray( 5 + 5, [ "8", "9", "10", 10 + "" ] );
+		 
+		 
+		var layer_state = layer.feature.properties.STUSPS;		
+		
+		if ($.inArray( layer_state, states_array ) >= 0) {
+			layer.setStyle(style_highlight);
+		}
+		/*
+		else {
+			layer.setStyle(style_off);
+		}
+		*/
+	 
+    });
+	
+	
+}
+
+
+
 
 var q_food = '';
 var q_state = '';
@@ -139,13 +201,11 @@ function setMarkers() {
 			}
 		}
 	}
-
 }
 
 function clickMarkers() {
 	
-	console.log('selected_json : '+ JSON.stringify(selected_json) );
-	
+	console.log('selected_json : '+ JSON.stringify(selected_json) );	
 	
 	$("#api_recall_number").text(selected_json.recall_number);
 	$("#api_recalling_firm").text(selected_json.recalling_firm);
@@ -158,6 +218,8 @@ function clickMarkers() {
 	$("#api_recall_initiation_date").text(selected_json.recall_initiation_date);
 	$("#api_report_date").text(selected_json.report_date);
 	$("#api_population_census").text(selected_json.affected_population_census);
+	
+	highlightState(selected_json.affected_state);
 	
 	//$("#api_crowdsource").text(selected_json.api_recall_initiation_date);
 }

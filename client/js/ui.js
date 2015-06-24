@@ -63,8 +63,104 @@ $(function() {
 	});	
 	
 	// get current location
-	//getCurrentLocation(true);			
+	//getCurrentLocation(true);	
+
+	// load markers
+	loadMarkers();
+	
 });
+
+var q_food = '';
+var q_state = '';
+var q_date = '';
+var q_class = '';
+
+var data_json;
+var selected_json;
+
+function loadMarkers() {
+		
+	var api_url = 'http://localhost:6479/api/search.json?food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'';
+	
+	console.log('api_url : '+ api_url);
+	
+	$.ajax({
+		type: 'GET',
+		url: api_url,
+		dataType: 'json',
+		success: function(data) {
+
+			//console.log('data : '+ JSON.stringify(data) );
+			
+			data_json = data;
+			
+			setMarkers();
+
+		}
+	});
+
+}
+
+function setMarkers() {
+	
+	//console.log('data_json.results : '+ JSON.stringify(data_json.results) );
+	
+	if (data_json.results) {
+	
+		
+		for (var i = 0; i < data_json.results.length; i++) {
+		
+			try {
+				var lat = data_json.results[i].recall_location.lat;
+				var lon = data_json.results[i].recall_location.long;
+				
+				var result_json = data_json.results[i];
+				
+				if ((lat != 0) && (lon != 0)) {
+				
+					//console.log('lat : '+ JSON.stringify(lat) );		
+					
+					L.marker([lat,lon], data_json.results[i])
+						.on('click',function(e) {
+						
+							console.log('e.target._leaflet_id : '+ e.target._leaflet_id );
+							console.log('this : '+ JSON.stringify(this.options) );
+							
+							selected_json = this.options;
+							
+							clickMarkers();							
+					
+						})
+						.addTo(map);
+				}
+			}
+			catch(err) {
+			
+			}
+		}
+	}
+
+}
+
+function clickMarkers() {
+	
+	console.log('selected_json : '+ JSON.stringify(selected_json) );
+	
+	
+	$("#api_recall_number").text(selected_json.recall_number);
+	$("#api_recalling_firm").text(selected_json.recalling_firm);
+	$("#api_product_description").text(selected_json.product_description);
+	$("#api_reason_for_recall").text(selected_json.reason_for_recall);
+	$("#api_status").text(selected_json.status);
+	$("#api_classification").text(selected_json.classification);
+	$("#api_distribution_pattern").text(selected_json.distribution_pattern);
+	$("#api_product_quantity").text(selected_json.product_quantity);
+	$("#api_recall_initiation_date").text(selected_json.recall_initiation_date);
+	$("#api_report_date").text(selected_json.report_date);
+	$("#api_population_census").text(selected_json.affected_population_census);
+	
+	//$("#api_crowdsource").text(selected_json.api_recall_initiation_date);
+}
 
 function setNationwide() {
 	map.setView([40, -97], 3);

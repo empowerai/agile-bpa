@@ -158,7 +158,7 @@ var selected_json;
 
 function loadMarkers() {
 		
-	var api_url = 'http://localhost:6479/api/search.json?food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'';
+	var api_url = '/api/search.json?food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'';
 	
 	console.log('api_url : '+ api_url);
 	

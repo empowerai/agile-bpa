@@ -11,6 +11,7 @@
 // ui.js
 
 var map;
+var markers;
 var states;
 var ready = false;
 
@@ -105,28 +106,23 @@ function readyState() {
 function highlightState(states_array) {
 	//console.log('states.features.length : '+ states.features.length);
 	//console.log('states : '+ JSON.stringify(states) );
-	
-	states.setStyle(style_off);
-	
-	states.eachLayer(function(layer) {
+	if (ready) {
+		states.setStyle(style_off);
 		
-		//$.inArray( 5 + 5, [ "8", "9", "10", 10 + "" ] );
-		 
-		 
-		var layer_state = layer.feature.properties.STUSPS;		
-		
-		if ($.inArray( layer_state, states_array ) >= 0) {
-			layer.setStyle(style_highlight);
-		}
-		/*
-		else {
-			layer.setStyle(style_off);
-		}
-		*/
-	 
-    });
-	
-	
+		states.eachLayer(function(layer) {			
+
+			var layer_state = layer.feature.properties.STUSPS;		
+			
+			if ($.inArray( layer_state, states_array ) >= 0) {
+				layer.setStyle(style_highlight);
+			}
+			/*
+			else {
+				layer.setStyle(style_off);
+			}
+			*/		 
+		});		
+	}
 }
 
 
@@ -136,6 +132,26 @@ var q_food = '';
 var q_state = '';
 var q_date = '';
 var q_class = '';
+
+$("#select_food").on("change", function() {
+	q_food = $("#select_food").val();
+	loadMarkers();	
+});	
+
+$("#select_state").on("change", function() {
+	q_state = $("#select_state").val();
+	loadMarkers();	
+});	
+
+$("#select_date").on("change", function() {
+	q_date = $("#select_date").val();
+	loadMarkers();	
+});	
+
+$("#select_class").on("change", function() {
+	q_class = $("#select_class").val();
+	loadMarkers();	
+});	
 
 var data_json;
 var selected_json;
@@ -167,6 +183,18 @@ function setMarkers() {
 	
 	//console.log('data_json.results : '+ JSON.stringify(data_json.results) );
 	
+	
+	if (markers) {
+		map.removeLayer(markers);
+	}
+	
+	//map.removeLayer(markers);
+	//markers = L.layerGroup();
+	
+	markers = L.mapbox.featureLayer();
+	//markers.addLayer(marker);
+	//markerGroup.removeLayer(marker);
+	
 	if (data_json.results) {
 	
 		
@@ -182,7 +210,7 @@ function setMarkers() {
 				
 					//console.log('lat : '+ JSON.stringify(lat) );		
 					
-					L.marker([lat,lon], data_json.results[i])
+					var new_marker = L.marker([lat,lon], data_json.results[i])
 						.on('click',function(e) {
 						
 							console.log('e.target._leaflet_id : '+ e.target._leaflet_id );
@@ -192,14 +220,19 @@ function setMarkers() {
 							
 							clickMarkers();							
 					
-						})
-						.addTo(map);
+						});
+						//.addTo(map);
+						
+					markers.addLayer(new_marker);
 				}
 			}
-			catch(err) {
-			
+			catch(err) {			
 			}
 		}
+		
+		
+		markers.addTo(map);
+		
 	}
 }
 

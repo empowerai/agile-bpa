@@ -74,7 +74,7 @@ function insertCrowd(req, res) {
         client.query(i_query, function(err, result) {
 
             if (err) {
-                console.log('\n\n requestSearch on error');	
+                console.log('\n\n insertCrowd on error');	
                 responseError(req, res, err);
                 return;
             }
@@ -118,7 +118,7 @@ function insertCrowd(req, res) {
                     return;
                 }
                 catch (err) {
-                    console.log('\n\n requestSearch res err ');	
+                    console.log('\n\n insertCrowd res err ');	
                     responseError(req, res, err);
                     return;
                 }	
@@ -157,7 +157,7 @@ function requestCrowd(req, res) {
         client.query(r_query, function(err, result) {
 
             if (err) {
-                console.log('\n\n requestSearch on error');	
+                console.log('\n\n requestCrowd on error');	
                 responseError(req, res, err);
                 return;
             }
@@ -201,7 +201,7 @@ function requestCrowd(req, res) {
                     return;
                 }
                 catch (err) {
-                    console.log('\n\n requestSearch res err ');	
+                    console.log('\n\n requestCrowd res err ');	
                     responseError(req, res, err);
                     return;
                 }	
@@ -231,62 +231,65 @@ function processSearch(json) {
 
     var location;
 
-    for (var i = 0; i < process_json.results.length; i++) {
-        
-        result_json = process_json.results[i];
-        
-        delete result_json['@epoch'];
-        delete result_json['@id'];
-        
-        //result_json.affected_population_census = 746262;
-        
-        
-        //result_json.affected_population_crowd = getPopCrowd('def');
-    
-        
-        result_json.affected_state = ['AL','NY','MD','VA'];
-        result_json.recall_location = [85, -105];
-        
-        //console.log('\n\n result_json  ' + JSON.stringify(result_json));
+    if(process_json.results){
 
-
-        var distribution_pattern = process_json.results[i].distribution_pattern;
-	    //console.log('\distribution_pattern  ' + distribution_pattern);
+	    for (var i = 0; i < process_json.results.length; i++) {
+	        
+	        result_json = process_json.results[i];
+	        
+	        delete result_json['@epoch'];
+	        delete result_json['@id'];
+	        
+	        //result_json.affected_population_census = 746262;
+	        
+	        
+	        //result_json.affected_population_crowd = getPopCrowd('def');
 	    
-	    var total_pop = 0;
-	    
-     	var match_array = new Array();
-     	if(distribution_pattern.toLowerCase().indexOf("nation")!=-1){
-     		for (var k in state_pop_json.state_pop) {
-     			match_array.push(k);
-	            total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
-     		}
-     	}
-     	else {
-     		for (var k in state_pop_json.state_pop) {
-				//console.log(k+","+JSON.stringify(state_pop_json.state_pop[k].pop));
-				if(distribution_pattern.indexOf(k)!=-1){
-	            	match_array.push(k);
-	            	total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
-	           	}
-	           	
-	           	if(distribution_pattern.indexOf(state_pop_json.state_pop[k].name)!=-1){
-	            	match_array.push(k);
-	            	total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
-	           	}
-			}	
-     	}
-		
-		location = process_json.results[i].city.concat(",").concat(process_json.results[i].state);
-		//console.log("location="+location);
-		//console.log("match_array="+match_array);
-		//console.log("total_pop="+total_pop);
-	    result_json.affected_population_census = total_pop;
-	    result_json.affected_state = match_array;
-	    result_json.recall_location = places_json.gnis_places[location];
+	        
+	        result_json.affected_state = ['AL','NY','MD','VA'];
+	        result_json.recall_location = [85, -105];
+	        
+	        //console.log('\n\n result_json  ' + JSON.stringify(result_json));
 
-        
-        process_json.results[i] = result_json;
+
+	        var distribution_pattern = process_json.results[i].distribution_pattern;
+		    //console.log('\distribution_pattern  ' + distribution_pattern);
+		    
+		    var total_pop = 0;
+		    
+	     	var match_array = new Array();
+	     	if(distribution_pattern.toLowerCase().indexOf("nation")!=-1){
+	     		for (var k in state_pop_json.state_pop) {
+	     			match_array.push(k);
+		            total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
+	     		}
+	     	}
+	     	else {
+	     		for (var k in state_pop_json.state_pop) {
+					//console.log(k+","+JSON.stringify(state_pop_json.state_pop[k].pop));
+					if(distribution_pattern.indexOf(k)!=-1){
+		            	match_array.push(k);
+		            	total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
+		           	}
+		           	
+		           	if(distribution_pattern.indexOf(state_pop_json.state_pop[k].name)!=-1){
+		            	match_array.push(k);
+		            	total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
+		           	}
+				}	
+	     	}
+			
+			location = process_json.results[i].city.concat(",").concat(process_json.results[i].state);
+			//console.log("location="+location);
+			//console.log("match_array="+match_array);
+			//console.log("total_pop="+total_pop);
+		    result_json.affected_population_census = total_pop;
+		    result_json.affected_state = match_array;
+		    result_json.recall_location = places_json.gnis_places[location];
+
+	        
+	        process_json.results[i] = result_json;
+	    }
     }
 
 	return process_json;
@@ -314,7 +317,32 @@ function requestSearch(req, res) {
     
     if (s_food) {
         if (search != '') { search += '+AND+';}
-        search += '(product_description:'+ s_food +')';                      
+        
+        var food_search = s_food;
+
+        if(s_food == 'dairy'){
+        	food_search = "cream+milk+butter+chocolate";
+        }
+        else if(s_food == 'nuts'){
+        	food_search = "peanut+almonds+pistachios+pine+walnuts+cashews+hazelnuts+pecans";
+        }
+        else if(s_food == 'dairy'){
+        	food_search = "cream+milk+butter+chocolate";
+        }
+        else if(s_food == 'meat'){
+        	food_search = "beef+chicken+pork";
+        }
+        else if(s_food == 'seafood'){
+        	food_search = "oysters+fish+crabs+lobster";
+        }
+        else if(s_food == 'vegetables'){
+        	food_search = "salad+herbs+squash+asparagus+broccoli+pepper+eggplant+zucchini";
+        }
+        else if(s_food == 'fruits'){
+        	food_search = "apples+oranges+pears+grapes+peaches+strawberries+melon+cantaloupe";
+        }
+
+        search += '(product_description:'+ food_search +')';
     }
     if (s_date) {
         if (search != '') { search += '+AND+';}
@@ -356,8 +384,10 @@ function requestSearch(req, res) {
 			
 			try {
 			
-				var json_data = JSON.parse(data);				
-				var process_data = processSearch(json_data);				
+				var json_data = JSON.parse(data);	
+				
+				var	process_data = processSearch(json_data);				
+				
 
 				if (process_data.error) {
 					var err_msg = 'requestSearch process error';
@@ -485,7 +515,32 @@ function requestCounts(req, res) {
     
     if (s_food) {
         if (search != '') { search += '+AND+';}
-        search += '(product_description:'+ s_food +')';                      
+        
+        var food_search = s_food;
+
+        if(s_food == 'dairy'){
+        	food_search = "cream+milk+butter+chocolate";
+        }
+        else if(s_food == 'nuts'){
+        	food_search = "peanut+almonds+pistachios+pine+walnuts+cashews+hazelnuts+pecans";
+        }
+        else if(s_food == 'dairy'){
+        	food_search = "cream+milk+butter+chocolate";
+        }
+        else if(s_food == 'meat'){
+        	food_search = "beef+chicken+pork";
+        }
+        else if(s_food == 'seafood'){
+        	food_search = "oysters+fish+crabs+lobster";
+        }
+        else if(s_food == 'vegetables'){
+        	food_search = "salad+herbs+squash+asparagus+broccoli+pepper+eggplant+zucchini";
+        }
+        else if(s_food == 'fruits'){
+        	food_search = "apples+oranges+pears+grapes+peaches+strawberries+melon+cantaloupe";
+        }
+
+        search += '(product_description:'+ food_search +')';
     }
     if (s_date) {
         if (search != '') { search += '+AND+';}
@@ -552,8 +607,9 @@ function requestCounts(req, res) {
 			try {
 			
 				var json_data = JSON.parse(data);				
-				var process_data = processCounts(json_data, count_type);				;				
-
+				
+				var	process_data = processCounts(json_data, count_type);				
+				
 				if (process_data.error) {
 					var err_msg = 'requestSearch process error';
 					responseError(req, res, err_msg);
@@ -668,24 +724,25 @@ function processCounts(json, type) {
     //return_json.meta = process_json.meta;
 
     if(type=='class'){
-    	for (var i = 0; i < process_json.results.length; i++) {
-        
-	        result_json = process_json.results[i];
-	       
-	        console.log('\n\n result_json. term: ' + result_json.term);
-	        console.log('\n\n result_json  count: ' + result_json.count);
-			
-			if(result_json.term=='i'){
-				class1 = result_json.count;
-			}
-			else if(result_json.term=='ii'){
-				class2 = result_json.count;
-			}
-			else if(result_json.term=='iii'){
-				class3 = result_json.count;
-			}
+    	if(process_json.results){
+	    	for (var i = 0; i < process_json.results.length; i++) {
+	        
+		        result_json = process_json.results[i];
+		       
+		        console.log('\n\n result_json. term: ' + result_json.term);
+		        console.log('\n\n result_json  count: ' + result_json.count);
+				
+				if(result_json.term=='i'){
+					class1 = result_json.count;
+				}
+				else if(result_json.term=='ii'){
+					class2 = result_json.count;
+				}
+				else if(result_json.term=='iii'){
+					class3 = result_json.count;
+				}
+		    }
 	    }
-	    
 		return_json.results = {
 			'class1': class1,
 			'class2': class2,
@@ -693,24 +750,25 @@ function processCounts(json, type) {
 		};
     }
     else if(type=='status'){
-    	for (var i = 0; i < process_json.results.length; i++) {
-        
-	        result_json = process_json.results[i];
-	       
-	        console.log('\n\n result_json. term: ' + result_json.term);
-	        console.log('\n\n result_json  count: ' + result_json.count);
-			
-			if(result_json.term=='ongoing'){
-				class1 = result_json.count;
-			}
-			else if(result_json.term=='terminated'){
-				class2 = result_json.count;
-			}
-			else if(result_json.term=='completed'){
-				class3 = result_json.count;
-			}
+    	if(process_json.results){
+	    	for (var i = 0; i < process_json.results.length; i++) {
+	        
+		        result_json = process_json.results[i];
+		       
+		        console.log('\n\n result_json. term: ' + result_json.term);
+		        console.log('\n\n result_json  count: ' + result_json.count);
+				
+				if(result_json.term=='ongoing'){
+					class1 = result_json.count;
+				}
+				else if(result_json.term=='terminated'){
+					class2 = result_json.count;
+				}
+				else if(result_json.term=='completed'){
+					class3 = result_json.count;
+				}
+		    }
 	    }
-	    
 		return_json.results = {
 			'ongoing': class1,
 			'terminated': class2,
@@ -720,12 +778,14 @@ function processCounts(json, type) {
     else {
     	var date_array = new Array();
     	var count_array = new Array();
-    	for (var i = 0; i < process_json.results.length; i++) {
-    		//console.
-    		//return_json = process_json.results[i];
-    		date_array.push(process_json.results[i].time);
-			count_array.push(process_json.results[i].count);
-    	}	
+    	if(process_json.results){
+	    	for (var i = 0; i < process_json.results.length; i++) {
+	    		//console.
+	    		//return_json = process_json.results[i];
+	    		date_array.push(process_json.results[i].time);
+				count_array.push(process_json.results[i].count);
+	    	}
+	    }	
     	//console.log("date_array="+date_array);
     	//console.log("count_array="+count_array);
 

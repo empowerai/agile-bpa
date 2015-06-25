@@ -26,6 +26,7 @@ header a:hover, header a:focus { color: #99CCCC; text-decoration: none;}
 .head-logo { padding: 2px; }
 .head-title-div {float: left; padding-left: 10px; }
 .head-title { font-family: Merriweather,'Helvetica Neue',Arial,sans-serif !important; }
+.head-title:hover, .head-title:focus, .head-title:active { color: #ffffff !important; font-family: Merriweather,'Helvetica Neue',Arial,sans-serif !important; }
 .head-sub { font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif !important; }
 
 /* foot */

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<!--
+     __  ___  _____     _   _____  __    
+  /\ \ \/ __\ \_   \   /_\ /__   \/ _\   
+ /  \/ / /     / /\/  //_\\  / /\/\ \    
+/ /\  / /___/\/ /_   /  _  \/ /   _\ \   
+\_\ \/\____/\____/   \_/ \_/\/    \__/   
+                                         
+-->
+<head>
+<title>NCI ATS - Agile BPA - FDA Recall Impact</title>
+<meta name="description" content="NCI ATS - Agile BPA - FDA Recall Impact">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="author" href="humans.txt" type="text/plain" />
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="apple-touch-icon" sizes="57x57" href="image/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="image/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="image/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="image/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="image/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="image/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="image/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="image/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="image/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="image/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="image/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="image/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="image/favicon-16x16.png">
+</head>
+<body>
+<header> 
+  <!-- <nav class="container" role="navigation">
+        <div class="row">
+            <div class="col-xs-10 col-sm-9"> 				
+                <h1><a href="/" class="logo"><img src="image/nciinc_logo_large.png" alt="NCI ATS" class="head-logo" /></a><a href="/" class="head-title">NCI ATS - Agile BPA - FDA Recall Impact</a></h1>
+            </div>
+            <div class="col-xs-2 col-sm-3"> 			
+				<div class="pull-right"> 
+					<a href="/about" class="und">About</a> - <a href="/faq" class="und">FAQ</a> - <a href="/style" class="und">Style</a> - <a href="/api" class="und">API</a>
+				</div>
+			</div>
+        </div>
+    </nav>-->
+  <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid"> 
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+        <a class="navbar-brand page-scroll" href="#page-top"><img src="image/gov-fda-blue.svg" width="60" alt="FDA Logo"> <span class="app-name">Food Recalls Impact</span><span class="app-dev">App by NCI Information Systems, Inc.</span></a> </div>
+      
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li> <a class="page-scroll" href="#design" title="About"><i class="fa fa-book fda-black"></i> </a> </li>
+          <li> <a class="page-scroll" href="#color" title="FAQ"><i class="fa fa-question-circle fda-black"></i> </a> </li>
+          <li> <a class="page-scroll" href="#typo" title="API Docs"><i class="fa fa-flask fda-black"></i> </a> </li>
+          <li> <a class="page-scroll" href="#icons" title="Style Guide"><i class="fa fa-cube fda-black"></i> </a></li>
+        </ul>
+      </div>
+      <!-- /.navbar-collapse --> 
+    </div>
+    <!-- /.container-fluid --> 
+  </nav>
+</header>
+<main class="container">
+<div class="row">
+<div class="col-md-7 col-lg-8 col-full">
+  <div class="map-container">
+    <div id="map"></div>
+  </div>
+</div>
+<div class="col-md-5 col-lg-4">
+  <div class="panel panel-default recalls">
+    <div class="nav-controls">
+      <select id="select_food">
+        <option value="">All Food</option>
+        <option value="cheese">cheese</option>
+        <option value="peanut">peanut</option>
+        <option value="gluten">gluten</option>
+        <option value="chocolate">chocolate</option>
+      </select>
+      <select id="select_state">
+        <option value="">All States</option>
+        <option value="AL">AL</option>
+        <option value="AR">AR</option>
+        <option value="CO">CO</option>
+        <option value="MD">MD</option>
+        <option value="VA">VA</option>
+      </select>
+      <select id="select_date">
+        <option value="">All Years</option>
+        <option value="2015">2015</option>
+        <option value="2014">2014</option>
+        <option value="2013">2013</option>
+        <option value="2012">2012</option>
+        <option value="2011">2011</option>
+        <option value="2010">2010</option>
+      </select>
+      <select id="select_class">
+        <option value="">All Class</option>
+        <option value="1">Class I</option>
+        <option value="2">Class II</option>
+        <option value="3">Class III</option>
+      </select>
+    </div>
+    <div class="data-display">
+      <div class="data-header">
+        <p class="recall-status"><i class="fa fa-arrow-circle-right fa-fw fda-accent3"></i> Ongoing <i class="fa fa-bell fa-fw fda-accent4"></i> Class III Recall </p>
+        <p class="recall-dates"> Initiated on <span>Jan 29, 2015</span> Reported on <span>May 20, 2015</span></p>
+      </div>
+      <div class="data-table">
+        <table>
+          <tbody>
+            <tr>
+              <td class="th">Product </td>
+              <td id="api_product_description">Aleia's Classic Croutons, Gluten Free, NET WT 8 oz (226.8g). UPC Code: 8 55930 00161 6, Product is packaged in a brown cardboard box with white text. </td>
+            </tr>
+            <tr>
+              <td class="th">Reason </td>
+              <td id="api_reason_for_recall" class="reason">Product manufactured with cumin that may contain peanut protein. </td>
+            </tr>
+            <tr>
+              <td class="th">Company </td>
+              <td id="api_recalling_firm">Aleias Gluten Free Foods LLC </td>
+            </tr>
+            <tr>
+              <td class="th">Recall Number </td>
+              <td id="api_recall_number">F-2205-2015 </td>
+            </tr>
+            <tr>
+              <td class="th">Distribution </td>
+              <td id="api_distribution_pattern">Product was distributed in the following states: TX, MA, ME, CT, CA, NH, NY, TX, NJ </td>
+            </tr>
+            <tr>
+              <td class="th">Quantity </td>
+              <td id="api_product_quantity">559 cases </td>
+            </tr>
+            <tr>
+              <td class="th">Potentially Affected </td>
+              <td id="api_population_census">33.6% of US Population </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="data-footer"><i class="fa fa-comments fda-black"></i> No feedback yet on this recall. <br>
+        <a href="#">Would you like to report one?</a></div>
+    </div>
+  </div>
+</div>
+</main>
+<footer class="footer">
+  <div class="footer-brand"> <a class="" href="http://www.nciinc.com/"><img src="image/nci-logo.svg" height="30" alt="NCI Logo"> <span class="app-name">App developed for the Agile BPA by: </span><span class="app-dev">NCI Information Systems, Inc.</span></a> </div>
+  <div class="footer-nav pull-right"> About    ·    FAQ    ·    API Docs    ·    Style Guide </div>
+</footer>
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script> 
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> 
+<script src="//api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.js"></script> 
+<script src="/js/ui.js"></script>
+</body>
+</html>

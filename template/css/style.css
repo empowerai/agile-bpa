@@ -1,0 +1,190 @@
+/*
+     __  ___  _____     _   _____  __    
+  /\ \ \/ __\ \_   \   /_\ /__   \/ _\   
+ /  \/ / /     / /\/  //_\\  / /\/\ \    
+/ /\  / /___/\/ /_   /  _  \/ /   _\ \   
+\_\ \/\____/\____/   \_/ \_/\/    \__/   
+                                         
+*/
+
+/* style.css */
+
+/* global */
+body { color: #45000B; font-family: arial, sans-serif; }
+h1 { color: #ffffff; font-size: 22px;  }
+h2 { color: #ffffff; font-size: 14px;  }
+a, a:hover, a:focus { color: #45000B; text-decoration: none; }
+label { font-size: 13px; font-weight: normal; }
+
+/* head*/
+header { color: #ffffff; background-color: #00539B; margin-bottom: 10px;  }
+header a { color: #ffffff; }
+header a:hover, header a:focus { color: #CFCFCF; text-decoration: none;}
+.head-logo { padding: 2px; height: 35px; width: 35px; background: #ffffff; }
+.head-title {padding-left: 10px;}
+
+/* foot */
+footer { color: #ffffff; background-color: #6699CC; margin-top: 10px; padding-bottom: 25px; padding-top: 25px }
+footer a { color: #ffffff; }
+footer a:hover, footer a:focus { color: #CFCFCF; text-decoration: underline;}
+
+/* form */
+form { position: relative; }
+.form-control, .form-control:focus { box-shadow: none; height: 36px; }
+.input-group { width: 100%; }
+.input-group .form-control:first-child { border-right: none; border-bottom: none; border-radius: 0; height: 36px; padding-right: 32px; }
+.form-control:focus { border-color: #CCC; }
+
+/* button */
+.btn-group .active { background-color: #013A58; }
+.input-group-btn button { background-color: #FFF; border-left: none; border-radius: 0; font-size: 17px; }
+.input-group-btn:last-child > .btn { border-bottom: 0; margin-left: 0; padding-bottom: 5px; }
+.input-group .divider { border-left: 1px solid #CCCCCC; height: 25px; position: absolute; top: 6px; z-index: 9; }
+
+/* section */
+.panel { border: none; border-radius: 0; box-shadow: none; margin-bottom: 0; }
+.panel-body { padding: 5px 0; background-color: #eeeeef; }
+
+/* map */
+#map { height: 666px; }
+.map-container { position: relative; }
+
+.btn-geo-current { border: 1px solid rgba(0, 0, 0, 0.4); border-radius: 3px; left: 10px; padding: 2px; position: absolute; top: 110px; z-index: 9; width: 28px; height: 26px; background: #ffffff; }
+.btn-geo-nation { border: 1px solid rgba(0, 0, 0, 0.4); border-radius: 3px; left: 10px; padding: 2px; position: absolute; top: 145px; z-index: 10; width: 28px; height: 26px; background: #ffffff; }
+
+
+
+/* responsive */
+@media only screen and (min-width : 320px) and (max-width : 479px) {
+	#map { height: 67vh; min-height: 200px; }
+	.col-full { padding-left: 0; padding-right: 0; }
+	.panel { margin: 20px 0 15px; }
+	h1 { font-size: 16px; margin-top: 12px; }
+	h2 { font-size: 11px; white-space: nowrap; }
+	.panel { margin: 20px 0 15px; }
+	.footer-nav { display: none;}
+}
+ @media only screen and (min-width : 480px) and (max-width : 767px) {
+	#map { height: 67vh; min-height: 200px; }
+	.col-full { padding-left: 0; padding-right: 0; }
+	.panel { margin: 20px 0 10px; }
+	footer .pull-right { float: none !important; }
+	.footer-nav { display: none;}
+}
+ @media (min-width: 768px) and (max-width : 991px) {
+	#map { height: 67vh; min-height: 200px; }
+	.col-full { padding-left: 0; padding-right: 0; }
+	.panel { margin-top: 20px; }
+}
+ @media (min-width: 992px) {
+
+}
+
+/* Uma's Styles */
+
+body { background-color: #99CCCC;   font-family: "Open Sans", Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #36383a;
+  font-family: Merriweather, Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", serif;
+  color: #bcbcbc;
+  font-size: 12px;
+  font-style:italic;
+padding-top: 15px;
+}
+.navbar-brand img {float: left;}
+.navbar-brand span {float: left; display:block}
+.navbar-brand span.app-dev {
+  clear: left;
+  font-size: 10px;
+  font-family: Merriweather, Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", serif;
+  font-style: italic;
+  padding-left: 70px;
+  margin-top: -15px;
+}
+.navbar-brand span.app-name {
+  font-size: 17px;
+  padding-left: 10px;
+  margin-top: -5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #00539B;
+}
+.footer-brand {
+  float: left;
+  padding-left: 15px;
+}
+.footer-nav {
+  padding: 8px 15px;
+}
+.footer-brand img {float: left; display:block;}
+.footer-brand span {
+  float: left;
+  display: block;
+  font-size: 11px;
+  color: #bcbcbc!important;
+  padding-left: 16px;
+}
+.footer-brand span.app-dev {
+  clear: left;
+  font-size: 13px;
+  padding-left: 60px;
+  margin-top: -13px;
+  color: #FFF!important;
+}
+.navbar .fa {font-size: 20px;}
+.recalls {
+  margin-top: 65px;
+  /* padding: 20px; */
+  box-shadow: rgba(0,0,0,0.2) 0px 0px 20px;
+}
+.recalls .nav-controls { padding:20px; background-color: #e2e2e2;}
+.recalls .data-display { padding:20px; }
+.recalls .data-display table td { padding: 10px 0 10px 20px; color: #000; vertical-align: top;font-size:13px; }
+.recalls .data-display table th { padding: 10px; vertical-align: top;}
+.recalls .data-display table td.th {   font-family: Merriweather, Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", serif; color: #808284; font-size:13px; padding-left: 0px }
+.recalls .data-display table td.reason {  color: #993333; font-style:italic; }
+.recalls .data-display .data-header {
+  border-bottom: 1px solid #cfcfcf;
+}
+.recalls .data-display .data-footer {
+  border-top: 1px solid #cfcfcf;
+  padding-top: 15px; color: #808284; font-size:12px;
+}
+a { color: #00539B;}
+.fda-blue { color: #00539B; }
+.fda-midtone { color: #6699CC; }
+.fda-tint { color: #99CCCC; }
+.fda-black { color: #323132; }
+.fda-accent1 { color: #CC6633; }
+.fda-accent2 { color: #A3C658; }
+.fda-accent3 { color: #E2C752; }
+.fda-accent4 { color: #993333; }
+.fda-blue-bg { background-color: #00539B; }
+.fda-midtone-bg { background-color: #6699CC; }
+.fda-tint-bg { background-color: #99CCCC; }
+.fda-black-bg { background-color: #323132; }
+.fda-accent1-bg { background-color: #CC6633; }
+.fda-accent2-bg { background-color: #A3C658; }
+.fda-accent3-bg { background-color: #E2C752; }
+.fda-accent4-bg { background-color: #993333; }
+.data-header .fa {font-size: 20px;}
+.data-header .fa-bell {font-size: 18px;}
+.recall-status { font-size: 14px; font-weight:700; color: #000;}
+.recall-dates { font-size: 12px; font-style:italic; color: #808284;}
+.recall-dates span { font-size: 12px; font-weight:600; color: #000;}
+
+

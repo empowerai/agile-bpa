@@ -1,5 +1,5 @@
 {
-    "apiVersion": "1.0",
+    "apiVersion": "0.0.1",
     "apis": [
         {
             "description": "FDA Food Reacall - Search API",

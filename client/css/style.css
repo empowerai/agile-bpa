@@ -236,3 +236,7 @@ filter-select { font-family: Arial,sans-serif; box-shadow: none; font-size: 12px
  @media (min-width: 992px) {
 
 }
+.selectWidth {
+	width: auto;
+	margin-right: 5px;
+}

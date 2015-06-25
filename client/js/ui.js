@@ -675,36 +675,45 @@ function clickMarkers() {
 	
 	//console.log('selected_json : '+ JSON.stringify(selected_json) );	
 	
-	$("#text-div-selected").show();
-	$("#text-div-national").hide();
-	$("#text-div-noresults").hide();	
+	$('#text-div-selected').show();
+	$('#text-div-national').hide();
+	$('#text-div-noresults').hide();	
 	
-	$("#api_recall_number").text(selected_json.recall_number);
-	$("#api_recalling_firm").text(selected_json.recalling_firm);
-	$("#api_product_description").text(selected_json.product_description);
-	$("#api_reason_for_recall").text(selected_json.reason_for_recall);
-	$("#api_status").text(selected_json.status);
-	$("#api_classification").text(selected_json.classification);
-	$("#api_distribution_pattern").text(selected_json.distribution_pattern);
-	$("#api_product_quantity").text(selected_json.product_quantity);
+	$('#api_recall_number').text(selected_json.recall_number);
+	$('#api_recalling_firm').text(selected_json.recalling_firm);
+	$('#api_product_description').text(selected_json.product_description);
+	$('#api_reason_for_recall').text(selected_json.reason_for_recall);
+	$('#api_status').text(selected_json.status);
+	$('#api_classification').text(selected_json.classification);
+	$('#api_distribution_pattern').text(selected_json.distribution_pattern);
+	$('#api_product_quantity').text(selected_json.product_quantity);
 	
 	var date_init = selected_json.recall_initiation_date;
-	var date_format = new Date(date_init.substring(0,4)+"-"+date_init.substring(4,6)+"-"+date_init.substring(6,8));
+	var date_format = new Date(date_init.substring(0,4)+'-'+date_init.substring(4,6)+'-'+date_init.substring(6,8));
 	
-	$("#api_recall_initiation_date").text(date_format.toLocaleDateString());
-	$("#api_report_date").text(selected_json.report_date);
-	$("#api_population_census").text(commaSeparateNumber(selected_json.affected_population_census));
+	$('#api_recall_initiation_date').text(date_format.toLocaleDateString());
+	$('#api_report_date').text(selected_json.report_date);
+	$('#api_population_census').text(commaSeparateNumber(selected_json.affected_population_census));
 	
 	var pop_perc = (selected_json.affected_population_census / 322405453) * 100;
 	console.log('pop_perc : '+ pop_perc );	
 	
-	$("#api_population_percent").text( ( Math.round(pop_perc * 100) / 100) );
+	$('#api_population_percent').text( ( Math.round(pop_perc * 100) / 100) );
 	
 	highlightState(selected_json.affected_state, selected_json.classification);
 	
 	getCrowd(selected_json.recall_number);
+    
+    if (selected_json.status == 'Ongoing') { $('#status-icon-img').attr('src','/image/circle-stroked-18.png'); }
+    else if (selected_json.status == 'Completed') { $('#status-icon-img').attr('src', '/image/circle-18.png' ); }
+    else if (selected_json.status == 'Terminated') { $('#status-icon-img').attr('src', '/image/cross-18.png' ); }
+
+    $('#class-icon-i').removeClass( 'fda-blue fda-accent2 fda-accent3' );
+    if (selected_json.classification == 'Class I') { $('#class-icon-i').addClass( 'fda-blue' ); }
+    else if (selected_json.classification == 'Class II') { $('#class-icon-i').addClass( 'fda-accent2' ); }
+    else if (selected_json.classification == 'Class III') { $('#class-icon-i').addClass( 'fda-accent3' ); }
 	
-	//$("#api_crowdsource").text(selected_json.api_recall_initiation_date);
+	//$('#api_crowdsource').text(selected_json.api_recall_initiation_date);
 }
 
 function setNationwide() {
@@ -712,7 +721,7 @@ function setNationwide() {
 	
 	clearSelected();	
 
-	//$("#text-div-national").show();	
+	//$('#text-div-national').show();	
 }
 
 function getCurrentLocation(load) {

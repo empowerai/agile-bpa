@@ -257,7 +257,9 @@ function setChartDate(data) {
 	}
 	
 	$('#chart-div-date').highcharts({
-		
+		colors: 
+            ['#00539B']
+        ,
 		title: {
             text: 'Recall Dates',
         },
@@ -285,16 +287,36 @@ function setChartDate(data) {
             }]
         },
 		plotOptions: {
-            spline: {
+            area: {
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1.5
+                    },
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
                 marker: {
-                    enabled: true
-                }
+                    radius: 2
+                },
+                lineWidth: 1,
+                states: {
+                    hover: {
+                        lineWidth: 1
+                    }
+                },
+                threshold: null
             }
         },
         tooltip: {
 
         },
         series: [{
+            type: 'area',
             name: 'Recalls',
             data: date_arr
         }]	
@@ -305,7 +327,10 @@ function setChartDate(data) {
 function setChartStatus(data) {
 
 	$('#chart-div-status').highcharts({
-		chart: {
+		colors: 
+            ['#6699CC', '#99CCCC', '#323132']
+        ,
+        chart: {
             type: 'bar',
 			plotBackgroundColor: null,
 			plotBorderWidth: null,
@@ -358,6 +383,9 @@ function setChartStatus(data) {
 function setChartClass(data) {
 
 	$('#chart-div-class').highcharts({
+        colors: 
+            ['#00539B', '#A3C658', '#E2C752']
+        ,
 		chart: {
 			plotBackgroundColor: null,
 			plotBorderWidth: null,

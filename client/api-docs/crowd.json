@@ -1,0 +1,89 @@
+{
+    "apiVersion": "1.0",
+    "apis": [
+        {
+            "operations": [
+                {
+                    "method": "GET",
+                    "nickname": "crowd",
+                    "parameters": [
+                        {
+                            "allowableValues": {
+                                "valueType": "LIST",
+                                "values": [
+                                    "json",
+                                    "jsonp",
+                                    "geojson",
+                                    "xml"                                   
+                                ]
+                            },
+                            "dataType": "string",
+                            "description": "File format",
+                            "name": "file",
+                            "paramType": "path",
+                            "required": true
+                        },
+                        {
+                            "dataType": "string",
+                            "description": "Recall number to get the crowdsource",
+                            "name": "recall",
+                            "paramType": "query",
+                            "required": true
+                        }
+                    ],
+                    "produces": [
+                        "application/json",
+                        "application/javascript",
+                        "application/xml"
+                    ],
+                    "summary": "API to get the crowdsource of FDA food reacll provided."
+                },
+                {
+                    "method": "POST",
+                    "nickname": "crowd",
+                    "parameters": [
+                        {
+                            "allowableValues": {
+                                "valueType": "LIST",
+                                "values": [
+                                    "json",
+                                    "jsonp",
+                                    "geojson",
+                                    "xml"                                   
+                                ]
+                            },
+                            "dataType": "string",
+                            "description": "File format",
+                            "name": "file",
+                            "paramType": "path",
+                            "required": true
+                        },
+                        {
+                            "dataType": "string",
+                            "description": "Recall number to submit a crowdsource",
+                            "name": "recall",
+                            "paramType": "query",
+                            "required": true
+                        }
+                    ],
+                    "produces": [
+                        "application/json",
+                        "application/javascript",
+                        "application/xml"
+                    ],
+                    "summary": "API to POST crowdsource of FDA food reacll number provided."
+                }
+            ],
+            "path": "/api/crowd.{file}"
+        }
+   ],
+    "basePath": "/",
+    "models": {},
+    "produces": [
+        "application/json",
+        "application/javascript",
+        "application/xml"
+    ],
+    "resourcePath": "/api",
+    "swaggerVersion": "1.2"
+}

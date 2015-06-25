@@ -1,0 +1,16 @@
+#gitignore
+
+# modules
+node_modules
+node_modules/*
+
+# config
+config
+config/*
+config.json
+
+# logs
+logs
+*.log
+log
+log/*

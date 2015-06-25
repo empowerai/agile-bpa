@@ -1,0 +1,89 @@
+{
+    "apiVersion": "1.0",
+    "apis": [
+        {
+            "operations": [
+                {
+                    "method": "GET",
+                    "nickname": "count",
+                    "parameters": [
+                        {
+                            "allowableValues": {
+                                "valueType": "LIST",
+                                "values": [
+                                    "json",
+                                    "jsonp",
+                                    "geojson",
+                                    "xml"                                   
+                                ]
+                            },
+                            "dataType": "string",
+                            "description": "File format",
+                            "name": "file",
+                            "paramType": "path",
+                            "required": true
+                        },
+                        {
+                            "dataType": "string",
+                            "description": "Get the counts based [class,date,status]",
+                            "name": "count",
+                            "paramType": "query",
+                            "required": true
+                        },
+                        {
+                            "dataType": "string",
+                            "description": "type of food",
+                            "name": "food",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "dataType": "string",
+                            "description": "affected state",
+                            "name": "state",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "dataType": "string",
+                            "description": "recall initiation year",
+                            "name": "year",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "dataType": "string",
+                            "description": "class of the recall",
+                            "name": "class",
+                            "paramType": "query",
+                            "required": false
+                        },
+                        {
+                            "dataType": "string",
+                            "description": "status of the recall [ongoing,completed,terminated]",
+                            "name": "status",
+                            "paramType": "query",
+                            "required": false
+                        }
+                    ],
+                    "produces": [
+                        "application/json",
+                        "application/javascript",
+                        "application/xml"
+                    ],
+                    "summary": "API to get the Count of FDA food reaclls."
+                }
+            ],
+            "path": "/api/count.{file}"
+        }
+   ],
+    "basePath": "/",
+    "models": {},
+    "produces": [
+        "application/json",
+        "application/javascript",
+        "application/xml"
+    ],
+    "resourcePath": "/api",
+    "swaggerVersion": "1.2"
+}

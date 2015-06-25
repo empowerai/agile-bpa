@@ -84,10 +84,32 @@ $(function() {
 		getCurrentLocation(false);
 		return false;
 	});
+	
+	$("#input-geo-search").on("click", function(e) {
+		e.preventDefault();
 
+		var search_input = $("#input-geo-location").val();
+		geocoder.query(search_input, searchMap);		 
+
+	});
+
+	$(document).keypress(function(e) {		
+		if (e.which == 13) {
+			var search_input = $("#input-geo-location").val();
+			geocoder.query(search_input, searchMap);		
+		}
+	});
+	 
+	 
 	// nationwide
 	$("#btn-geo-nation").on("click", function() {
 		setNationwide();
+	});	
+	
+	// crowdsourced
+	$("#btn-crowd-post").on("click", function() {
+	
+		postCrowd(selected_json.recall_number);
 	});	
 	
 	// get current location
@@ -108,6 +130,64 @@ $(function() {
 	
 });
 
+function loadError() {
+	$("#text-div-selected").hide();
+	$("#text-div-national").hide();
+	$("#text-div-noresults").show();
+}
+
+function searchMap(err, data) {
+ 
+	var lat = data.latlng[0];
+	var lon = data.latlng[1];
+
+	if (data.lbounds) {
+		map.fitBounds(data.lbounds);
+	} else if (data.latlng) {
+		map.setView([lat, lon], 12);
+	}
+ }
+
+function getCrowd(recall) {
+	
+	var crowd_url = '/api/crowd.json?recall='+recall;	
+	console.log('crowd_url : '+ crowd_url);	
+	$.ajax({
+		type: 'GET',
+		url: crowd_url,
+		dataType: 'json',
+		success: function(data) {
+
+			console.log('get data : '+ JSON.stringify(data) );	
+			$("#api_population_crowd").text(data.results.recall_crowd_count);			
+		},
+		error: function (request, status, error) {
+			console.log(request.responseText);
+			loadError();
+		}
+	});	
+}
+
+function postCrowd(recall) {
+	
+	var crowd_url = '/api/crowd.json?recall='+recall;	
+	console.log('crowd_url : '+ crowd_url);	
+	$.ajax({
+		type: 'POST',
+		url: crowd_url,
+		dataType: 'json',
+		success: function(data) {
+
+			console.log('postdata : '+ JSON.stringify(data) );	
+			$("#api_population_crowd").text(data.results.recall_crowd_count);			
+		},
+		error: function (request, status, error) {
+			console.log(request.responseText);
+			loadError();
+		}
+	});	
+}
+
 function loadCharts() {
 	
 	var class_url = '/api/count.json?count=class&food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'&status='+q_status;	
@@ -120,6 +200,10 @@ function loadCharts() {
 
 			//console.log('data : '+ JSON.stringify(data) );			
 			setChartClass(data);
+		},
+		error: function (request, status, error) {
+			console.log(request.responseText);
+			loadError();
 		}
 	});
 	
@@ -133,6 +217,10 @@ function loadCharts() {
 
 			console.log('data : '+ JSON.stringify(data) );			
 			setChartStatus(data);
+		},
+		error: function (request, status, error) {
+			console.log(request.responseText);
+			loadError();
 		}
 	});
 	
@@ -144,8 +232,12 @@ function loadCharts() {
 		dataType: 'json',
 		success: function(data) {
 
-			console.log('data : '+ JSON.stringify(data) );			
+			//console.log('data : '+ JSON.stringify(data) );			
 			setChartDate(data);
+		},
+		error: function (request, status, error) {
+			console.log(request.responseText);
+			loadError();
 		}
 	});
 	
@@ -204,8 +296,7 @@ function setChartDate(data) {
             data: date_arr
         }]	
 	
-	});
-	
+	});	
 }
 
 function setChartStatus(data) {
@@ -312,6 +403,17 @@ function readyState() {
 	ready = true;
 }
 
+function clearSelected() {
+
+	$("#text-div-selected").hide();
+	$("#text-div-national").show();
+	$("#text-div-noresults").hide();
+	
+	if (ready) {
+		states.setStyle(style_off);
+	}
+}
+
 function highlightState(states_array, classification) {
 	//console.log('states.features.length : '+ states.features.length);
 	//console.log('states : '+ JSON.stringify(states) );
@@ -353,30 +455,35 @@ var q_status = '';
 
 $("#select_food").on("change", function() {
 	q_food = $("#select_food").val();
+	clearSelected();
 	loadMarkers();	
 	loadCharts();
 });	
 
 $("#select_state").on("change", function() {
 	q_state = $("#select_state").val();
+	clearSelected();
 	loadMarkers();	
-	loadCharts();
+	loadCharts();	
 });	
 
 $("#select_date").on("change", function() {
 	q_date = $("#select_date").val();
+	clearSelected();
 	loadMarkers();	
 	loadCharts();
 });	
 
 $("#select_class").on("change", function() {
 	q_class = $("#select_class").val();
+	clearSelected();
 	loadMarkers();	
 	loadCharts();
 });
 
 $("#select_status").on("change", function() {
 	q_status = $("#select_status").val();
+	clearSelected();
 	loadMarkers();	
 	loadCharts();
 });		
@@ -396,15 +503,16 @@ function loadMarkers() {
 		dataType: 'json',
 		success: function(data) {
 
-			//console.log('data : '+ JSON.stringify(data) );
-			
+			//console.log('data : '+ JSON.stringify(data) );			
 			data_json = data;
 			
 			setMarkers();
-
+		},
+		error: function (request, status, error) {
+			console.log(request.responseText);
+			loadError();
 		}
 	});
-
 }
 
 function getIconColor(m_class) {
@@ -525,9 +633,20 @@ function setMarkers() {
 	}
 }
 
+function commaSeparateNumber(val){
+	while (/(\d+)(\d{3})/.test(val.toString())){
+		val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
+	}
+	return val;
+}
+
 function clickMarkers() {
 	
 	//console.log('selected_json : '+ JSON.stringify(selected_json) );	
+	
+	$("#text-div-selected").show();
+	$("#text-div-national").hide();
+	$("#text-div-noresults").hide();	
 	
 	$("#api_recall_number").text(selected_json.recall_number);
 	$("#api_recalling_firm").text(selected_json.recalling_firm);
@@ -537,17 +656,32 @@ function clickMarkers() {
 	$("#api_classification").text(selected_json.classification);
 	$("#api_distribution_pattern").text(selected_json.distribution_pattern);
 	$("#api_product_quantity").text(selected_json.product_quantity);
-	$("#api_recall_initiation_date").text(selected_json.recall_initiation_date);
+	
+	var date_init = selected_json.recall_initiation_date;
+	var date_format = new Date(date_init.substring(0,4)+"-"+date_init.substring(4,6)+"-"+date_init.substring(6,8));
+	
+	$("#api_recall_initiation_date").text(date_format.toLocaleDateString());
 	$("#api_report_date").text(selected_json.report_date);
-	$("#api_population_census").text(selected_json.affected_population_census);
+	$("#api_population_census").text(commaSeparateNumber(selected_json.affected_population_census));
+	
+	var pop_perc = (selected_json.affected_population_census / 322405453) * 100;
+	console.log('pop_perc : '+ pop_perc );	
+	
+	$("#api_population_percent").text( ( Math.round(pop_perc * 100) / 100) );
 	
 	highlightState(selected_json.affected_state, selected_json.classification);
+	
+	getCrowd(selected_json.recall_number);
 	
 	//$("#api_crowdsource").text(selected_json.api_recall_initiation_date);
 }
 
 function setNationwide() {
 	map.setView([40, -97], 3);
+	
+	clearSelected();	
+
+	//$("#text-div-national").show();	
 }
 
 function getCurrentLocation(load) {

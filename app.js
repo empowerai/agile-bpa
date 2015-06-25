@@ -74,9 +74,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/', express.static(__dirname + '/client'));
 
+/*
 app.get('/api', function(req, res){
 	server_api.requestSearch(req,res);
 });
+*/
 
 app.get('/api/search', function(req, res){
 	server_api.requestSearch(req,res);

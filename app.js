@@ -74,11 +74,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/', express.static(__dirname + '/client'));
 
-/*
 app.get('/api', function(req, res){
 	server_api.requestSearch(req,res);
 });
-*/
 
 app.get('/api/search', function(req, res){
 	server_api.requestSearch(req,res);
@@ -86,6 +84,10 @@ app.get('/api/search', function(req, res){
 
 app.get('/api/search.:ext', function(req, res){
 	server_api.requestSearch(req,res);
+});
+
+app.get('/api/count', function(req, res){
+	server_api.requestCounts(req,res);
 });
 
 app.get('/api/count.:ext', function(req, res){

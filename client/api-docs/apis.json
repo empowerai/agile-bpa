@@ -8,6 +8,10 @@
 		{
             "description": "FDA Food Recall - Count API",
             "path": "http://localhost:8000/api-docs/count.json"
+        },
+        {
+            "description": "FDA Food Recall - Crowdsource API",
+            "path": "http://localhost:8000/api-docs/crowd.json"
         }
     ],
     "swaggerVersion": "1.2"

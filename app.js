@@ -90,14 +90,6 @@ app.get('/api/count.:ext', function(req, res){
 	server_api.requestCounts(req,res);
 });
 
-app.get('/api/filter', function(req, res){
-	server_api.requestFilter(req,res);
-});
-
-app.get('/api/filter.:ext', function(req, res){
-	server_api.requestFilter(req,res);
-});
-
 app.get('/api/crowd', function(req, res){
 	server_api.requestCrowd(req,res);
 });

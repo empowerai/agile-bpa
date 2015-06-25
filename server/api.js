@@ -509,11 +509,12 @@ function requestCounts(req, res) {
     var s_date = req.query.date;
     var s_state = req.query.state;
     var s_class = req.query.class;
-    var s_count = req.query.count;
-
-    var count_type = "class";
-    
+	var s_status = req.query.status;    	
+   
     var search = '';
+	
+	var s_count = req.query.count;
+	var count = '';
     
     if (s_food) {
         if (search != '') { search += '+AND+';}
@@ -564,38 +565,26 @@ function requestCounts(req, res) {
         
         search += '(classification:'+ s_class_i +')';                      
     }
-
-    if (search != '') { search += '&';}
-
-    if (s_count) {
-    	// for getting count on recall_initiation_date
-    	if(s_count.toLowerCase().indexOf("class")!=-1){
-    		count_type = "class";
-    	}
-    	else if(s_count.toLowerCase().indexOf("date")!=-1){
-    		count_type = "date";
-    		
-    	}	
-    	else if(s_count.toLowerCase().indexOf("status")!=-1){
-    		count_type = "status";
-    	}
+	if (s_status) {
+        if (search != '') { search += '+AND+';}       
+        
+        search += '(status:'+ s_status +')';                      
     }
-    if(count_type=='date'){
-		search += 'count=recall_initiation_date';                      
+
+    if (s_count == 'date'){
+		count = 'recall_initiation_date';                      
     }
-    else if (count_type=='status') {
-    	search += 'count=status';
+    else if (s_count == 'status') {
+    	count = 'status';
     }
     else {
-    	search += 'count=classification';	
+    	count = 'classification';	
     }
 	
-    console.log('\n\n searchCount : ' + search );    
-        
-	console.log('\n\n query : ' + query );
-	console.log('\n\n filter : ' + filter );
+    console.log('\n\n count : ' + count );   
+	console.log('\n\n search : ' + search ); 
 	
-	var request_fda = config_json.fda_protocol +'://'+ config_json.fda_host +'/'+ config_json.fda_path +'?api_key='+ config_json.fda_key +'&limit=1000&search='+ search;
+	var request_fda = config_json.fda_protocol +'://'+ config_json.fda_host +'/'+ config_json.fda_path +'?api_key='+ config_json.fda_key +'&limit=1000&count='+ count +'&search='+ search;
 	console.log('\n\n request_fda : ' + request_fda );	
 	
 	https.get(request_fda, function (http_res) {
@@ -610,7 +599,7 @@ function requestCounts(req, res) {
 			
 				var json_data = JSON.parse(data);				
 				
-				var	process_data = processCounts(json_data, count_type);				
+				var	process_data = processCounts(json_data, s_count);				
 				
 				if (process_data.error) {
 					var err_msg = 'requestSearch process error';
@@ -795,131 +784,10 @@ function processCounts(json, type) {
 			'date': date_array,
 			'count': count_array
 		};
-    }
-    
+    }    
     
 	return return_json;
 }
-
-// **********************************************************
-// processFilter
-
-function processFilter(json) {
-
-	console.log('\n\n processFilter  ');	
-	
-	var process_json = json;	
-	
-	/*
-	for (var k in process_json) {	
-		console.log('\n\n k : ' + k );
-		console.log('\n\n process_json[k] : ' + process_json[k] );		
-	}
-	*/
-	
-	console.log('\n\n process_json.results.length : ' + process_json.results.length );
-	var normalize_arr = [];
-	for (var i = 0; i < process_json.results.length; i++) {	
-		//console.log('\n\n i : ' + i );
-		//console.log('\n\n process_json.results[i] : ' + JSON.stringify( process_json.results[i] ) );	
-		
-		if (process_json.results[i].term.length < 4) {		
-			// less than 4 char
-		}
-		else if ((process_json.results[i].term == 'product') || (process_json.results[i].term == 'packaged') || (process_json.results[i].term == 'distributed') || (process_json.results[i].term == 'with')) {		
-			// stop words
-		}
-		else if ( !isNaN(process_json.results[i].term) ) {
-			// number
-		}
-		else {
-			normalize_arr.push(process_json.results[i]);
-		}
-		
-		//console.log('\n\n normalize_arr : ' + JSON.stringify( normalize_arr ) );
-	}
-	
-	process_json.results = normalize_arr;	
-
-	return process_json;
-}
-
-// **********************************************************
-// requestSearch
-
-function requestFilter(req, res) {
-
-	console.log('\n\n requestFilter  ');
-
-	var ext = req.params.ext;	
-	console.log('\n\n ext : ' + ext );
-	
-	var query = req.query.q;
-	var filter = req.query.f;
-	
-	console.log('\n\n query : ' + query );
-	console.log('\n\n filter : ' + filter );
-	
-	var request_fda = config_json.fda_protocol +'://'+ config_json.fda_host +'/'+ config_json.fda_path +'?api_key='+ config_json.fda_key +'&limit=1000&count=product_description';
-	console.log('\n\n request_fda : ' + request_fda );	
-	
-	https.get(request_fda, function (http_res) {
-		var data = '';	
-		http_res.on("data", function (chunk) {
-			data += chunk;
-		});
-
-		http_res.on("end", function () {				
-			
-			try {
-			
-				var json_data = JSON.parse(data);				
-				var process_data = processFilter(json_data);				
-
-				if (process_data.error) {
-					var err_msg = 'requestFilter process error';
-					responseError(req, res, err_msg);
-					return;
-				} 
-				
-				if (process_data.meta) {
-					process_data.meta.name = package_json.name;
-					process_data.meta.description = package_json.description;
-					process_data.meta.version = package_json.version;
-				}
-				
-				process_data.status = {
-					'status': 200,
-					'type': 'OK'
-				};               
-			
-				// response_out		
-				var response_out = secureJSON(process_data);
-				
-				if (ext == 'xml') {
-					response_out = js2xmlparser('api', response_out);
-					res.setHeader('Content-Type', 'text/xml');
-				}
-				
-				res.header("Access-Control-Allow-Origin", "*");
-				res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
-				
-				res.send(response_out);
-				return;
-			}
-			catch (err) {
-				console.log('\n\n requestFilter res err ');	
-				responseError(req, res, err);
-				return;
-			}			
-		});
-		
-	}).on("error", function(err){		
-		console.log('\n\n requestFilter on error');	
-		responseError(req, res, err);
-		return;
-	});
-};
 
 // **********************************************************
 // responseError
@@ -965,6 +833,5 @@ function responseError(req, res, err) {
 
 exports.requestSearch = requestSearch;
 exports.requestCounts = requestCounts;
-exports.requestFilter = requestFilter;
 exports.requestCrowd = requestCrowd;
 exports.insertCrowd = insertCrowd;

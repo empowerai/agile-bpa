@@ -23,10 +23,24 @@ var style_off = {
     weight: 1
 };
 
-var style_highlight = {
-    fillColor: '#FF9100',
+var style_highlight_1 = {
+    fillColor: '#00539B',
     fillOpacity: 0.5,
-	color: '#FF9100',
+	color: '#00539B',
+    opacity: 0.9,
+    weight: 2
+};
+var style_highlight_2 = {
+    fillColor: '#A3C658',
+    fillOpacity: 0.5,
+	color: '#A3C658',
+    opacity: 0.9,
+    weight: 2
+};
+var style_highlight_3 = {
+    fillColor: '#E2C752',
+    fillOpacity: 0.5,
+	color: '#E2C752',
     opacity: 0.9,
     weight: 2
 };
@@ -89,16 +103,21 @@ $(function() {
 		
 	//console.log('states.features.length : '+ states.features.length);
 		
-	//var states.
+	// load charts
+	loadCharts();
 	
 });
+
+function loadCharts() {
+
+}
 
 function readyState() {
 	states.setStyle(style_off).addTo(map);
 	ready = true;
 }
 
-function highlightState(states_array) {
+function highlightState(states_array, classification) {
 	//console.log('states.features.length : '+ states.features.length);
 	//console.log('states : '+ JSON.stringify(states) );
 	if (ready) {
@@ -106,10 +125,21 @@ function highlightState(states_array) {
 		
 		states.eachLayer(function(layer) {			
 
-			var layer_state = layer.feature.properties.STUSPS;		
+			var layer_state = layer.feature.properties.STUSPS;	
+			 
+			var high_style = style_highlight_1;
+			if (classification == "Class I") {
+				high_style = style_highlight_1;
+			}
+			else if (classification == "Class II") {
+				high_style = style_highlight_2;
+			}
+			else if (classification == "Class III") {
+				high_style = style_highlight_3;
+			}
 			
 			if ($.inArray( layer_state, states_array ) >= 0) {
-				layer.setStyle(style_highlight);
+				layer.setStyle(high_style);
 			}
 			/*
 			else {
@@ -119,7 +149,6 @@ function highlightState(states_array) {
 		});		
 	}
 }
-
 
 var q_food = '';
 var q_state = '';
@@ -299,7 +328,6 @@ function setMarkers() {
 			}
 		}
 		
-		
 		markers.addTo(map);
 		
 	}
@@ -321,7 +349,7 @@ function clickMarkers() {
 	$("#api_report_date").text(selected_json.report_date);
 	$("#api_population_census").text(selected_json.affected_population_census);
 	
-	highlightState(selected_json.affected_state);
+	highlightState(selected_json.affected_state, selected_json.classification);
 	
 	//$("#api_crowdsource").text(selected_json.api_recall_initiation_date);
 }

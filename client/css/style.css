@@ -48,13 +48,14 @@ footer a:hover, footer a:focus { color: #ffffff; text-decoration: underline; fon
 .navbar-toggle  { background-color: #ffffff !important; }
 .nav>li>a { padding: 8px; 8px; }
 
-
 /* form */
 form { position: relative; }
 .form-control, .form-control:focus { box-shadow: none; height: 36px; }
 .input-group { width: 100%; }
 .input-group .form-control:first-child { border-right: none; border-bottom: none; border-radius: 0; height: 36px; padding-right: 32px; }
 .form-control:focus { border-color: #CCC; }
+
+filter-select { font-family: Arial,sans-serif; box-shadow: none; font-size: 12px; border: none;  }
 
 /* button */
 .btn-group .active { background-color: #013A58; }

@@ -91,18 +91,10 @@
             <form id="form-map" action="/">                
 			</form>
 			-->
-            <div class="map-container">
-                <button class="btn-geo-current btn btn-default st" type="button" id="btn-geo-current" data-toggle="tooltip" data-placement="right" title="Current Location">CL<span class="sr-only">Current Location</span></button>
-                <button class="btn-geo-nation btn btn-default st" type="button" id="btn-geo-nation" data-toggle="tooltip" data-placement="right" title="Nationwide">NW<span class="sr-only">Nationwide</span></button>
-                <div id="map"></div>              
-            </div>
-        </div>
-        <div class="col-md-5 col-lg-4">
-            <div class="panel panel-default">
-                <div>
-					<select id="select_food">
+			<div class="filter-div">
+					<select id="select_food" class="filter-select">
 						<option value="">Any Food</option>
-						<option value="baby+infant">Baby Food</option>
+						<option value="baby+infant+child+children">Baby Food</option>
 						<option value="dairy">Dairy</option>
 						<option value="gluten+wheat">Gluten</option>
 						<option value="nuts">Nuts</option>
@@ -116,7 +108,7 @@
 						<option value="drink+beverage+soda+pop">Soft Drinks</option>
 						<option value="alcohol+wine+beer+booze">Alcohol</option>
 					</select>
-					<select id="select_state">
+					<select id="select_state" class="filter-select">
 						<option value="">Any State</option>
 						<option value="AL">Alabama</option>
 						<option value="AK">Alaska</option>
@@ -126,7 +118,7 @@
 						<option value="CO">Colorado</option>
 						<option value="CT">Connecticut</option>
 						<option value="DE">Delaware</option>
-						<option value="DC">District Of Columbia</option>
+						<option value="DC">DC</option>
 						<option value="FL">Florida</option>
 						<option value="GA">Georgia</option>
 						<option value="HI">Hawaii</option>
@@ -170,7 +162,7 @@
 						<option value="WI">Wisconsin</option>
 						<option value="WY">Wyoming</option>
 					</select>
-					<select id="select_date">
+					<select id="select_date" class="filter-select">
 						<option value="">Any Year</option>
 						<option value="2015">2015</option>
 						<option value="2014">2014</option>
@@ -179,19 +171,28 @@
 						<option value="2011">2011</option>
 						<option value="2010">2010</option>
 					</select>
-					<select id="select_class">
+					<select id="select_class" class="filter-select">
 						<option value="">Any Class</option>
 						<option value="1">Class I</option>
 						<option value="2">Class II</option>
 						<option value="3">Class III</option>
 					</select>
-					<select id="select_status">
+					<select id="select_status" class="filter-select">
 						<option value="">Any Status</option>
 						<option value="ongoing">Ongoing</option>
 						<option value="completed">Completed</option>
 						<option value="terminated">Terminated</option>						
 					</select>
 				</div>				
+            <div class="map-container">
+                <button class="btn-geo-current btn btn-default st" type="button" id="btn-geo-current" data-toggle="tooltip" data-placement="right" title="Current Location">CL<span class="sr-only">Current Location</span></button>
+                <button class="btn-geo-nation btn btn-default st" type="button" id="btn-geo-nation" data-toggle="tooltip" data-placement="right" title="Nationwide">NW<span class="sr-only">Nationwide</span></button>
+                <div id="map"></div>              
+            </div>
+        </div>
+        <div class="col-md-5 col-lg-4">
+            <div class="panel panel-default">
+                
 				<table>
 					<thead>
 						<tr>

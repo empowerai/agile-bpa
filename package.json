@@ -1,6 +1,6 @@
 {
   "name": "agile-bpa",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "NCI ATS - Agile BPA - FDA Recall Impact",
   "main": "app.js",
   "dependencies": {

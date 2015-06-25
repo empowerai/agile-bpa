@@ -261,6 +261,9 @@ function setChartDate(data) {
 		title: {
             text: 'Recall Dates',
         },
+        chart: {
+            zoomType: 'x'
+        },
 		credits: {
 			enabled: false
 		},

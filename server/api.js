@@ -350,6 +350,11 @@ function requestSearch(req, res) {
        
         search += '(recall_initiation_date:['+ s_date +'-01-01+TO+'+ s_date +'-12-31])'; 
     }
+	else {
+		if (search != '') { search += '+AND+';}
+		
+		search += '(recall_initiation_date:[2010-01-01+TO+2015-12-31])'; 
+	}
     if (s_state) {
         if (search != '') { search += '+AND+';}
         //search += '(state:'+ s_state +')';  
@@ -550,6 +555,11 @@ function requestCounts(req, res) {
        
         search += '(recall_initiation_date:['+ s_date +'-01-01+TO+'+ s_date +'-12-31])'; 
     }
+	else {
+		if (search != '') { search += '+AND+';}
+		
+		search += '(recall_initiation_date:[2010-01-01+TO+2015-12-31])'; 
+	}
     if (s_state) {
         if (search != '') { search += '+AND+';}
         //search += '(state:'+ s_state +')';  
@@ -584,7 +594,7 @@ function requestCounts(req, res) {
     console.log('\n\n count : ' + count );   
 	console.log('\n\n search : ' + search ); 
 	
-	var request_fda = config_json.fda_protocol +'://'+ config_json.fda_host +'/'+ config_json.fda_path +'?api_key='+ config_json.fda_key +'&limit=1000&count='+ count +'&search='+ search;
+	var request_fda = config_json.fda_protocol +'://'+ config_json.fda_host +'/'+ config_json.fda_path +'?api_key='+ config_json.fda_key +'&limit=500&count='+ count +'&search='+ search;
 	console.log('\n\n request_fda : ' + request_fda );	
 	
 	https.get(request_fda, function (http_res) {
@@ -766,27 +776,44 @@ function processCounts(json, type) {
 			'completed': class3	
 		};
     }
-    else {
-    	var date_array = new Array();
-    	var count_array = new Array();
-    	if(process_json.results){
+    else if(type=='date'){
+    	var date_array = [];
+    	var count_array = [];
+    	var date_count_array = [];
+		
+		if(process_json.results){
 	    	for (var i = 0; i < process_json.results.length; i++) {
 	    		//console.
 	    		//return_json = process_json.results[i];
 	    		date_array.push(process_json.results[i].time);
 				count_array.push(process_json.results[i].count);
+				
+				date_count_array.push([process_json.results[i].time, process_json.results[i].count]);
+				
 	    	}
+						
+			date_count_array.sort(sortFunction);			
 	    }	
     	//console.log("date_array="+date_array);
     	//console.log("count_array="+count_array);
 
     	return_json.results = {
-			'date': date_array,
-			'count': count_array
+			'date_count': date_count_array
+			//'date': date_array,
+			//'count': count_array
 		};
     }    
     
 	return return_json;
+}
+
+function sortFunction(a, b) {
+	if (a[0] === b[0]) {
+		return 0;
+	}
+	else {
+		return (a[0] < b[0]) ? -1 : 1;
+	}
 }
 
 // **********************************************************

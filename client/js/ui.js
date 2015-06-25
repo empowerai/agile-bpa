@@ -109,7 +109,212 @@ $(function() {
 });
 
 function loadCharts() {
+	
+	var class_url = '/api/count.json?count=class&food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'&status='+q_status;	
+	console.log('class_url : '+ class_url);	
+	$.ajax({
+		type: 'GET',
+		url: class_url,
+		dataType: 'json',
+		success: function(data) {
 
+			//console.log('data : '+ JSON.stringify(data) );			
+			setChartClass(data);
+		}
+	});
+	
+	var status_url = '/api/count.json?count=status&food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'&status='+q_status;	
+	console.log('status_url : '+ status_url);	
+	$.ajax({
+		type: 'GET',
+		url: status_url,
+		dataType: 'json',
+		success: function(data) {
+
+			console.log('data : '+ JSON.stringify(data) );			
+			setChartStatus(data);
+		}
+	});
+	
+	var date_url = '/api/count.json?count=date&food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'&status='+q_status;	
+	console.log('date_url : '+ date_url);	
+	$.ajax({
+		type: 'GET',
+		url: date_url,
+		dataType: 'json',
+		success: function(data) {
+
+			console.log('data : '+ JSON.stringify(data) );			
+			setChartDate(data);
+		}
+	});
+	
+}
+
+function setChartDate(data) {
+	
+	var date_arr = [];
+	
+	for (var i = 0; i < data.results.date_count.length; i++) {
+	
+		var this_date = data.results.date_count[i][0];
+		var format_date = Date.UTC(this_date.substring(0,4), this_date.substring(4,6), this_date.substring(6,8))
+		console.log(this_date);
+		
+		console.log(this_date.substring(0,4));
+		console.log(this_date.substring(4,6));
+		console.log(this_date.substring(6,8));
+		
+		console.log(format_date);
+		console.log(data.results.date_count[i][1]);
+		//data.results.date
+		
+		date_arr.push([format_date, data.results.date_count[i][1]])
+	
+	}
+	
+	
+	$('#chart-div-date').highcharts({
+		
+		title: {
+            text: 'Recall Dates',
+            x: -20 //center
+        },
+		credits: {
+			enabled: false
+		},
+        xAxis: {
+            type: 'datetime',
+            title: {
+                text: ''
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Number of Recalls'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+		plotOptions: {
+            spline: {
+                marker: {
+                    enabled: true
+                }
+            }
+        },
+        tooltip: {
+
+        },
+        series: [{
+            name: 'Recalls',
+            data: date_arr
+        }]	
+	
+	});
+	
+}
+
+function setChartStatus(data) {
+
+	$('#chart-div-status').highcharts({
+		chart: {
+            type: 'bar',
+			plotBackgroundColor: null,
+			plotBorderWidth: null,
+			plotShadow: false
+        },
+        title: {
+            text: 'Recall Status'
+        },
+		tooltip: {
+			pointFormat: '{series.name}: <b>{point.y:.0f}</b>'
+		},
+		tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+            footerFormat: '</table>',
+            //shared: true,
+            useHTML: true
+        },
+		plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+		credits: {
+			enabled: false
+		},
+        xAxis: {
+            categories: ['']
+        },
+        yAxis: {
+            title: {
+                text: 'Recall Status'
+            }
+        },
+        series: [{
+            name: 'Ongoing',
+            data: [data.results.ongoing]
+        }, {
+            name: 'Completed',
+            data: [data.results.completed]
+        }, {
+            name: 'Terminated',
+            data: [data.results.terminated]
+        }]
+	});		
+}
+
+function setChartClass(data) {
+
+	$('#chart-div-class').highcharts({
+		chart: {
+			plotBackgroundColor: null,
+			plotBorderWidth: null,
+			plotShadow: false,
+			type: 'pie'
+		},
+		credits: {
+			enabled: false
+		},
+		title: {
+			text: 'Recall Classification'
+		},
+		tooltip: {
+			pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+		},
+		plotOptions: {
+			pie: {
+				allowPointSelect: true,
+				cursor: 'pointer',
+				dataLabels: {
+					enabled: false
+				},
+				showInLegend: true
+			}
+		},
+		series: [{
+			name: "Recalls",
+			colorByPoint: true,
+			innerSize: '50%',
+			data: [{
+				name: "Class I",
+				y: data.results.class1
+			}, {
+				name: "Class II",
+				y: data.results.class2
+			}, {
+				name: "Class III",
+				y: data.results.class3
+			}]
+		}]
+	});		
 }
 
 function readyState() {
@@ -159,26 +364,31 @@ var q_status = '';
 $("#select_food").on("change", function() {
 	q_food = $("#select_food").val();
 	loadMarkers();	
+	loadCharts();
 });	
 
 $("#select_state").on("change", function() {
 	q_state = $("#select_state").val();
 	loadMarkers();	
+	loadCharts();
 });	
 
 $("#select_date").on("change", function() {
 	q_date = $("#select_date").val();
 	loadMarkers();	
+	loadCharts();
 });	
 
 $("#select_class").on("change", function() {
 	q_class = $("#select_class").val();
 	loadMarkers();	
+	loadCharts();
 });
 
 $("#select_status").on("change", function() {
 	q_status = $("#select_status").val();
 	loadMarkers();	
+	loadCharts();
 });		
 
 var data_json;
@@ -188,7 +398,7 @@ function loadMarkers() {
 		
 	var api_url = '/api/search.json?food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'&status='+q_status;
 	
-	console.log('api_url : '+ api_url);
+	//console.log('api_url : '+ api_url);
 	
 	$.ajax({
 		type: 'GET',
@@ -259,13 +469,9 @@ function setMarkers() {
                     'marker-size': 'medium',
                     'marker-symbol': getIconSymbol(m_status)
                 });
-                
-    
-                
-                console.log('m_icon : '+ JSON.stringify(m_icon.options) );
-                
-                //m_icon.options.shadowSize = 0;
-                
+                                
+                //console.log('m_icon : '+ JSON.stringify(m_icon.options) );
+				
 				var result_json = data_json.results[i];
 				
 				if ((m_lat != 0) && (m_lon != 0)) {
@@ -275,8 +481,6 @@ function setMarkers() {
 					var new_marker = L.marker([m_lat,m_lon], data_json.results[i])
 						.on('click',function(e) {
 						
-                            
-                            //console.log('e.target._leaflet_id : '+ e.target._leaflet_id );
 							//console.log('this : '+ JSON.stringify(this.options) );
 							
 							selected_json = this.options;
@@ -284,14 +488,12 @@ function setMarkers() {
                             var c_class = selected_json.classification;
                             var c_status = selected_json.status;
                             
-                            console.log('c_class : '+ c_class );	
-                            console.log('c_status : '+ c_status );	
+                            //console.log('c_class : '+ c_class );	
+                            //console.log('c_status : '+ c_status );	
                             
                             markers.eachLayer(function(marker) {
-                                //var properties = marker.feature.properties;
-                                console.log('marker !!!!!!! : '+ JSON.stringify(marker.options.icon.options) );
-                                
-                                //marker.options.icon.options.iconSize = [30,70];
+
+                                //console.log('marker !!!!!!! : '+ JSON.stringify(marker.options.icon.options) );
                                 
                                 var reset_marker = marker.options.icon.options;
                                 

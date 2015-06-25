@@ -74,6 +74,29 @@ filter-select { font-family: Arial,sans-serif; box-shadow: none; font-size: 12px
 .btn-geo-current { border: 1px solid rgba(0, 0, 0, 0.4); border-radius: 3px; left: 10px; padding: 2px; position: absolute; top: 110px; z-index: 9; width: 28px; height: 26px; background: #ffffff; }
 .btn-geo-nation { border: 1px solid rgba(0, 0, 0, 0.4); border-radius: 3px; left: 10px; padding: 2px; position: absolute; top: 145px; z-index: 10; width: 28px; height: 26px; background: #ffffff; }
 
+/* charts */
+.charts-div { width:100%; min-height: 300px; margin: 0 auto; }
+
+/** carousel **/
+
+.jcarousel-wrapper { width: 100%;}
+
+.jcarousel {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.jcarousel li {
+    float: left;
+    width: 100%;
+}
+
+.jcarousel-pagination { bottom: -8px;}
+.jcarousel-control-prev { left: -25px;}
+.jcarousel-control-next { right: -25px;}
+
+
 /* responsive */
 @media only screen and (max-width : 320px) {
 	#map { height: 67vh; min-height: 200px; }

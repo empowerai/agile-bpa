@@ -158,27 +158,16 @@ function setChartDate(data) {
 	for (var i = 0; i < data.results.date_count.length; i++) {
 	
 		var this_date = data.results.date_count[i][0];
-		var format_date = Date.UTC(this_date.substring(0,4), this_date.substring(4,6), this_date.substring(6,8))
-		console.log(this_date);
+		var this_count = data.results.date_count[i][1];
+		var format_date = Date.UTC(this_date.substring(0,4), this_date.substring(4,6), this_date.substring(6,8));
 		
-		console.log(this_date.substring(0,4));
-		console.log(this_date.substring(4,6));
-		console.log(this_date.substring(6,8));
-		
-		console.log(format_date);
-		console.log(data.results.date_count[i][1]);
-		//data.results.date
-		
-		date_arr.push([format_date, data.results.date_count[i][1]])
-	
+		date_arr.push([format_date, this_count]);
 	}
-	
 	
 	$('#chart-div-date').highcharts({
 		
 		title: {
             text: 'Recall Dates',
-            x: -20 //center
         },
 		credits: {
 			enabled: false
@@ -193,6 +182,7 @@ function setChartDate(data) {
             title: {
                 text: 'Number of Recalls'
             },
+			min: 0,
             plotLines: [{
                 value: 0,
                 width: 1,

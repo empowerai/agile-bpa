@@ -27,6 +27,8 @@
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 	<link rel="stylesheet" href="//api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css" />	
+	
+	<link rel="stylesheet" href="/css/jcarousel.responsive.css" />	
 
 	<link rel="stylesheet" href="/css/style.css">
 	
@@ -191,11 +193,20 @@
             </div>
         </div>
         <div class="col-md-5 col-lg-4">
-            <div class="panel panel-default">
-                <div id="chart-all-area">
-					<div id="chart-div-class" style="width:100%; margin: 0 auto"></div>
-					<div id="chart-div-status" style="width:100%; margin: 0 auto"></div>
-					<div id="chart-div-date" style="width:100%; margin: 0 auto"></div>
+            <div class="panel panel-default">		
+				<div class="jcarousel-wrapper">
+					<div class="jcarousel">
+						<ul>
+							<li><div id="chart-div-class" class="charts-div"></div></li>
+							<li><div id="chart-div-status" class="charts-div"></div></li>
+							<li><div id="chart-div-date" class="charts-div"></div></li>
+						</ul>
+					</div>
+					<a href="#" class="jcarousel-control-prev">&lsaquo;</a>
+					<a href="#" class="jcarousel-control-next">&rsaquo;</a>
+					<p class="jcarousel-pagination"></p>
+				</div>
+				<div>
 				</div>
 				<table>
 					<thead>
@@ -304,6 +315,11 @@
 
 <script src="//code.highcharts.com/highcharts.js"></script>
 <script src="//code.highcharts.com/modules/exporting.js"></script>
+
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jcarousel/0.3.3/jquery.jcarousel.min.js"></script> -->
+
+<script src="/js/jquery.jcarousel.min.js"></script>
+<script src="/js/jcarousel.responsive.js"></script>
 
 <script src="/js/ui.js"></script>
 

@@ -7,6 +7,8 @@
                                          
 */
 
+/* App developed for the Agile BPA by: NCI Information Systems, Inc. */ 
+
 // **********************************************************
 // ui.js
 
@@ -60,6 +62,7 @@ $(function() {
 	}).addTo(map);
 	
 	map.attributionControl.addAttribution('<a href="http://nciinc.com">NCI Inc.</a>');
+	map.attributionControl.addAttribution('<a href="https://open.fda.gov/">FDA.</a>');
 	
 	var map_street = L.mapbox.tileLayer('computech.j86bnb99').addTo(map);
 	var map_sat = L.mapbox.tileLayer('computech.jh7ic2j0');
@@ -77,7 +80,6 @@ $(function() {
 	 
 	// geocoder
 	geocoder = L.mapbox.geocoder('mapbox.places-v1');
-
 	
 	// current location
 	$('#btn-geo-current').click(function(event) {
@@ -100,7 +102,6 @@ $(function() {
 		}
 	});
 	 
-	 
 	// nationwide
 	$("#btn-geo-nation").on("click", function() {
 		setNationwide();
@@ -114,6 +115,20 @@ $(function() {
 	
 	// get current location
 	//getCurrentLocation(true);	
+	
+	// legend
+	$('.btn-geo-legend').click(function(){ 
+        $(this).hide();
+        $('.legend').show('fast');
+    });
+
+    $('.btn-geo-legend-close').click(function() { 
+        $('.legend').hide('fast');
+        $('.btn-geo-legend').show();
+    });
+	
+	// tooltips
+	$('[data-toggle="tooltip"]').tooltip(); 
 
 	// load markers
 	loadMarkers();

@@ -201,9 +201,54 @@
 				</select>
 			</div>				
             <div class="map-container">
-                <button class="btn-geo-current btn btn-default st" type="button" id="btn-geo-current" data-toggle="tooltip" data-placement="right" title="Current Location"><i class="fa fa-location-arrow"></i><span class="sr-only">Current Location</span></button>
-                <button class="btn-geo-nation btn btn-default st" type="button" id="btn-geo-nation" data-toggle="tooltip" data-placement="right" title="Nationwide"><i class="fa fa-globe"></i><span class="sr-only">Nationwide</span></button>
-                <div id="map"></div>              
+                <button class="btn-geo btn-geo-current btn btn-default st" type="button" id="btn-geo-current" data-toggle="tooltip" data-placement="right" title="Current Location"><i class="fa fa-location-arrow"></i><span class="sr-only">Current Location</span></button>
+                <button class="btn-geo btn-geo-nation btn btn-default st" type="button" id="" data-toggle="tooltip" data-placement="right" title="Nationwide"><i class="fa fa-globe"></i><span class="sr-only">Nationwide</span></button>
+                <button  class="btn-geo btn-geo-legend btn btn-default st" type="button" id="btn-geo-legend" data-toggle="tooltip" data-placement="right" title="Map Legend" ><i class="fa fa-list"></i><span class="sr-only">Map Legend</span></button>   
+				<div class="map-legend" style="">
+					<div class="legend" style="display: none;">
+						<div class="map-legend-hd">
+							<i class="fa fa-list"></i> <span class="map-legend-name">Map Legend</span>
+							<button class="btn-geo-legend-close btn btn-xs pull-right">
+								<i class="fa fa-times-circle"></i>
+							</button>
+						</div>
+						<div class="legend-table-div">						
+							<table class="legend-table">
+								<tr>
+									<td colspan="2" class="map-legend-type-sub">Status</td>
+								</tr>
+								<tr>
+									<td><img src="/image/circle-stroked-18.png" alt="Ongoing" /></td>
+									<td>Ongoing</td>
+								</tr>
+								<tr>
+									<td><img src="/image/circle-18.png" alt="Completed" /></td>
+									<td>Completed</td>
+								</tr>
+								<tr>
+									<td><img src="/image/cross-18.png" alt="Terminated" /></td>
+									<td>Terminated</td>
+								</tr>
+								<tr>
+									<td colspan="2" class="map-legend-type-sub">Classification</td>
+								</tr>
+								<tr>
+									<td><div style="width: 16px; height: 16px; background: #00539B; border: solid 0px #000;" title="Class I"></div></td>
+									<td>Class I</td>
+								</tr>
+								<tr>
+									<td><div style="width: 16px; height: 16px; background: #A3C658; border: solid 0px #000;" title="Class II"></div></td>
+									<td>Class II</td>
+								</tr>
+								<tr>
+									<td><div style="width: 16px; height: 16px; background: #E2C752; border: solid 0px #000;" title="Class II"></div></td>
+									<td>Class III</td>
+								</tr>
+							</table>
+						</div>
+					</div>						
+				</div>				
+				<div id="map"></div>              
             </div>
         </div>
         <div class="col-md-5 col-lg-4">

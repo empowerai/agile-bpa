@@ -104,6 +104,7 @@ function insertCrowd(req, res) {
 
                     // response_out		
                     var response_out = secureJSON(process_data);
+					res.setHeader('Content-Type', 'application/json');
 
                     if (ext == 'xml') {
                         response_out = js2xmlparser('api', response_out);
@@ -187,6 +188,7 @@ function requestCrowd(req, res) {
 
                     // response_out		
                     var response_out = secureJSON(process_data);
+					res.setHeader('Content-Type', 'application/json');
 
                     if (ext == 'xml') {
                         response_out = js2xmlparser('api', response_out);
@@ -421,6 +423,7 @@ function requestSearch(req, res) {
 			
 				// response_out		
 				var response_out = secureJSON(process_data);
+				res.setHeader('Content-Type', 'application/json');
 
 				if (ext == 'csv') {
                     
@@ -632,6 +635,7 @@ function requestCounts(req, res) {
 			
 				// response_out		
 				var response_out = secureJSON(process_data);
+				res.setHeader('Content-Type', 'application/json');
 
 				if (ext == 'csv') {
                     
@@ -841,6 +845,7 @@ function responseError(req, res, err) {
 	
 	// response_out		
 	var response_out = secureJSON(err_res);
+	res.setHeader('Content-Type', 'application/json');
 
 	if (ext == 'xml') {
 		response_out = js2xmlparser('api', response_out);

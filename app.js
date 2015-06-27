@@ -10,7 +10,7 @@
 // **********************************************************
 // app.js
 
-console.log('NCI ATS - Agile BPA - FDA Recall Impact');
+console.log('NCI ATS - Agile BPA - FDA Food Recall Impact App');
 
 // **********************************************************
 // require 

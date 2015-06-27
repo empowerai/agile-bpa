@@ -5,73 +5,67 @@
             "operations": [
                 {
                     "method": "GET",
-                    "nickname": "crowd",
+                    "nickname": "crowd-get",
                     "parameters": [
                         {
                             "allowableValues": {
                                 "valueType": "LIST",
                                 "values": [
                                     "json",
-                                    "jsonp",
-                                    "geojson",
-                                    "xml"                                   
+                                    "xml"                                
                                 ]
                             },
                             "dataType": "string",
-                            "description": "File format",
+                            "description": "file format",
                             "name": "file",
                             "paramType": "path",
                             "required": true
                         },
                         {
                             "dataType": "string",
-                            "description": "Recall number to get the crowdsource",
+                            "description": "recall number",
                             "name": "recall",
                             "paramType": "query",
                             "required": true
                         }
                     ],
                     "produces": [
-                        "application/json",
-                        "application/javascript",
-                        "application/xml"
+                        "application/json",                        
+                        "text/xml"
                     ],
-                    "summary": "API to get the crowdsource of FDA food reacll provided."
+                    "summary": "API to GET the crowdsource feedback of a FDA food recall."
                 },
                 {
                     "method": "POST",
-                    "nickname": "crowd",
+                    "nickname": "crowd-post",
                     "parameters": [
                         {
                             "allowableValues": {
                                 "valueType": "LIST",
                                 "values": [
                                     "json",
-                                    "jsonp",
-                                    "geojson",
-                                    "xml"                                   
+                                    "xml"                             
                                 ]
                             },
                             "dataType": "string",
-                            "description": "File format",
+                            "description": "file format",
                             "name": "file",
                             "paramType": "path",
                             "required": true
                         },
                         {
                             "dataType": "string",
-                            "description": "Recall number to submit a crowdsource",
+                            "description": "recall number",
                             "name": "recall",
                             "paramType": "query",
                             "required": true
                         }
                     ],
                     "produces": [
-                        "application/json",
-                        "application/javascript",
-                        "application/xml"
+                        "application/json",                        
+                        "text/xml"
                     ],
-                    "summary": "API to POST crowdsource of FDA food reacll number provided."
+                    "summary": "API to POST the crowdsource input of a FDA food recall."
                 }
             ],
             "path": "/api/crowd.{file}"
@@ -80,9 +74,8 @@
     "basePath": "/",
     "models": {},
     "produces": [
-        "application/json",
-        "application/javascript",
-        "application/xml"
+        "application/json",                        
+		"text/xml"
     ],
     "resourcePath": "/api",
     "swaggerVersion": "1.2"

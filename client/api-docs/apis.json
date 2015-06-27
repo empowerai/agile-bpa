@@ -2,7 +2,7 @@
     "apiVersion": "0.0.1",
     "apis": [
         {
-            "description": "FDA Food Reacall - Search API",
+            "description": "FDA Food Recall - Search API",
             "path": "http://localhost:8000/api-docs/search.json"
         },
 		{

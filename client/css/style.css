@@ -23,7 +23,8 @@ label { font-size: 13px; font-weight: normal; }
 header { color: #ffffff; background-color: #00539B; margin-bottom: 10px; padding-top: 10px; padding-bottom: 10px;  }
 header a { color: #ffffff; }
 header a:hover, header a:focus { color: #99CCCC; text-decoration: none;}
-.head-logo { padding: 2px; }
+.head-logo-div { padding: 2px; margin-top: 3px; }
+.head-logo { height: 50px; width: 115px;}
 .head-title-div {float: left; padding-left: 10px; }
 .head-title { font-family: Merriweather,'Helvetica Neue',Arial,sans-serif !important; }
 .head-title:hover, .head-title:focus, .head-title:active { color: #ffffff !important; font-family: Merriweather,'Helvetica Neue',Arial,sans-serif !important; }
@@ -62,7 +63,7 @@ footer a:hover, footer a:focus { color: #ffffff; text-decoration: underline; fon
 .footer-links { margin-top: 10px; }
 
 /* navs */
-.navbar-right { padding-top: 8px;}
+.navbar-right { margin-top: 12px;}
 .navbar-right li a { color: #ffffff !important; }
 .navbar-right li  a:hover, header a:focus { color: #00539B !important; text-decoration: none !important;}
 

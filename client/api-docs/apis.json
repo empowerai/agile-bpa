@@ -1,17 +1,19 @@
 {
     "apiVersion": "0.0.3",
+	"basePath": "/api-docs",
+	"resourcePath": "/api",
     "apis": [
         {
             "description": "FDA Food Recall - Search API",
-            "path": "http://localhost:8000/api-docs/search.json"
+            "path": "/search.json"
         },
 		{
             "description": "FDA Food Recall - Count API",
-            "path": "http://localhost:8000/api-docs/count.json"
+            "path": "/count.json"
         },
         {
             "description": "FDA Food Recall - Crowdsource API",
-            "path": "http://localhost:8000/api-docs/crowd.json"
+            "path": "/crowd.json"
         }
     ],
     "swaggerVersion": "1.2"

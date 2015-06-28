@@ -158,7 +158,7 @@ process.on('uncaughtException', function (err) {
 // **********************************************************
 // server
 
-var server = app.listen(config_json.app_port, config_json.app_host, function () {
+var server = app.listen(config_json.app_port, function () {
 
   var host = server.address().address;
   var port = server.address().port;

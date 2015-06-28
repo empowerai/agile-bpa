@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "nciats/agile-bpa-t1",
+    "Name": "nciats/agile-bpa-dev",
     "Update": "true"
   },
   "Ports": [

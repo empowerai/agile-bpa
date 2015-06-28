@@ -20,5 +20,5 @@
 .about_link { color: #ffffff; }
 .about_link:hover, .about_link:active, .about_link:focus { color: #99CCCC; }
 
-.panel-about { background: #6699CC; padding: 4px 7px; color: #ffffff; text-align: justify;}
+.panel-about { background: #6699CC; padding: 8px 14px; color: #ffffff; text-align: justify;}
 .panel-about hr {color: #ffffff; width:100%;}

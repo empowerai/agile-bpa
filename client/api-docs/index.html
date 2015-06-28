@@ -10,12 +10,12 @@
                                          
 -->
 
-<!-- index.html -->
+<!-- api-docs/index.html -->
 
 <html>
 <head>
     <title>
-        FDA Food Recall Impact
+        API - FDA Food Recall Impact
     </title>
   
   <meta name="description" content="NCI ATS - Agile BPA - FDA Food Recall Impact">
@@ -32,8 +32,6 @@
   <link href='css/reset.css' media='print' rel='stylesheet' type='text/css'/>
   <link href='css/screen.css' media='print' rel='stylesheet' type='text/css'/>
   
-  <link rel="stylesheet" href="/css/jcarousel.responsive.css" />  
-
   <link rel="stylesheet" href="/css/style.css">
   
   <link rel="apple-touch-icon" sizes="57x57" href="/image/apple-icon-57x57.png">
@@ -53,55 +51,6 @@
   <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
   <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="/style/font-awesome/css/font-awesome.min.css" type="text/css">
-
-  <script type="text/javascript" src="lib/shred.bundle.js"></script>
-  <script src='lib/jquery-1.8.0.min.js' type='text/javascript'></script>
-  <script src='lib/jquery.slideto.min.js' type='text/javascript'></script>
-  <script src='lib/jquery.wiggle.min.js' type='text/javascript'></script>
-  <script src='lib/jquery.ba-bbq.min.js' type='text/javascript'></script>
-  <script src='lib/handlebars-1.0.0.js' type='text/javascript'></script>
-  <script src='lib/underscore-min.js' type='text/javascript'></script>
-  <script src='lib/backbone-min.js' type='text/javascript'></script>
-  <script src='lib/swagger.js' type='text/javascript'></script>
-  <script src='swagger-ui.js' type='text/javascript'></script>
-  <script src='lib/highlight.7.3.pack.js' type='text/javascript'></script>
-
-  <!-- enabling this will enable oauth2 implicit scope support -->
-  <script src='lib/swagger-oauth.js' type='text/javascript'></script>
-
-  <script type="text/javascript">
-    $(function () {
-      var host = window.location.host;
-      window.swaggerUi = new SwaggerUi({
-      url: "/api-docs/apis.json",
-      dom_id: "swagger-ui-container",
-      supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
-      onComplete: function(swaggerApi, swaggerUi){
-        log("Loaded SwaggerUI");
-
-        if(typeof initOAuth == "function") {
-          /*
-          initOAuth({
-            clientId: "your-client-id",
-            realm: "your-realms",
-            appName: "your-app-name"
-          });
-          */
-        }
-        $('pre code').each(function(i, e) {
-          hljs.highlightBlock(e)
-        });
-      },
-      onFailure: function(data) {
-        log("Unable to Load SwaggerUI");
-      },
-      docExpansion: "none",
-      sorter : "alpha"
-    });
-
-    window.swaggerUi.load();
-  });
-  </script>
   
 </head>
 <body>
@@ -109,40 +58,40 @@
     <nav class="container" role="navigation"> 
         <div class="row">   
             <div class="col-xs-9 col-sm-8">
-        <div class="pull-left"> 
-          <a href="/" class="logo"><img src="/image/fda_logo_s_w.png" alt="NCI ATS" class="head-logo" /></a>
-        </div>
-        <div class="head-title-div">
-          <h1><a href="/" class="head-title">Food Recall Impact</a></h1>
-          <h2 class="head-sub">Protecting and Promoting Health - With <em>Your</em> Help</h2>
-        </div>
+				<div class="pull-left head-logo-div"> 
+					<a href="/" class="logo"><img src="/image/fda_logo_s_w_2.png" alt="NCI ATS" class="head-logo" /></a>
+				</div>
+				<div class="head-title-div">
+					<h1><a href="/" class="head-title">Food Recall Impact</a></h1>
+                    <h2 class="head-sub">Protecting and Promoting Health - With <em>Your</em> Help</h2>
+				</div>
             </div>
             <div class="col-xs-3 col-sm-4">       
-        <div class="pull-right"> 
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-          </div>
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-              <li><a href="/about" class="nav_link"><i class="fa fa-question-circle "></i> <span>About</span></a></li>
-              <li><a href="/style" class="nav_link"><i class="fa fa-cube "></i> <span>Style</span></a></li>
-              <li><a href="/api-docs" class="nav_link"><i class="fa fa-flask "></i> <span>API</span></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+				<div class="pull-right"> 
+				  <div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					  <span class="sr-only">Toggle navigation</span>
+					  <span class="icon-bar"></span>
+					  <span class="icon-bar"></span>
+					  <span class="icon-bar"></span>
+					</button>
+				  </div>
+				  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav navbar-right">
+					  <li><a href="/about" class="nav_link"><i class="fa fa-question-circle "></i> <span>About</span></a></li>
+					  <li><a href="/style" class="nav_link"><i class="fa fa-cube "></i> <span>Style</span></a></li>
+					  <li><a href="/api-docs" class="nav_link"><i class="fa fa-flask "></i> <span>API</span></a></li>
+					</ul>
+				  </div>
+				</div>
+			</div>
         </div>
     </nav>
 </header>
-<main class="container swagger-section">
+<main class="container swagger-section" role="main">
     <div id="swagger-ui-container" class="swagger-ui-wrap"></div>
 </main>
-<footer>
+<footer role="contentinfo">
     <div class="container">
         <div class="row">
             <div class="col-sm-6 col-md-6 col-lg-6"> 
@@ -157,14 +106,51 @@
     </div>
 </footer>
 
+
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jcarousel/0.3.3/jquery.jcarousel.min.js"></script> -->
 
-<script src="/js/jquery.jcarousel.min.js"></script>
-<script src="/js/jcarousel.responsive.js"></script>
+<script type="text/javascript" src="lib/shred.bundle.js"></script>
 
+<script src='lib/jquery-1.8.0.min.js' type='text/javascript'></script>
+
+<script src='lib/jquery.slideto.min.js' type='text/javascript'></script>
+<script src='lib/jquery.wiggle.min.js' type='text/javascript'></script>
+
+<script src='lib/jquery.ba-bbq.min.js' type='text/javascript'></script>
+
+<script src='lib/handlebars-1.0.0.js' type='text/javascript'></script>
+<script src='lib/underscore-min.js' type='text/javascript'></script>
+<script src='lib/backbone-min.js' type='text/javascript'></script>
+<script src='lib/swagger.js' type='text/javascript'></script>
+<script src='swagger-ui.js' type='text/javascript'></script>
+<script src='lib/highlight.7.3.pack.js' type='text/javascript'></script>
+  
+<script type="text/javascript">
+	$(function () {
+	  var host = window.location.host;
+	  window.swaggerUi = new SwaggerUi({
+	  url: "/api-docs/apis.json",
+	  dom_id: "swagger-ui-container",
+	  supportedSubmitMethods: ['get', 'post'],
+	  onComplete: function(swaggerApi, swaggerUi){
+		log("Loaded SwaggerUI");
+
+		$('pre code').each(function(i, e) {
+		  hljs.highlightBlock(e)
+		});
+	  },
+	  onFailure: function(data) {
+		log("Unable to Load SwaggerUI");
+	  },
+	  docExpansion: "list",
+	  sorter : "alpha"
+	});
+
+	window.swaggerUi.load();
+	});
+</script>
 
 </body>
 </html>

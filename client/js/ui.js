@@ -7,6 +7,8 @@
                                          
 */
 
+/* App developed for the Agile BPA by: NCI Information Systems, Inc. */ 
+
 // **********************************************************
 // ui.js
 
@@ -60,6 +62,7 @@ $(function() {
 	}).addTo(map);
 	
 	map.attributionControl.addAttribution('<a href="http://nciinc.com">NCI Inc.</a>');
+	map.attributionControl.addAttribution('<a href="https://open.fda.gov/">FDA.</a>');
 	
 	var map_street = L.mapbox.tileLayer('computech.j86bnb99').addTo(map);
 	var map_sat = L.mapbox.tileLayer('computech.jh7ic2j0');
@@ -77,7 +80,6 @@ $(function() {
 	 
 	// geocoder
 	geocoder = L.mapbox.geocoder('mapbox.places-v1');
-
 	
 	// current location
 	$('#btn-geo-current').click(function(event) {
@@ -85,35 +87,53 @@ $(function() {
 		return false;
 	});
 	
-	$("#input-geo-search").on("click", function(e) {
+	$('#input-geo-search').on('click', function(e) {
 		e.preventDefault();
 
-		var search_input = $("#input-geo-location").val();
+		var search_input = $('#input-geo-location').val();
 		geocoder.query(search_input, searchMap);		 
 
 	});
 
 	$(document).keypress(function(e) {		
 		if (e.which == 13) {
-			var search_input = $("#input-geo-location").val();
+			var search_input = $('#input-geo-location').val();
 			geocoder.query(search_input, searchMap);		
 		}
 	});
 	 
-	 
 	// nationwide
-	$("#btn-geo-nation").on("click", function() {
+	$('#btn-geo-nation').on('click', function() {
 		setNationwide();
 	});	
 	
 	// crowdsourced
-	$("#btn-crowd-post").on("click", function() {
+	$('#btn-crowd-post').on('click', function() {
 	
 		postCrowd(selected_json.recall_number);
 	});	
 	
 	// get current location
 	//getCurrentLocation(true);	
+	
+	// legend
+	$('.btn-geo-legend').click(function(){ 
+        $(this).hide();
+        $('.legend').show('fast');
+    });
+
+    $('.btn-geo-legend-close').click(function() { 
+        $('.legend').hide('fast');
+        $('.btn-geo-legend').show();
+    });
+	
+	// tooltips
+	$('[data-toggle="tooltip"]').tooltip(); 
+	
+	// download
+	$( '#download-data' ).click(function() {
+		$( '#download-links' ).toggle();
+	});
 
 	// load markers
 	loadMarkers();
@@ -131,9 +151,9 @@ $(function() {
 });
 
 function loadError() {
-	$("#text-div-selected").hide();
-	$("#text-div-national").hide();
-	$("#text-div-noresults").show();
+	$('#text-div-selected').hide();
+	$('#text-div-national').hide();
+	$('#text-div-noresults').show();
 }
 
 function searchMap(err, data) {
@@ -159,7 +179,7 @@ function getCrowd(recall) {
 		success: function(data) {
 
 			console.log('get data : '+ JSON.stringify(data) );	
-			$("#api_population_crowd").text(data.results.recall_crowd_count);			
+			$('#api_population_crowd').text(data.results.recall_crowd_count);			
 		},
 		error: function (request, status, error) {
 			console.log(request.responseText);
@@ -179,7 +199,16 @@ function postCrowd(recall) {
 		success: function(data) {
 
 			console.log('postdata : '+ JSON.stringify(data) );	
-			$("#api_population_crowd").text(data.results.recall_crowd_count);			
+			$('#api_population_crowd').text(data.results.recall_crowd_count);
+			
+			//$('#api_population_crowd').css('font-size', '16px');
+			$('.recall-users').css('color', '#E2C752');
+			
+			$('.recall-users').animate({			
+				//fontSize: '13px',
+				color: '#ffffff'
+			}, 2000 );
+			
 		},
 		error: function (request, status, error) {
 			console.log(request.responseText);
@@ -257,7 +286,9 @@ function setChartDate(data) {
 	}
 	
 	$('#chart-div-date').highcharts({
-		
+		colors: 
+            ['#00539B']
+        ,
 		title: {
             text: 'Recall Dates',
         },
@@ -285,16 +316,36 @@ function setChartDate(data) {
             }]
         },
 		plotOptions: {
-            spline: {
+            area: {
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1.5
+                    },
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
                 marker: {
-                    enabled: true
-                }
+                    radius: 2
+                },
+                lineWidth: 1,
+                states: {
+                    hover: {
+                        lineWidth: 1
+                    }
+                },
+                threshold: null
             }
         },
         tooltip: {
 
         },
         series: [{
+            type: 'area',
             name: 'Recalls',
             data: date_arr
         }]	
@@ -305,7 +356,10 @@ function setChartDate(data) {
 function setChartStatus(data) {
 
 	$('#chart-div-status').highcharts({
-		chart: {
+		colors: 
+            ['#6699CC', '#99CCCC', '#323132']
+        ,
+        chart: {
             type: 'bar',
 			plotBackgroundColor: null,
 			plotBorderWidth: null,
@@ -358,6 +412,9 @@ function setChartStatus(data) {
 function setChartClass(data) {
 
 	$('#chart-div-class').highcharts({
+        colors: 
+            ['#00539B', '#A3C658', '#E2C752']
+        ,
 		chart: {
 			plotBackgroundColor: null,
 			plotBorderWidth: null,
@@ -368,7 +425,7 @@ function setChartClass(data) {
 			enabled: false
 		},
 		title: {
-			text: 'Recall Classification'
+			text: 'Recall Severity'
 		},
 		tooltip: {
 			pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -384,17 +441,17 @@ function setChartClass(data) {
 			}
 		},
 		series: [{
-			name: "Recalls",
+			name: 'Recalls',
 			colorByPoint: true,
 			innerSize: '50%',
 			data: [{
-				name: "Class I",
+				name: 'Class I',
 				y: data.results.class1
 			}, {
-				name: "Class II",
+				name: 'Class II',
 				y: data.results.class2
 			}, {
-				name: "Class III",
+				name: 'Class III',
 				y: data.results.class3
 			}]
 		}]
@@ -408,9 +465,9 @@ function readyState() {
 
 function clearSelected() {
 
-	$("#text-div-selected").hide();
-	$("#text-div-national").show();
-	$("#text-div-noresults").hide();
+	$('#text-div-selected').hide();
+	$('#text-div-national').show();
+	$('#text-div-noresults').hide();
 	
 	if (ready) {
 		states.setStyle(style_off);
@@ -418,8 +475,7 @@ function clearSelected() {
 }
 
 function highlightState(states_array, classification) {
-	//console.log('states.features.length : '+ states.features.length);
-	//console.log('states : '+ JSON.stringify(states) );
+
 	if (ready) {
 		states.setStyle(style_off);
 		
@@ -428,13 +484,13 @@ function highlightState(states_array, classification) {
 			var layer_state = layer.feature.properties.STUSPS;	
 			 
 			var high_style = style_highlight_1;
-			if (classification == "Class I") {
+			if (classification == 'Class I') {
 				high_style = style_highlight_1;
 			}
-			else if (classification == "Class II") {
+			else if (classification == 'Class II') {
 				high_style = style_highlight_2;
 			}
-			else if (classification == "Class III") {
+			else if (classification == 'Class III') {
 				high_style = style_highlight_3;
 			}
 			
@@ -456,40 +512,38 @@ var q_date = '';
 var q_class = '';
 var q_status = '';
 
-$("#select_food").on("change", function() {
-	q_food = $("#select_food").val();
-	clearSelected();
-	loadMarkers();	
-	loadCharts();
+$('#select_food').on('change', function() {
+	q_food = $('#select_food').val();
+	changeSearch();
 });	
 
-$("#select_state").on("change", function() {
-	q_state = $("#select_state").val();
-	clearSelected();
-	loadMarkers();	
-	loadCharts();	
+$('#select_state').on('change', function() {
+	q_state = $('#select_state').val();
+	changeSearch();	
 });	
 
-$("#select_date").on("change", function() {
-	q_date = $("#select_date").val();
-	clearSelected();
-	loadMarkers();	
-	loadCharts();
+$('#select_date').on('change', function() {
+	q_date = $('#select_date').val();
+	changeSearch();
 });	
 
-$("#select_class").on("change", function() {
-	q_class = $("#select_class").val();
-	clearSelected();
-	loadMarkers();	
-	loadCharts();
+$('#select_class').on('change', function() {
+	q_class = $('#select_class').val();
+	changeSearch();
 });
 
-$("#select_status").on("change", function() {
-	q_status = $("#select_status").val();
+$('#select_status').on('change', function() {
+	q_status = $('#select_status').val();
+	changeSearch();
+});
+
+function changeSearch() {
+	
 	clearSelected();
+	setDownloadLinks();
 	loadMarkers();	
-	loadCharts();
-});		
+	loadCharts();	
+}
 
 var data_json;
 var selected_json;
@@ -536,25 +590,15 @@ function getIconSymbol(m_status) {
     return m_symbol;
 }
 
-
 function setMarkers() {
-	
-	//console.log('data_json.results : '+ JSON.stringify(data_json.results) );
-	
 	
 	if (markers) {
 		map.removeLayer(markers);
 	}
 	
-	//map.removeLayer(markers);
-	//markers = L.layerGroup();
-	
 	markers = L.mapbox.featureLayer();
-	//markers.addLayer(marker);
-	//markerGroup.removeLayer(marker);
 	
-	if (data_json.results) {
-	
+	if (data_json.results) {	
 		
 		for (var i = 0; i < data_json.results.length; i++) {
 		
@@ -565,12 +609,25 @@ function setMarkers() {
                 var m_class = data_json.results[i].classification;
                 var m_status = data_json.results[i].status;
                 
+				var m_size = 'medium';
+
+				// set default recall
+				/*
+				if (i == data_json.results.length -1 ) {
+					//console.log('data_json.results : '+ JSON.stringify(data_json.results[i]) );
+					
+					m_size = 'large';					
+					selected_json = data_json.results[i];					
+					selectResult();						
+				}
+				*/
+				
                 var m_icon = L.mapbox.marker.icon({
                     'marker-color': getIconColor(m_class),
-                    'marker-size': 'medium',
+                    'marker-size': m_size,
                     'marker-symbol': getIconSymbol(m_status)
                 });
-                                
+
                 //console.log('m_icon : '+ JSON.stringify(m_icon.options) );
 				
 				var result_json = data_json.results[i];
@@ -582,7 +639,7 @@ function setMarkers() {
 					var new_marker = L.marker([m_lat,m_lon], data_json.results[i])
 						.on('click',function(e) {
 						
-							//console.log('this : '+ JSON.stringify(this.options) );
+							console.log('this : '+ JSON.stringify(this.options) );
 							
 							selected_json = this.options;
                             
@@ -593,13 +650,9 @@ function setMarkers() {
                             //console.log('c_status : '+ c_status );	
                             
                             markers.eachLayer(function(marker) {
-
-                                //console.log('marker !!!!!!! : '+ JSON.stringify(marker.options.icon.options) );
-                                
-                                var reset_marker = marker.options.icon.options;
-                                
-                                //console.log('reset_marker !!!!!!! : '+ JSON.stringify(reset_marker) );
-                                
+                               
+                                var reset_marker = marker.options.icon.options;                                
+                               
                                 reset_marker.iconSize = [30,70];
                                 reset_marker.iconAnchor = [15,35];
                                 reset_marker.popupAnchor = [0,-35];
@@ -616,7 +669,7 @@ function setMarkers() {
                                 'marker-symbol': getIconSymbol(c_status)
                             }));
                             
-							clickMarkers();							
+							selectResult();							
 					
 						});
                     
@@ -631,8 +684,7 @@ function setMarkers() {
 			}
 		}
 		
-		markers.addTo(map);
-		
+		markers.addTo(map);		
 	}
 }
 
@@ -643,40 +695,116 @@ function commaSeparateNumber(val){
 	return val;
 }
 
-function clickMarkers() {
+function selectResult() {
 	
 	//console.log('selected_json : '+ JSON.stringify(selected_json) );	
 	
-	$("#text-div-selected").show();
-	$("#text-div-national").hide();
-	$("#text-div-noresults").hide();	
+	$('#text-div-selected').show();
+	$('#text-div-national').hide();
+	$('#text-div-noresults').hide();	
 	
-	$("#api_recall_number").text(selected_json.recall_number);
-	$("#api_recalling_firm").text(selected_json.recalling_firm);
-	$("#api_product_description").text(selected_json.product_description);
-	$("#api_reason_for_recall").text(selected_json.reason_for_recall);
-	$("#api_status").text(selected_json.status);
-	$("#api_classification").text(selected_json.classification);
-	$("#api_distribution_pattern").text(selected_json.distribution_pattern);
-	$("#api_product_quantity").text(selected_json.product_quantity);
+	$('#api_recall_number').text(selected_json.recall_number);
+	$('#api_recalling_firm').text(selected_json.recalling_firm);
+	$('#api_product_description').text(selected_json.product_description);
+	$('#api_reason_for_recall').text(selected_json.reason_for_recall);
+	
+	$('#api_distribution_pattern').text(selected_json.distribution_pattern);
+	$('#api_product_quantity').text(selected_json.product_quantity);
 	
 	var date_init = selected_json.recall_initiation_date;
-	var date_format = new Date(date_init.substring(0,4)+"-"+date_init.substring(4,6)+"-"+date_init.substring(6,8));
+	var date_format = new Date(date_init.substring(0,4)+'-'+date_init.substring(4,6)+'-'+date_init.substring(6,8));
 	
-	$("#api_recall_initiation_date").text(date_format.toLocaleDateString());
-	$("#api_report_date").text(selected_json.report_date);
-	$("#api_population_census").text(commaSeparateNumber(selected_json.affected_population_census));
+	$('#api_recall_initiation_date').text(date_format.toLocaleDateString());
+	$('#api_report_date').text(selected_json.report_date);
+	$('#api_population_census').text(commaSeparateNumber(selected_json.affected_population_census));
 	
 	var pop_perc = (selected_json.affected_population_census / 322405453) * 100;
 	console.log('pop_perc : '+ pop_perc );	
 	
-	$("#api_population_percent").text( ( Math.round(pop_perc * 100) / 100) );
+	$('#api_population_percent').text( ( Math.round(pop_perc * 100) / 100) );
 	
 	highlightState(selected_json.affected_state, selected_json.classification);
 	
 	getCrowd(selected_json.recall_number);
+    
+	setStatusIcon(selected_json.status);
+	setClassIcon(selected_json.classification);
+		
+	//$('#api_crowdsource').text(selected_json.api_recall_initiation_date);
+}
+
+function setDownloadLinks() {
 	
-	//$("#api_crowdsource").text(selected_json.api_recall_initiation_date);
+	var download_qs = '';
+	
+	if (q_food) {
+		if (download_qs) { download_qs += '&'; }
+		else { download_qs += '?'; }
+		download_qs += 'food='+q_food;
+	}
+	if (q_state) {
+		if (download_qs) { download_qs += '&'; }
+		else { download_qs += '?'; }
+		download_qs += 'state='+q_state;
+	}
+	if (q_date) {
+		if (download_qs) { download_qs += '&'; }
+		else { download_qs += '?'; }
+		download_qs += 'date='+q_date;
+	}
+	if (q_class) {
+		if (download_qs) { download_qs += '&'; }
+		else { download_qs += '?'; }
+		download_qs += 'class='+q_class;
+	}
+	if (q_status) {
+		if (download_qs) { download_qs += '&'; }
+		else { download_qs += '?'; }
+		download_qs += 'status='+q_status;
+	}
+	
+	console.log('download_qs : ' + download_qs);
+	
+	$('#download-json-link').attr('href', '/api/search.json'+ download_qs);
+	$('#download-xml-link').attr('href', '/api/search.xml'+ download_qs);
+	$('#download-csv-link').attr('href', '/api/search.csv'+ download_qs);
+	
+}
+
+function setStatusIcon(status_i) {
+	$('#api-status').text(status_i);
+	
+	if (status_i == 'Ongoing') { 
+		$('#status-icon-img').attr('src','/image/circle-stroked-18.png'); 
+		$('#api-status-span').prop('title', 'Ongoing - product recall is currently in progress').tooltip('fixTitle');
+	}
+    else if (status_i == 'Completed') { 
+		$('#status-icon-img').attr('src', '/image/circle-18.png' ); 
+		$('#api-status-span').prop('title', 'Completed - violative products have been retrieved/impounded').tooltip('fixTitle');
+	}
+    else if (status_i == 'Terminated') { 
+		$('#status-icon-img').attr('src', '/image/cross-18.png' ); 
+		$('#api-status-span').prop('title', 'Terminated - reasonable efforts have been made to remove/correct the product').tooltip('fixTitle');
+	}
+}
+
+function setClassIcon(class_i) {
+	$('#api-classification').text(class_i);
+	
+	$('#class-icon-i').removeClass( 'fda-blue fda-accent2 fda-accent3' );
+		
+    if (class_i == 'Class I') { 
+		$('#class-icon-i').addClass( 'fda-blue' ); 
+		$('#api-classification-span').prop('title', 'Class I - dangerous product that could cause serious health problems or death').tooltip('fixTitle');
+	}
+    else if (class_i == 'Class II') { 
+		$('#class-icon-i').addClass( 'fda-accent2' ); 
+		$('#api-classification-span').prop('title', 'Class II - defective product that could cause temporary health problems').tooltip('fixTitle');
+	}
+    else if (class_i == 'Class III') { 
+		$('#class-icon-i').addClass( 'fda-accent3' ); 
+		$('#api-classification-span').prop('title', 'Class III - unlikely to cause health problems but that violates labeling/manufacturing standards').tooltip('fixTitle');
+	}	
 }
 
 function setNationwide() {
@@ -684,7 +812,7 @@ function setNationwide() {
 	
 	clearSelected();	
 
-	//$("#text-div-national").show();	
+	//$('#text-div-national').show();	
 }
 
 function getCurrentLocation(load) {
@@ -716,17 +844,3 @@ function getCurrentLocation(load) {
 	}
 	return false;
 }
-
-
-
-
-
-
-
-
-
-
-
-
- 
-

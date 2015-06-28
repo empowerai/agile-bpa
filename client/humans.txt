@@ -6,5 +6,5 @@
                                          
  
  User-Agent: *
- Thanks: Akeloe, Brian, Darren, Doug, Gavin, Jack, Jules, Shekar, Jack, Shelley, Uma
+ Thanks: Akeloe, Brian, Darren, Doug, Filippo, Fred, Gavin, Jack, Jules, Kathy, Shekar, Shelley, Uma
  Special Thanks: Friends, Family, Coworkers

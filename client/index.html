@@ -58,8 +58,8 @@
     <nav class="container" role="navigation">	
         <div class="row">		
             <div class="col-xs-9 col-sm-8">
-				<div class="pull-left"> 
-					<a href="/" class="logo"><img src="/image/fda_logo_s_w.png" alt="NCI ATS" class="head-logo" /></a>
+				<div class="pull-left head-logo-div"> 
+					<a href="/" class="logo"><img src="/image/fda_logo_s_w_2.png" alt="NCI ATS" class="head-logo" /></a>
 				</div>
 				<div class="head-title-div">
 					<h1><a href="/" class="head-title">Food Recall Impact</a></h1>
@@ -88,7 +88,7 @@
         </div>
     </nav>
 </header>
-<main class="container">
+<main class="container" role="main">
     <div class="row">
         <div class="col-md-7 col-lg-8 col-full">
 			<!--
@@ -97,18 +97,18 @@
 			-->
 			<div class="search-input" >
 				<div class="input-group">					
-					<input id="input-geo-location" class="form-control" type="search" placeholder="Enter Location" style="display: block">
+					<input id="input-geo-location" class="form-control" type="search" placeholder="Enter Location" aria-label="Enter Geographic Location/Address" style="display: block">
 					<span class="input-group-btn" style="display: table-cell">                        
-						<button class="btn-search btn btn-default" type="submit" id="input-geo-search" title="Location Search"><span><i class="fa fa-search"></i></span></button>
+						<button class="btn-search btn btn-default" type="submit" id="input-geo-search" title="Submit Location Search" aria-label="Submit Location Search"><span><i class="fa fa-search"></i></span></button>
 					</span>
 					<span class="input-group-btn">  
-						<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#filter-option">Filter Options&nbsp;<i class="fa fa-filter"></i></button>
+						<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#filter-option" aria-label="Recall Filter Options">Filter Options&nbsp;<i class="fa fa-filter"></i></button>
 					</span>
 				</div>
 			</div>
 			
 			<div id="filter-option" class="collapse out form-inline">
-				<select id="select_food" class="form-control selectWidth">
+				<select id="select_food" class="form-control selectWidth" aria-label="Select Food Type">
 					<option value="">Any Food</option>
 					<option value="alcohol+wine+beer+booze">Alcohol</option>
 					<option value="baby+infant+child+children">Baby Food</option>
@@ -124,7 +124,7 @@
 					<option value="sweet+sugar+candy+cake+dessert">Sweets</option>
 					<option value="vegetables">Vegetables</option>
 				</select>
-				<select id="select_state" class="form-control selectWidth">
+				<select id="select_state" class="form-control selectWidth" aria-label="Select Affected State">
 					<option value="">Any State</option>
 					<option value="AL">Alabama</option>
 					<option value="AK">Alaska</option>
@@ -178,7 +178,7 @@
 					<option value="WI">Wisconsin</option>
 					<option value="WY">Wyoming</option>
 				</select>
-				<select id="select_date" class="form-control selectWidth">
+				<select id="select_date" class="form-control selectWidth" aria-label="Select Year">
 					<option value="">Any Year</option>
 					<option value="2015">2015</option>
 					<option value="2014">2014</option>
@@ -187,13 +187,13 @@
 					<option value="2011">2011</option>
 					<option value="2010">2010</option>
 				</select>
-				<select id="select_class" class="form-control selectWidth">
-					<option value="">Any Class</option>
+				<select id="select_class" class="form-control selectWidth" aria-label="Select Severity Classification">
+					<option value="">Any Severity</option>
 					<option value="1">Class I</option>
 					<option value="2">Class II</option>
 					<option value="3">Class III</option>
 				</select>
-				<select id="select_status" class="form-control selectWidth">
+				<select id="select_status" class="form-control selectWidth" aria-label="Select Recall Status">
 					<option value="">Any Status</option>
 					<option value="ongoing">Ongoing</option>
 					<option value="completed">Completed</option>
@@ -201,41 +201,93 @@
 				</select>
 			</div>				
             <div class="map-container">
-                <button class="btn-geo-current btn btn-default st" type="button" id="btn-geo-current" data-toggle="tooltip" data-placement="right" title="Current Location"><i class="fa fa-location-arrow"></i><span class="sr-only">Current Location</span></button>
-                <button class="btn-geo-nation btn btn-default st" type="button" id="btn-geo-nation" data-toggle="tooltip" data-placement="right" title="Nationwide"><i class="fa fa-globe"></i><span class="sr-only">Nationwide</span></button>
-                <div id="map"></div>              
+                <button class="btn-geo btn-geo-current btn btn-default st" type="button" id="btn-geo-current" data-toggle="tooltip" data-placement="right" title="Current Location"><i class="fa fa-location-arrow"></i><span class="sr-only">Current Location</span></button>
+                <button class="btn-geo btn-geo-nation btn btn-default st" type="button" id="" data-toggle="tooltip" data-placement="right" title="Nationwide"><i class="fa fa-globe"></i><span class="sr-only">Nationwide</span></button>
+                <button  class="btn-geo btn-geo-legend btn btn-default st" type="button" id="btn-geo-legend" data-toggle="tooltip" data-placement="right" title="Map Legend" ><i class="fa fa-list"></i><span class="sr-only">Map Legend</span></button>   
+				<div class="map-legend" style="">
+					<div class="legend" style="display: none;">
+						<div class="map-legend-hd">
+							<i class="fa fa-list"></i> <span class="map-legend-name">Map Legend</span>
+							<button class="btn-geo-legend-close btn btn-xs pull-right">
+								<i class="fa fa-times-circle"></i>
+							</button>
+						</div>
+						<div class="legend-table-div">						
+							<table class="legend-table">
+								<tr>
+									<td colspan="2" class="map-legend-type-sub">Status: </td>
+								</tr>
+								<tr data-toggle="tooltip" data-placement="right" data-container="body" title="Ongoing - product recall is currently in progress">
+									<td><img src="/image/circle-stroked-18.png" alt="Ongoing" /></td>
+									<td>Ongoing</td>
+								</tr>
+								<tr data-toggle="tooltip" data-placement="right" data-container="body" title="Completed - violative products have been retrieved/impounded">
+									<td><img src="/image/circle-18.png" alt="Completed" /></td>
+									<td>Completed</td>
+								</tr>
+								<tr data-toggle="tooltip" data-placement="right" data-container="body" title="Terminated - reasonable efforts have been made to remove/correct the product">
+									<td><img src="/image/cross-18.png" alt="Terminated" /></td>
+									<td>Terminated</td>
+								</tr>
+								<tr>
+									<td colspan="2" class="map-legend-type-sub">Severity: </td>
+								</tr>
+								<tr data-toggle="tooltip" data-placement="right" data-container="body" title="Class I - dangerous product that could cause serious health problems or death">
+									<td><div style="width: 16px; height: 16px; background: #00539B; border: solid 0px #000;" title="Class I"></div></td>
+									<td>Class I</td>
+								</tr>
+								<tr data-toggle="tooltip" data-placement="right" data-container="body" title="Class II - defective product that could cause temporary health problems">
+									<td><div style="width: 16px; height: 16px; background: #A3C658; border: solid 0px #000;" title="Class II"></div></td>
+									<td>Class II</td>
+								</tr>
+								<tr data-toggle="tooltip" data-placement="right" data-container="body" title="Class III - unlikely to cause health problems but that violates labeling manufacturing standards">
+									<td><div style="width: 16px; height: 16px; background: #E2C752; border: solid 0px #000;" title="Class III"></div></td>
+									<td>Class III</td>
+								</tr>
+							</table>
+						</div>
+					</div>						
+				</div>				
+				<div id="map"></div>              
             </div>
         </div>
         <div class="col-md-5 col-lg-4">
             <div class="panel panel-default">
 				<div id="text-div-national" class="text-div" >
-					<p class="text-div-national-first">Welcome to the FDA Recall Map. Here you'll find information based on data collected by the Food and Drug Administration for recalled foods over the past 5 years. 
+					<p class="text-div-national-first">Welcome to the Food Recall Impact map. Here you will find information collected by the Food and Drug Administration for recalled foods over the past 5 years. 
 					
-					<p>The data may be sorted by food category, location, years, status, and severity or class. </p>
+					<p>The data may be filtered by food category, affected date, years, severity, and/or status. </p>
 					
 					<p>We encourage you to use this data to educate and inform your community on recalled foods both past and present in your area. </p>
 
-					<p>For details on a particular area, click on a pin. Similarly affected areas will be highlighted.
+					<p>For details on a particular recall, click on a pin. States affected by the recall will be highlighted.
 					
 					<p>If you have any questions, please refer to the About page which has answers to Frequently Asked Questions.</p>
-      
 				</div>
 				<div id="text-div-selected" class="text-div" style="display: none;">
 					<div id="text-div-info">
 						<p class="recall-num">Recall Number: <span id="api_recall_number"></span></p>
-						<div style="position: relative; width: 100%; overflow: auto;">
+						<div style="position: relative; width: 100%; overflow: hidden;">
 							<div class="recall-pop" style="float: left;">
-								<p class="recall-status"><i class="fa fa-arrow-circle-right fa-fw fda-accent3"></i><span id="api_status"></span>&nbsp;&nbsp;&nbsp; <i class="fa fa-bell fa-fw fda-blue"></i> <span id="api_classification"></span> </p>
+                                <p class="recall-status">
+									<a id="api-status-span" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" href="javascript: void(0);">
+										<img src="/image/circle-18.png" id="status-icon-img" /> <span id="api-status"></span>
+									</a>
+									&nbsp;&nbsp;&nbsp; 
+									<a id="api-classification-span" data-toggle="tooltip" data-placement="bottom" data-container="body" title="" href="javascript: void(0);">
+										<i class="fa fa-bell fa-fw fda-blue" id="class-icon-i"></i> <span id="api-classification"></span> 
+									</a>
+								</p>
 								<p class="recall-dates">Initiated on <span id="api_recall_initiation_date"></span></p>	
 							</div>
 							<div class="recall-pop" style="float: right;"><button type="button" class="btn btn-default btn-crowd" id="btn-crowd-post"> <i class="fa fa-comments"></i>  I Was Impacted!</button></div>
 						</div>					
-						<p class="recall-firm"><span id="api_recalling_firm"></span></p>
+						<p class="recall-firm" style="overflow: auto;"><span id="api_recalling_firm"></span></p>
 						<div id="text-div-selected-scroll">
 							<p class="recall-product"><strong>Recall Product:</strong> </br><span id="api_product_description"></span></p>
 							<p class="recall-reason fda-accent4"><strong>Recall Reason:</strong> </br><span id="api_reason_for_recall" class="fda-accent4"></span></p>
 						</div>
-					</div>
+					</div>					
 					<div id="text-div-pop">
 						<div id="text-div-pop-bg">
 							<div id="text-div-pop-in">
@@ -246,8 +298,8 @@
 								</div>
 								<hr/>
 								<div style="position: relative; width: 100%; overflow: auto;">
-									<div class="recall-pop" style="float: left;">Users Impacted: <span id="api_population_crowd"></span></div>
-									<div class="recall-pop recall-crowd-text" style="float: right;"><i class="fa fa-group"></i> Feedback From Crowdsourced Data</div>
+									<div class="recall-pop recall-users" style="float: left;"><i class="fa fa-group"></i> Users Impacted: <span id="api_population_crowd"></span></div>
+									<div class="recall-pop recall-crowd-text" style="float: right;"> Feedback From Crowdsourced Data</div>
 								</div>
 							</div>
 						</div>
@@ -268,14 +320,16 @@
 					<a href="#" class="jcarousel-control-next">&rsaquo;</a>
 					<p class="jcarousel-pagination"></p>
 				</div>
+				<div class="recall-download">
+					<span id="download-data">Download Data</span><span id="download-links" style="display: none;">:&nbsp;&nbsp;<a href="/api/search.json" target="_blank" id="download-json-link">JSON</a>&nbsp;&nbsp;-&nbsp;&nbsp;<a href="/api/search.xml" target="_blank" id="download-xml-link">XML</a>&nbsp;&nbsp;-&nbsp;&nbsp;<a href="/api/search.csv" target="_blank" id="download-csv-link">CSV</a></span>
+				</div>
 				<div>
 				</div>
-				
             </div>
         </div>
     </div>
 </main>
-<footer>
+<footer role="contentinfo">
     <div class="container">
         <div class="row">
             <div class="col-sm-6 col-md-6 col-lg-6"> 
@@ -301,6 +355,8 @@
 
 <script src="/js/jquery.jcarousel.min.js"></script>
 <script src="/js/jcarousel.responsive.js"></script>
+
+<script src="//cdn.jsdelivr.net/jquery.color-animation/1/mainfile"></script>
 
 <script src="/js/ui.js"></script>
 

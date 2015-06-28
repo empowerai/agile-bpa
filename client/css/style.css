@@ -128,13 +128,13 @@ filter-select { font-family: Arial,sans-serif; box-shadow: none; font-size: 12px
 .recall-reason { font-size: 12px; font-style: italic;}
 .recall-pop { font-size: 13px; }
 
-.text-div { min-height: 330px; width: 100%; padding: 0px; }
+.text-div { min-height: 360px; width: 100%; padding: 0px; }
 #text-div-selected-scroll {overflow-y: auto; height: 136px;}
 #text-div-info {width: 100%; margin: 0 auto; margin-bottom: 3px;}
 #text-div-pop { width: 100%; color: #ffffff; padding: 3px; margin: 3px; }
-#text-div-pop-bg { background-color: #6699CC; margin: 3px -24px 3px -24px }
-#text-div-pop-in{ margin: 3px 24px 3px 24px }
-#text-div-pop-in hr {margin-top: 3px; margin-bottom: 3px; color: #ffffff; }
+#text-div-pop-bg { background-color: #6699CC; margin: 0px -24px 0px -24px }
+#text-div-pop-in{ margin: 4px 24px 4px 24px; padding: 6px 0px; }
+#text-div-pop-in hr {margin-top: 6px; margin-bottom: 6px; color: #ffffff; }
 
 #text-div-noresults { height: 100%; width: 100%; text-align: center; }
 .text-div-noresults-sorry { font-size: 20px; font-weight: bold; color: #CC6633; font-family: Merriweather,'Helvetica Neue',Arial,sans-serif !important; text-align: center; margin-top: 80px; }
@@ -144,10 +144,15 @@ filter-select { font-family: Arial,sans-serif; box-shadow: none; font-size: 12px
 #text-div-national p:first-of-type::first-letter { initial-letter: 3; color: red; }
 #text-div-national p.text-div-national-first:first-of-type::first-letter { initial-letter: 10; color: #00539B; float: left; font-size: 50px; line-height: 46px; padding-top: 4px; padding-right: 8px; padding-left: 3px;}
 
-
 #text-div-pop-title { font-size: 18px; color: #ffffff; font-family: Merriweather,'Helvetica Neue',Arial,sans-serif !important; text-align: center; margin-bottom: 4px;}
 
 .recall-crowd-text { font-style: italic;}
+
+.recall-download { font-size: 12px; color: #888888; text-align: right; width: 100%; position: relative; }
+.recall-download a { font-size: 12px; color: #6699CC; }
+.recall-download a:hover, .recall-download a:active , .recall-download a:focus  { font-size: 12px; color: #00539B; text-decoration: underline;}
+
+#download-data:hover, #download-data:active, #download-data:focus { cursor: pointer; text-decoration: underline; }
 
 .btn-crowd , .btn-crowd:hover, .btn-crowd:active, .btn-crowd:focus { background: #A3C658; color: #ffffff; font-weight: normal; width: 144px;   text-shadow: none;  font-size: 13px; font-family: Merriweather,'Helvetica Neue',Arial,sans-serif !important;}
 
@@ -157,8 +162,8 @@ filter-select { font-family: Arial,sans-serif; box-shadow: none; font-size: 12px
 */
 
 /* map */
-#map { height: 640px; }
-.map-container { position: relative; margin-top:8px; }
+#map { height: 670px; }
+.map-container { position: relative; margin-top: 8px; }
 
 .btn-geo { border: 1px solid rgba(0, 0, 0, 0.4); border-radius: 3px; left: 10px; padding: 2px; position: absolute; width: 28px; height: 26px; background: #ffffff; }
 
@@ -182,7 +187,7 @@ filter-select { font-family: Arial,sans-serif; box-shadow: none; font-size: 12px
 
 /** carousel **/
 
-.jcarousel-wrapper { width: 100%; box-shadow: none; margin: 10px;}
+.jcarousel-wrapper { width: 100%; box-shadow: none; margin: 10px 10px 4px 10px;}
 
 .jcarousel {
     position: relative;

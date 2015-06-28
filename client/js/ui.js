@@ -87,28 +87,28 @@ $(function() {
 		return false;
 	});
 	
-	$("#input-geo-search").on("click", function(e) {
+	$('#input-geo-search').on('click', function(e) {
 		e.preventDefault();
 
-		var search_input = $("#input-geo-location").val();
+		var search_input = $('#input-geo-location').val();
 		geocoder.query(search_input, searchMap);		 
 
 	});
 
 	$(document).keypress(function(e) {		
 		if (e.which == 13) {
-			var search_input = $("#input-geo-location").val();
+			var search_input = $('#input-geo-location').val();
 			geocoder.query(search_input, searchMap);		
 		}
 	});
 	 
 	// nationwide
-	$("#btn-geo-nation").on("click", function() {
+	$('#btn-geo-nation').on('click', function() {
 		setNationwide();
 	});	
 	
 	// crowdsourced
-	$("#btn-crowd-post").on("click", function() {
+	$('#btn-crowd-post').on('click', function() {
 	
 		postCrowd(selected_json.recall_number);
 	});	
@@ -129,6 +129,11 @@ $(function() {
 	
 	// tooltips
 	$('[data-toggle="tooltip"]').tooltip(); 
+	
+	// download
+	$( '#download-data' ).click(function() {
+		$( '#download-links' ).toggle();
+	});
 
 	// load markers
 	loadMarkers();
@@ -146,9 +151,9 @@ $(function() {
 });
 
 function loadError() {
-	$("#text-div-selected").hide();
-	$("#text-div-national").hide();
-	$("#text-div-noresults").show();
+	$('#text-div-selected').hide();
+	$('#text-div-national').hide();
+	$('#text-div-noresults').show();
 }
 
 function searchMap(err, data) {
@@ -174,7 +179,7 @@ function getCrowd(recall) {
 		success: function(data) {
 
 			console.log('get data : '+ JSON.stringify(data) );	
-			$("#api_population_crowd").text(data.results.recall_crowd_count);			
+			$('#api_population_crowd').text(data.results.recall_crowd_count);			
 		},
 		error: function (request, status, error) {
 			console.log(request.responseText);
@@ -194,7 +199,16 @@ function postCrowd(recall) {
 		success: function(data) {
 
 			console.log('postdata : '+ JSON.stringify(data) );	
-			$("#api_population_crowd").text(data.results.recall_crowd_count);			
+			$('#api_population_crowd').text(data.results.recall_crowd_count);
+			
+			//$('#api_population_crowd').css('font-size', '16px');
+			$('.recall-users').css('color', '#E2C752');
+			
+			$('.recall-users').animate({			
+				//fontSize: '13px',
+				color: '#ffffff'
+			}, 2000 );
+			
 		},
 		error: function (request, status, error) {
 			console.log(request.responseText);
@@ -427,17 +441,17 @@ function setChartClass(data) {
 			}
 		},
 		series: [{
-			name: "Recalls",
+			name: 'Recalls',
 			colorByPoint: true,
 			innerSize: '50%',
 			data: [{
-				name: "Class I",
+				name: 'Class I',
 				y: data.results.class1
 			}, {
-				name: "Class II",
+				name: 'Class II',
 				y: data.results.class2
 			}, {
-				name: "Class III",
+				name: 'Class III',
 				y: data.results.class3
 			}]
 		}]
@@ -451,9 +465,9 @@ function readyState() {
 
 function clearSelected() {
 
-	$("#text-div-selected").hide();
-	$("#text-div-national").show();
-	$("#text-div-noresults").hide();
+	$('#text-div-selected').hide();
+	$('#text-div-national').show();
+	$('#text-div-noresults').hide();
 	
 	if (ready) {
 		states.setStyle(style_off);
@@ -461,8 +475,7 @@ function clearSelected() {
 }
 
 function highlightState(states_array, classification) {
-	//console.log('states.features.length : '+ states.features.length);
-	//console.log('states : '+ JSON.stringify(states) );
+
 	if (ready) {
 		states.setStyle(style_off);
 		
@@ -471,13 +484,13 @@ function highlightState(states_array, classification) {
 			var layer_state = layer.feature.properties.STUSPS;	
 			 
 			var high_style = style_highlight_1;
-			if (classification == "Class I") {
+			if (classification == 'Class I') {
 				high_style = style_highlight_1;
 			}
-			else if (classification == "Class II") {
+			else if (classification == 'Class II') {
 				high_style = style_highlight_2;
 			}
-			else if (classification == "Class III") {
+			else if (classification == 'Class III') {
 				high_style = style_highlight_3;
 			}
 			
@@ -499,40 +512,38 @@ var q_date = '';
 var q_class = '';
 var q_status = '';
 
-$("#select_food").on("change", function() {
-	q_food = $("#select_food").val();
-	clearSelected();
-	loadMarkers();	
-	loadCharts();
+$('#select_food').on('change', function() {
+	q_food = $('#select_food').val();
+	changeSearch();
 });	
 
-$("#select_state").on("change", function() {
-	q_state = $("#select_state").val();
-	clearSelected();
-	loadMarkers();	
-	loadCharts();	
+$('#select_state').on('change', function() {
+	q_state = $('#select_state').val();
+	changeSearch();	
 });	
 
-$("#select_date").on("change", function() {
-	q_date = $("#select_date").val();
-	clearSelected();
-	loadMarkers();	
-	loadCharts();
+$('#select_date').on('change', function() {
+	q_date = $('#select_date').val();
+	changeSearch();
 });	
 
-$("#select_class").on("change", function() {
-	q_class = $("#select_class").val();
-	clearSelected();
-	loadMarkers();	
-	loadCharts();
+$('#select_class').on('change', function() {
+	q_class = $('#select_class').val();
+	changeSearch();
 });
 
-$("#select_status").on("change", function() {
-	q_status = $("#select_status").val();
+$('#select_status').on('change', function() {
+	q_status = $('#select_status').val();
+	changeSearch();
+});
+
+function changeSearch() {
+	
 	clearSelected();
+	setDownloadLinks();
 	loadMarkers();	
-	loadCharts();
-});		
+	loadCharts();	
+}
 
 var data_json;
 var selected_json;
@@ -579,25 +590,15 @@ function getIconSymbol(m_status) {
     return m_symbol;
 }
 
-
 function setMarkers() {
-	
-	//console.log('data_json.results : '+ JSON.stringify(data_json.results) );
-	
 	
 	if (markers) {
 		map.removeLayer(markers);
 	}
 	
-	//map.removeLayer(markers);
-	//markers = L.layerGroup();
-	
 	markers = L.mapbox.featureLayer();
-	//markers.addLayer(marker);
-	//markerGroup.removeLayer(marker);
 	
-	if (data_json.results) {
-	
+	if (data_json.results) {	
 		
 		for (var i = 0; i < data_json.results.length; i++) {
 		
@@ -636,9 +637,7 @@ function setMarkers() {
                             //console.log('c_status : '+ c_status );	
                             
                             markers.eachLayer(function(marker) {
-
-                                //console.log('marker !!!!!!! : '+ JSON.stringify(marker.options.icon.options) );
-                                
+                               
                                 var reset_marker = marker.options.icon.options;
                                 
                                 //console.log('reset_marker !!!!!!! : '+ JSON.stringify(reset_marker) );
@@ -674,8 +673,7 @@ function setMarkers() {
 			}
 		}
 		
-		markers.addTo(map);
-		
+		markers.addTo(map);		
 	}
 }
 
@@ -719,16 +717,61 @@ function clickMarkers() {
 	
 	getCrowd(selected_json.recall_number);
     
-    if (selected_json.status == 'Ongoing') { $('#status-icon-img').attr('src','/image/circle-stroked-18.png'); }
-    else if (selected_json.status == 'Completed') { $('#status-icon-img').attr('src', '/image/circle-18.png' ); }
-    else if (selected_json.status == 'Terminated') { $('#status-icon-img').attr('src', '/image/cross-18.png' ); }
-
-    $('#class-icon-i').removeClass( 'fda-blue fda-accent2 fda-accent3' );
-    if (selected_json.classification == 'Class I') { $('#class-icon-i').addClass( 'fda-blue' ); }
-    else if (selected_json.classification == 'Class II') { $('#class-icon-i').addClass( 'fda-accent2' ); }
-    else if (selected_json.classification == 'Class III') { $('#class-icon-i').addClass( 'fda-accent3' ); }
-	
+	setStatusIcon(selected_json.status);
+	setClassIcon(selected_json.classification);
+		
 	//$('#api_crowdsource').text(selected_json.api_recall_initiation_date);
+}
+
+function setDownloadLinks() {
+	
+	var download_qs = '';
+	
+	if (q_food) {
+		if (download_qs) { download_qs += '&'; }
+		else { download_qs += '?'; }
+		download_qs += 'food='+q_food;
+	}
+	if (q_state) {
+		if (download_qs) { download_qs += '&'; }
+		else { download_qs += '?'; }
+		download_qs += 'state='+q_state;
+	}
+	if (q_date) {
+		if (download_qs) { download_qs += '&'; }
+		else { download_qs += '?'; }
+		download_qs += 'date='+q_date;
+	}
+	if (q_class) {
+		if (download_qs) { download_qs += '&'; }
+		else { download_qs += '?'; }
+		download_qs += 'class='+q_class;
+	}
+	if (q_status) {
+		if (download_qs) { download_qs += '&'; }
+		else { download_qs += '?'; }
+		download_qs += 'status='+q_status;
+	}
+	
+	console.log('download_qs : ' + download_qs);
+	
+	$('#download-json-link').attr('href', '/api/search.json'+ download_qs);
+	$('#download-xml-link').attr('href', '/api/search.xml'+ download_qs);
+	$('#download-csv-link').attr('href', '/api/search.csv'+ download_qs);
+	
+}
+
+function setStatusIcon(status_i) {
+	if (status_i == 'Ongoing') { $('#status-icon-img').attr('src','/image/circle-stroked-18.png'); }
+    else if (status_i == 'Completed') { $('#status-icon-img').attr('src', '/image/circle-18.png' ); }
+    else if (status_i == 'Terminated') { $('#status-icon-img').attr('src', '/image/cross-18.png' ); }
+}
+
+function setClassIcon(class_i) {
+	$('#class-icon-i').removeClass( 'fda-blue fda-accent2 fda-accent3' );
+    if (class_i == 'Class I') { $('#class-icon-i').addClass( 'fda-blue' ); }
+    else if (class_i == 'Class II') { $('#class-icon-i').addClass( 'fda-accent2' ); }
+    else if (class_i == 'Class III') { $('#class-icon-i').addClass( 'fda-accent3' ); }
 }
 
 function setNationwide() {
@@ -768,17 +811,3 @@ function getCurrentLocation(load) {
 	}
 	return false;
 }
-
-
-
-
-
-
-
-
-
-
-
-
- 
-

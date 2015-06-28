@@ -88,7 +88,7 @@
         </div>
     </nav>
 </header>
-<main class="container">
+<main class="container" role="main">
     <div class="row">
         <div class="col-md-7 col-lg-8 col-full">
 			<!--
@@ -97,18 +97,18 @@
 			-->
 			<div class="search-input" >
 				<div class="input-group">					
-					<input id="input-geo-location" class="form-control" type="search" placeholder="Enter Location" style="display: block">
+					<input id="input-geo-location" class="form-control" type="search" placeholder="Enter Location" aria-label="Enter Geographic Location/Address" style="display: block">
 					<span class="input-group-btn" style="display: table-cell">                        
-						<button class="btn-search btn btn-default" type="submit" id="input-geo-search" title="Location Search"><span><i class="fa fa-search"></i></span></button>
+						<button class="btn-search btn btn-default" type="submit" id="input-geo-search" title="Submit Location Search" aria-label="Submit Location Search"><span><i class="fa fa-search"></i></span></button>
 					</span>
 					<span class="input-group-btn">  
-						<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#filter-option">Filter Options&nbsp;<i class="fa fa-filter"></i></button>
+						<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#filter-option" aria-label="Recall Filter Options">Filter Options&nbsp;<i class="fa fa-filter"></i></button>
 					</span>
 				</div>
 			</div>
 			
 			<div id="filter-option" class="collapse out form-inline">
-				<select id="select_food" class="form-control selectWidth">
+				<select id="select_food" class="form-control selectWidth" aria-label="Select Food Type">
 					<option value="">Any Food</option>
 					<option value="alcohol+wine+beer+booze">Alcohol</option>
 					<option value="baby+infant+child+children">Baby Food</option>
@@ -124,7 +124,7 @@
 					<option value="sweet+sugar+candy+cake+dessert">Sweets</option>
 					<option value="vegetables">Vegetables</option>
 				</select>
-				<select id="select_state" class="form-control selectWidth">
+				<select id="select_state" class="form-control selectWidth" aria-label="Select Affected State">
 					<option value="">Any State</option>
 					<option value="AL">Alabama</option>
 					<option value="AK">Alaska</option>
@@ -178,7 +178,7 @@
 					<option value="WI">Wisconsin</option>
 					<option value="WY">Wyoming</option>
 				</select>
-				<select id="select_date" class="form-control selectWidth">
+				<select id="select_date" class="form-control selectWidth" aria-label="Select Year">
 					<option value="">Any Year</option>
 					<option value="2015">2015</option>
 					<option value="2014">2014</option>
@@ -187,13 +187,13 @@
 					<option value="2011">2011</option>
 					<option value="2010">2010</option>
 				</select>
-				<select id="select_class" class="form-control selectWidth">
+				<select id="select_class" class="form-control selectWidth" aria-label="Select Severity Classification">
 					<option value="">Any Severity</option>
 					<option value="1">Class I</option>
 					<option value="2">Class II</option>
 					<option value="3">Class III</option>
 				</select>
-				<select id="select_status" class="form-control selectWidth">
+				<select id="select_status" class="form-control selectWidth" aria-label="Select Recall Status">
 					<option value="">Any Status</option>
 					<option value="ongoing">Ongoing</option>
 					<option value="completed">Completed</option>
@@ -329,7 +329,7 @@
         </div>
     </div>
 </main>
-<footer>
+<footer role="contentinfo">
     <div class="container">
         <div class="row">
             <div class="col-sm-6 col-md-6 col-lg-6"> 

@@ -67,6 +67,10 @@ footer a:hover, footer a:focus { color: #ffffff; text-decoration: underline; fon
 .navbar-right li a { color: #ffffff !important; }
 .navbar-right li  a:hover, header a:focus { color: #00539B !important; text-decoration: none !important;}
 
+.legend-table div.tooltip-inner {
+    width: 350px;
+}
+
 .navbar {
    background-color: transparent !important;
    background: transparent !important;
@@ -123,7 +127,7 @@ filter-select { font-family: Arial,sans-serif; box-shadow: none; font-size: 12px
 .recall-dates { font-size: 14px; font-style:italic; color: #808284;}
 .recall-dates span { font-size: 14px; font-weight:600; }
 .recall-num { font-size: 18px; color: #000; font-family: Merriweather,'Helvetica Neue',Arial,sans-serif !important; }
-.recall-firm { font-size: 16px; font-weight: bold;  font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;}
+.recall-firm { font-size: 16px; font-weight: bold;  font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif; }
 .recall-product { font-size: 12px;}
 .recall-reason { font-size: 12px; font-style: italic;}
 .recall-pop { font-size: 13px; }
@@ -155,11 +159,6 @@ filter-select { font-family: Arial,sans-serif; box-shadow: none; font-size: 12px
 #download-data:hover, #download-data:active, #download-data:focus { cursor: pointer; text-decoration: underline; }
 
 .btn-crowd , .btn-crowd:hover, .btn-crowd:active, .btn-crowd:focus { background: #A3C658; color: #ffffff; font-weight: normal; width: 144px;   text-shadow: none;  font-size: 13px; font-family: Merriweather,'Helvetica Neue',Arial,sans-serif !important;}
-
-/*
-.btn-crowd { background: #A3C658; color: #ffffff; font-weight: normal; width: 70%;  display: table; text-shadow: none; margin: 0 auto; font-size: 16px; font-family: Merriweather,'Helvetica Neue',Arial,sans-serif !important;}
-.btn-crowd:hover, .btn-crowd:active, .btn-crowd:focus { background: #A3C658; color: #ffffff; font-weight: normal; width: 70%;  display: table; text-shadow: none; margin: 0 auto; font-size: 16px; font-family: Merriweather,'Helvetica Neue',Arial,sans-serif !important;}
-*/
 
 /* map */
 #map { height: 670px; }
@@ -203,7 +202,6 @@ filter-select { font-family: Arial,sans-serif; box-shadow: none; font-size: 12px
 .jcarousel-pagination { bottom: -8px;}
 .jcarousel-control-prev { left: -25px;}
 .jcarousel-control-next { right: -25px;}
-
 
 /* responsive */
 @media only screen and (max-width : 320px) {

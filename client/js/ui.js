@@ -425,7 +425,7 @@ function setChartClass(data) {
 			enabled: false
 		},
 		title: {
-			text: 'Recall Classification'
+			text: 'Recall Severity'
 		},
 		tooltip: {
 			pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -609,12 +609,25 @@ function setMarkers() {
                 var m_class = data_json.results[i].classification;
                 var m_status = data_json.results[i].status;
                 
+				var m_size = 'medium';
+
+				// set default recall
+				/*
+				if (i == data_json.results.length -1 ) {
+					//console.log('data_json.results : '+ JSON.stringify(data_json.results[i]) );
+					
+					m_size = 'large';					
+					selected_json = data_json.results[i];					
+					selectResult();						
+				}
+				*/
+				
                 var m_icon = L.mapbox.marker.icon({
                     'marker-color': getIconColor(m_class),
-                    'marker-size': 'medium',
+                    'marker-size': m_size,
                     'marker-symbol': getIconSymbol(m_status)
                 });
-                                
+
                 //console.log('m_icon : '+ JSON.stringify(m_icon.options) );
 				
 				var result_json = data_json.results[i];
@@ -626,7 +639,7 @@ function setMarkers() {
 					var new_marker = L.marker([m_lat,m_lon], data_json.results[i])
 						.on('click',function(e) {
 						
-							//console.log('this : '+ JSON.stringify(this.options) );
+							console.log('this : '+ JSON.stringify(this.options) );
 							
 							selected_json = this.options;
                             
@@ -638,10 +651,8 @@ function setMarkers() {
                             
                             markers.eachLayer(function(marker) {
                                
-                                var reset_marker = marker.options.icon.options;
-                                
-                                //console.log('reset_marker !!!!!!! : '+ JSON.stringify(reset_marker) );
-                                
+                                var reset_marker = marker.options.icon.options;                                
+                               
                                 reset_marker.iconSize = [30,70];
                                 reset_marker.iconAnchor = [15,35];
                                 reset_marker.popupAnchor = [0,-35];
@@ -658,7 +669,7 @@ function setMarkers() {
                                 'marker-symbol': getIconSymbol(c_status)
                             }));
                             
-							clickMarkers();							
+							selectResult();							
 					
 						});
                     
@@ -684,7 +695,7 @@ function commaSeparateNumber(val){
 	return val;
 }
 
-function clickMarkers() {
+function selectResult() {
 	
 	//console.log('selected_json : '+ JSON.stringify(selected_json) );	
 	
@@ -696,8 +707,7 @@ function clickMarkers() {
 	$('#api_recalling_firm').text(selected_json.recalling_firm);
 	$('#api_product_description').text(selected_json.product_description);
 	$('#api_reason_for_recall').text(selected_json.reason_for_recall);
-	$('#api_status').text(selected_json.status);
-	$('#api_classification').text(selected_json.classification);
+	
 	$('#api_distribution_pattern').text(selected_json.distribution_pattern);
 	$('#api_product_quantity').text(selected_json.product_quantity);
 	
@@ -762,16 +772,39 @@ function setDownloadLinks() {
 }
 
 function setStatusIcon(status_i) {
-	if (status_i == 'Ongoing') { $('#status-icon-img').attr('src','/image/circle-stroked-18.png'); }
-    else if (status_i == 'Completed') { $('#status-icon-img').attr('src', '/image/circle-18.png' ); }
-    else if (status_i == 'Terminated') { $('#status-icon-img').attr('src', '/image/cross-18.png' ); }
+	$('#api-status').text(status_i);
+	
+	if (status_i == 'Ongoing') { 
+		$('#status-icon-img').attr('src','/image/circle-stroked-18.png'); 
+		$('#api-status-span').prop('title', 'Ongoing - product recall is currently in progress').tooltip('fixTitle');
+	}
+    else if (status_i == 'Completed') { 
+		$('#status-icon-img').attr('src', '/image/circle-18.png' ); 
+		$('#api-status-span').prop('title', 'Completed - violative products have been retrieved/impounded').tooltip('fixTitle');
+	}
+    else if (status_i == 'Terminated') { 
+		$('#status-icon-img').attr('src', '/image/cross-18.png' ); 
+		$('#api-status-span').prop('title', 'Terminated - reasonable efforts have been made to remove/correct the product').tooltip('fixTitle');
+	}
 }
 
 function setClassIcon(class_i) {
+	$('#api-classification').text(class_i);
+	
 	$('#class-icon-i').removeClass( 'fda-blue fda-accent2 fda-accent3' );
-    if (class_i == 'Class I') { $('#class-icon-i').addClass( 'fda-blue' ); }
-    else if (class_i == 'Class II') { $('#class-icon-i').addClass( 'fda-accent2' ); }
-    else if (class_i == 'Class III') { $('#class-icon-i').addClass( 'fda-accent3' ); }
+		
+    if (class_i == 'Class I') { 
+		$('#class-icon-i').addClass( 'fda-blue' ); 
+		$('#api-classification-span').prop('title', 'Class I - dangerous product that could cause serious health problems or death').tooltip('fixTitle');
+	}
+    else if (class_i == 'Class II') { 
+		$('#class-icon-i').addClass( 'fda-accent2' ); 
+		$('#api-classification-span').prop('title', 'Class II - defective product that could cause temporary health problems').tooltip('fixTitle');
+	}
+    else if (class_i == 'Class III') { 
+		$('#class-icon-i').addClass( 'fda-accent3' ); 
+		$('#api-classification-span').prop('title', 'Class III - unlikely to cause health problems but that violates labeling/manufacturing standards').tooltip('fixTitle');
+	}	
 }
 
 function setNationwide() {

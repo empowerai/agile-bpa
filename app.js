@@ -28,8 +28,19 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser');
 
 var server_api = require("./server/api.js");
-var config_json = require('./config/config.json');
+//var config_json = require('./config/config.json');
 var package_json = require('./package.json');
+
+// **********************************************************
+// config
+
+//var config_port = config_json.app_port || process.env.NODE_APP_PORT;
+var config_app_port = process.env.NODE_APP_PORT;
+
+var config_fda_url = process.env.NODE_FDA_URL;
+var config_fda_key = process.env.NODE_FDA_KEY;
+
+var config_db_url = process.env.NODE_DB_URL; 
 
 // **********************************************************
 // console start
@@ -38,6 +49,12 @@ console.log('package_json.name : '+ package_json.name );
 console.log('package_json.version : '+ package_json.version );
 console.log('package_json.description : '+ package_json.description );
 
+console.log('config_app_port : '+ config_app_port );
+console.log('config_fda_url : '+ config_fda_url );
+console.log('config_fda_key : '+ config_fda_key );
+console.log('config_db_url : '+ config_db_url );
+
+/*
 console.log('config_json.host : '+ config_json.app_host );
 console.log('config_json.port : '+ config_json.app_port );
 
@@ -45,6 +62,7 @@ console.log('config_json.fda_host : '+ config_json.fda_host );
 console.log('config_json.fda_key : '+ config_json.fda_key );
 
 console.log('config_json.db_url : '+ config_json.db_url );
+*/
 
 // **********************************************************
 // log using morgan
@@ -158,7 +176,7 @@ process.on('uncaughtException', function (err) {
 // **********************************************************
 // server
 
-var server = app.listen(config_json.app_port, function () {
+var server = app.listen(config_app_port, function () {
 
   var host = server.address().address;
   var port = server.address().port;

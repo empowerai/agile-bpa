@@ -12,7 +12,7 @@
 
 'use strict';
 
-var config_json = require('../config/config.json');
+//var config_json = require('../config/config.json');
 var package_json = require('../package.json');
 
 var state_pop_json = require('../data/state_pop.json');
@@ -27,9 +27,20 @@ var moment = require('moment');
 var pg = require('pg');
 
 // **********************************************************
-//database
+// config
+var config_fda_url = process.env.NODE_FDA_URL;
+var config_fda_key = process.env.NODE_FDA_KEY;
 
-var conString = config_json.db_url; 
+//console.log('\n\n config_fda_url : ' + config_fda_url );
+//console.log('\n\n config_fda_key : ' + config_fda_key );
+
+// **********************************************************
+// database
+
+//var conString = config_json.db_url; 
+var conString = process.env.NODE_DB_URL; 
+//console.log('\n\n conString : ' + conString );
+
 var client = new pg.Client(conString);
 client.connect();
 
@@ -380,7 +391,7 @@ function requestSearch(req, res) {
 	
     console.log('\n\n search : ' + search ); 
 	
-	var request_fda = config_json.fda_protocol +'://'+ config_json.fda_host +'/'+ config_json.fda_path +'?api_key='+ config_json.fda_key +'&limit=100&search='+ search;
+	var request_fda = config_fda_url +'?api_key='+ config_fda_key +'&limit=100&search='+ search;
 	console.log('\n\n request_fda : ' + request_fda );	
 	
 	https.get(request_fda, function (http_res) {
@@ -597,7 +608,7 @@ function requestCounts(req, res) {
     console.log('\n\n count : ' + count );   
 	console.log('\n\n search : ' + search ); 
 	
-	var request_fda = config_json.fda_protocol +'://'+ config_json.fda_host +'/'+ config_json.fda_path +'?api_key='+ config_json.fda_key +'&limit=500&count='+ count +'&search='+ search;
+	var request_fda = config_fda_url +'?api_key='+ config_fda_key +'&limit=500&count='+ count +'&search='+ search;
 	console.log('\n\n request_fda : ' + request_fda );	
 	
 	https.get(request_fda, function (http_res) {

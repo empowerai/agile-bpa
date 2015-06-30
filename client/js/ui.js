@@ -108,8 +108,7 @@ $(function() {
 	});	
 	
 	// crowdsourced
-	$('#btn-crowd-post').on('click', function() {
-	
+	$('#btn-crowd-post').on('click', function() {	
 		postCrowd(selected_json.recall_number);
 	});	
 	
@@ -171,18 +170,18 @@ function searchMap(err, data) {
 function getCrowd(recall) {
 	
 	var crowd_url = '/api/crowd.json?recall='+recall;	
-	console.log('crowd_url : '+ crowd_url);	
+	//console.log('crowd_url : '+ crowd_url);	
 	$.ajax({
 		type: 'GET',
 		url: crowd_url,
 		dataType: 'json',
 		success: function(data) {
 
-			console.log('get data : '+ JSON.stringify(data) );	
+			//console.log('get data : '+ JSON.stringify(data) );	
 			$('#api_population_crowd').text(data.results.recall_crowd_count);			
 		},
 		error: function (request, status, error) {
-			console.log(request.responseText);
+			//console.log(request.responseText);
 			loadError();
 		}
 	});	
@@ -191,14 +190,14 @@ function getCrowd(recall) {
 function postCrowd(recall) {
 	
 	var crowd_url = '/api/crowd.json?recall='+recall;	
-	console.log('crowd_url : '+ crowd_url);	
+	//console.log('crowd_url : '+ crowd_url);	
 	$.ajax({
 		type: 'POST',
 		url: crowd_url,
 		dataType: 'json',
 		success: function(data) {
 
-			console.log('postdata : '+ JSON.stringify(data) );	
+			//console.log('postdata : '+ JSON.stringify(data) );	
 			$('#api_population_crowd').text(data.results.recall_crowd_count);
 			
 			//$('#api_population_crowd').css('font-size', '16px');
@@ -211,7 +210,7 @@ function postCrowd(recall) {
 			
 		},
 		error: function (request, status, error) {
-			console.log(request.responseText);
+			//console.log(request.responseText);
 			loadError();
 		}
 	});	
@@ -220,7 +219,7 @@ function postCrowd(recall) {
 function loadCharts() {
 	
 	var class_url = '/api/count.json?count=class&food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'&status='+q_status;	
-	console.log('class_url : '+ class_url);	
+	//console.log('class_url : '+ class_url);	
 	$.ajax({
 		type: 'GET',
 		url: class_url,
@@ -231,30 +230,30 @@ function loadCharts() {
 			setChartClass(data);
 		},
 		error: function (request, status, error) {
-			console.log(request.responseText);
+			//console.log(request.responseText);
 			loadError();
 		}
 	});
 	
 	var status_url = '/api/count.json?count=status&food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'&status='+q_status;	
-	console.log('status_url : '+ status_url);	
+	//console.log('status_url : '+ status_url);	
 	$.ajax({
 		type: 'GET',
 		url: status_url,
 		dataType: 'json',
 		success: function(data) {
 
-			console.log('data : '+ JSON.stringify(data) );			
+			//console.log('data : '+ JSON.stringify(data) );			
 			setChartStatus(data);
 		},
 		error: function (request, status, error) {
-			console.log(request.responseText);
+			//console.log(request.responseText);
 			loadError();
 		}
 	});
 	
 	var date_url = '/api/count.json?count=date&food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'&status='+q_status;	
-	console.log('date_url : '+ date_url);	
+	//console.log('date_url : '+ date_url);	
 	$.ajax({
 		type: 'GET',
 		url: date_url,
@@ -265,7 +264,7 @@ function loadCharts() {
 			setChartDate(data);
 		},
 		error: function (request, status, error) {
-			console.log(request.responseText);
+			//console.log(request.responseText);
 			loadError();
 		}
 	});
@@ -566,7 +565,7 @@ function loadMarkers() {
 			setMarkers();
 		},
 		error: function (request, status, error) {
-			console.log(request.responseText);
+			//console.log(request.responseText);
 			loadError();
 		}
 	});
@@ -639,7 +638,7 @@ function setMarkers() {
 					var new_marker = L.marker([m_lat,m_lon], data_json.results[i])
 						.on('click',function(e) {
 						
-							console.log('this : '+ JSON.stringify(this.options) );
+							//console.log('this : '+ JSON.stringify(this.options) );
 							
 							selected_json = this.options;
                             
@@ -719,7 +718,7 @@ function selectResult() {
 	$('#api_population_census').text(commaSeparateNumber(selected_json.affected_population_census));
 	
 	var pop_perc = (selected_json.affected_population_census / 322405453) * 100;
-	console.log('pop_perc : '+ pop_perc );	
+	//console.log('pop_perc : '+ pop_perc );	
 	
 	$('#api_population_percent').text( ( Math.round(pop_perc * 100) / 100) );
 	
@@ -763,7 +762,7 @@ function setDownloadLinks() {
 		download_qs += 'status='+q_status;
 	}
 	
-	console.log('download_qs : ' + download_qs);
+	//console.log('download_qs : ' + download_qs);
 	
 	$('#download-json-link').attr('href', '/api/search.json'+ download_qs);
 	$('#download-xml-link').attr('href', '/api/search.xml'+ download_qs);
@@ -808,11 +807,11 @@ function setClassIcon(class_i) {
 }
 
 function setNationwide() {
-	map.setView([40, -97], 3);
-	
-	clearSelected();	
+		
+	clearSelected();
 
-	//$('#text-div-national').show();	
+	map.setView([40, -97], 3);	
+
 }
 
 function getCurrentLocation(load) {

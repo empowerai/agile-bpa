@@ -23,6 +23,28 @@ hr {
 hr.light {
     border-color: #fff;
 }
+
+#back { background: #ffffff; }
+#back .container .row a { font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif; color: #00539B; font-size: 20px;  }
+#back .container .row a:hover { font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif; color: #6699CC; font-size: 20px; text-decoration: none;  }
+
+#foot { background: #99CCCC; }
+#foot .container .row a { font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif; color: #ffffff; font-size: 16px;  }
+
+.footer-brand span {
+
+  font-size: 18px;
+  color: #ffffff;
+  padding-left: 16px;
+}
+.app-dev {
+  font-size: 18px;
+  color: #FFF!important;
+}
+.app-name {
+  font-style: italic;
+}
+
 .navbar-brand>img  { float:left; display:block; padding-right: 10px; }
 .navbar-brand span { float:left; display:block; }
 .fda-blue { color: #00539B; }

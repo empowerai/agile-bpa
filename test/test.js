@@ -1,16 +1,30 @@
+/*
+     __  ___  _____     _   _____  __    
+  /\ \ \/ __\ \_   \   /_\ /__   \/ _\   
+ /  \/ / /     / /\/  //_\\  / /\/\ \    
+/ /\  / /___/\/ /_   /  _  \/ /   _\ \   
+\_\ \/\____/\____/   \_/ \_/\/    \__/   
+                                         
+*/
 
+// **********************************************************
+// test.js
 
+process.env.NODE_APP_PORT = '3000';
 
-var should = require('chai').should(),
-    supertest = require('supertest');
+var app = require('../app.js');
+
+var should = require('chai').should();
+var supertest = require('supertest');
     
-var config_app_url = process.env.NODE_APP_URL;
-var config_app_port = process.env.NODE_APP_PORT;
-var api = supertest(config_app_url+":"+config_app_port);
+//var config_app_url = process.env.NODE_APP_URL;
+//var config_app_port = process.env.NODE_APP_PORT;
+//var api = supertest(config_app_url+":"+config_app_port);
+var api = supertest(app);
 
 var crowd_count;
-console.log("config_app_url:"+config_app_url);
-console.log("config_app_port:"+config_app_port);
+//console.log("config_app_url:"+config_app_url);
+//console.log("config_app_port:"+config_app_port);
 
 describe('NCI-BPA API Unit Testing', function(done) {
   it('testing SEARCH API with date', function(done) {

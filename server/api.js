@@ -49,7 +49,7 @@ client.connect();
 
 function secureJSON(json) {
 	
-	console.log('\n\n secureJSON  ');
+	//console.log('\n\n secureJSON  ');
 
 	var secure_json = json;
 	if (typeof secure_json == 'object') {
@@ -65,22 +65,22 @@ function secureJSON(json) {
 
 function insertCrowd(req, res) {
 
-	console.log('\n\n insertCrowd ');
+	//console.log('\n\n insertCrowd ');
 
 	var ext = req.params.ext;	
-	console.log('\n\n ext : ' + ext );
+	//console.log('\n\n ext : ' + ext );
     
     var r_recall = req.query.recall;
     
     if (r_recall) {
         
         var curr_time = moment().format('YYYY/MM/DD HH:MM');
-        console.log('\n\n curr_time : ' + curr_time );
+        //console.log('\n\n curr_time : ' + curr_time );
         
         var i_query = "INSERT INTO fda_demo.affected_crowdsource_input (input_datetime, fda_recall_number) VALUES ('"+ curr_time +"', '"+ r_recall +"'); "+
             "SELECT COUNT(*) FROM fda_demo.affected_crowdsource_input WHERE fda_recall_number = '"+ r_recall +"' AND input_status = 'y'; ";
         
-        console.log('\n\n i_query : ' + i_query );
+        //console.log('\n\n i_query : ' + i_query );
         
         client.query(i_query, function(err, result) {
 
@@ -126,7 +126,7 @@ function insertCrowd(req, res) {
                     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
 
                     res.send(response_out);
-                    console.log('\n\n res.send response_out ');	
+                    //console.log('\n\n res.send response_out ');	
                     return;
                 }
                 catch (err) {
@@ -136,8 +136,8 @@ function insertCrowd(req, res) {
                 }	
 
             for (var i = 0; i < result.rows.length; i++) {
-                console.log("my result="+JSON.stringify(result.rows[i]));
-                console.log("count="+JSON.stringify(result.rows[i].count));
+                //console.log("my result="+JSON.stringify(result.rows[i]));
+                //console.log("count="+JSON.stringify(result.rows[i].count));
 
                 return result.rows[i].count;
 
@@ -153,10 +153,10 @@ function insertCrowd(req, res) {
 
 function requestCrowd(req, res) {
 
-	console.log('\n\n requestCrowd  ');
+	//console.log('\n\n requestCrowd  ');
 
 	var ext = req.params.ext;	
-	console.log('\n\n ext : ' + ext );
+	//console.log('\n\n ext : ' + ext );
     
     var r_recall = req.query.recall;
     
@@ -164,7 +164,7 @@ function requestCrowd(req, res) {
         
         var r_query = "SELECT COUNT(*) FROM fda_demo.affected_crowdsource_input WHERE fda_recall_number = '"+ r_recall +"' AND input_status = 'y'; ";
         
-        console.log('\n\n r_query : ' + r_query );
+        //console.log('\n\n r_query : ' + r_query );
         
         client.query(r_query, function(err, result) {
 
@@ -210,7 +210,7 @@ function requestCrowd(req, res) {
                     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
 
                     res.send(response_out);
-                    console.log('\n\n res.send response_out ');	
+                    //console.log('\n\n res.send response_out ');	
                     return;
                 }
                 catch (err) {
@@ -220,8 +220,8 @@ function requestCrowd(req, res) {
                 }	
 
             for (var i = 0; i < result.rows.length; i++) {
-                console.log("my result="+JSON.stringify(result.rows[i]));
-                console.log("count="+JSON.stringify(result.rows[i].count));
+                //console.log("my result="+JSON.stringify(result.rows[i]));
+                //console.log("count="+JSON.stringify(result.rows[i].count));
 
                 return result.rows[i].count;
 
@@ -236,7 +236,7 @@ function requestCrowd(req, res) {
 
 function processSearch(json) {
 
-	console.log('\n\n processSearch  ');
+	//console.log('\n\n processSearch  ');
 	
 	var process_json = json;	
     
@@ -251,26 +251,16 @@ function processSearch(json) {
 	        result_json = process_json.results[i];
 	        
 	        delete result_json['@epoch'];
-	        delete result_json['@id'];
-	        
-	        //result_json.affected_population_census = 746262;
-	        
-	        
-	        //result_json.affected_population_crowd = getPopCrowd('def');
-	    
-	        
-	        result_json.affected_state = ['AL','NY','MD','VA'];
-	        result_json.recall_location = [85, -105];
+	        delete result_json['@id'];	 
 	        
 	        //console.log('\n\n result_json  ' + JSON.stringify(result_json));
-
 
 	        var distribution_pattern = process_json.results[i].distribution_pattern;
 		    //console.log('\distribution_pattern  ' + distribution_pattern);
 		    
 		    var total_pop = 0;
 		    
-	     	var match_array = new Array();
+	     	var match_array = [];
 	     	if(distribution_pattern.toLowerCase().indexOf("nation")!=-1){
 	     		for (var k in state_pop_json.state_pop) {
 	     			match_array.push(k);
@@ -299,7 +289,6 @@ function processSearch(json) {
 		    result_json.affected_population_census = total_pop;
 		    result_json.affected_state = match_array;
 		    result_json.recall_location = places_json.gnis_places[location];
-
 	        
 	        process_json.results[i] = result_json;
 	    }
@@ -313,10 +302,10 @@ function processSearch(json) {
 
 function requestSearch(req, res) {
 
-	console.log('\n\n requestSearch  ');
+	//console.log('\n\n requestSearch  ');
 
 	var ext = req.params.ext;	
-	console.log('\n\n ext : ' + ext );
+	//console.log('\n\n ext : ' + ext );
 	
 	var query = req.query.q;
 	var filter = req.query.f;
@@ -389,10 +378,10 @@ function requestSearch(req, res) {
         search += '(status:'+ s_status +')';                      
     }
 	
-    console.log('\n\n search : ' + search ); 
+    //console.log('\n\n search : ' + search ); 
 	
 	var request_fda = config_fda_url +'?api_key='+ config_fda_key +'&limit=100&search='+ search;
-	console.log('\n\n request_fda : ' + request_fda );	
+	//console.log('\n\n request_fda : ' + request_fda );	
 	
 	https.get(request_fda, function (http_res) {
 		var data = '';	
@@ -421,7 +410,7 @@ function requestSearch(req, res) {
 					process_data.meta.version = package_json.version;
 				}
 				
-				console.log("count:"+process_data.results.length);
+				//console.log("count:"+process_data.results.length);
 
 				process_data.counts = {
 					'result_count': process_data.results.length
@@ -440,9 +429,9 @@ function requestSearch(req, res) {
                     
                     var csv_data = JSON.parse(response_out).results;
                     
-                    console.log('\n\n csv_data : ' + csv_data );	
+                    //console.log('\n\n csv_data : ' + csv_data );	
 
-                    var header_array = new Array();	
+                    var header_array = [];	
 					for (var i = 0; i < process_data.results.length; i++) {
 						header_array.push(Object.keys(process_data.results)[i]);
     				}
@@ -475,7 +464,7 @@ function requestSearch(req, res) {
                             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
 
                             res.send(csv);
-                            console.log('\n\n res.send csv response_out ');	
+                            //console.log('\n\n res.send csv response_out ');	
                             return;
                         }
 
@@ -493,7 +482,7 @@ function requestSearch(req, res) {
 					res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
 					
 					res.send(response_out);
-	                console.log('\n\n res.send response_out ');	
+	                //console.log('\n\n res.send response_out ');	
 					return;
 				}
 			}
@@ -516,10 +505,10 @@ function requestSearch(req, res) {
 
 function requestCounts(req, res) {
 
-	console.log('\n\n requestCounts  ');
+	//console.log('\n\n requestCounts  ');
 
 	var ext = req.params.ext;	
-	console.log('\n\n ext : ' + ext );
+	//console.log('\n\n ext : ' + ext );
 	
 	var query = req.query.q;
 	var filter = req.query.f;
@@ -605,11 +594,11 @@ function requestCounts(req, res) {
     	count = 'classification';	
     }
 	
-    console.log('\n\n count : ' + count );   
-	console.log('\n\n search : ' + search ); 
+    //console.log('\n\n count : ' + count );   
+	//console.log('\n\n search : ' + search ); 
 	
 	var request_fda = config_fda_url +'?api_key='+ config_fda_key +'&limit=500&count='+ count +'&search='+ search;
-	console.log('\n\n request_fda : ' + request_fda );	
+	//console.log('\n\n request_fda : ' + request_fda );	
 	
 	https.get(request_fda, function (http_res) {
 		var data = '';	
@@ -637,7 +626,7 @@ function requestCounts(req, res) {
 					process_data.meta.version = package_json.version;
 				}
 				
-				console.log("count:"+process_data.results.length);
+				//console.log("count:"+process_data.results.length);
 
 				process_data.status = {
 					'status': 200,
@@ -652,9 +641,9 @@ function requestCounts(req, res) {
                     
                     var csv_data = JSON.parse(response_out).results;
                     
-                    console.log('\n\n csv_data : ' + csv_data );
+                    //console.log('\n\n csv_data : ' + csv_data );
 
-                    var header_array = new Array();	
+                    var header_array = [];	
 					for (var i = 0; i < process_data.results.length; i++) {
 						header_array.push(Object.keys(process_data.results)[i]);
     				}
@@ -685,7 +674,7 @@ function requestCounts(req, res) {
                             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
 
                             res.send(csv);
-                            console.log('\n\n res.send csv response_out ');	
+                            //console.log('\n\n res.send csv response_out ');	
                             return;
                         }
 
@@ -703,7 +692,7 @@ function requestCounts(req, res) {
 					res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");					
 					
 					res.send(response_out);
-	                console.log('\n\n res.send response_out ');	
+	                //console.log('\n\n res.send response_out ');	
 					return;
 				}
 			}
@@ -723,7 +712,7 @@ function requestCounts(req, res) {
 
 function processCounts(json, type) {
 
-	console.log('\n\n processCounts  ');
+	//console.log('\n\n processCounts  ');
 	
 	var process_json = json;	
     
@@ -745,8 +734,8 @@ function processCounts(json, type) {
 	        
 		        result_json = process_json.results[i];
 		       
-		        console.log('\n\n result_json. term: ' + result_json.term);
-		        console.log('\n\n result_json  count: ' + result_json.count);
+		        //console.log('\n\n result_json. term: ' + result_json.term);
+		        //console.log('\n\n result_json  count: ' + result_json.count);
 				
 				if(result_json.term=='i'){
 					class1 = result_json.count;
@@ -771,8 +760,8 @@ function processCounts(json, type) {
 	        
 		        result_json = process_json.results[i];
 		       
-		        console.log('\n\n result_json. term: ' + result_json.term);
-		        console.log('\n\n result_json  count: ' + result_json.count);
+		        //console.log('\n\n result_json. term: ' + result_json.term);
+		        //console.log('\n\n result_json  count: ' + result_json.count);
 				
 				if(result_json.term=='ongoing'){
 					class1 = result_json.count;
@@ -836,11 +825,11 @@ function sortFunction(a, b) {
 
 function responseError(req, res, err) {
 	
-	console.log('\n\n responseError ');	
+	//console.log('\n\n responseError ');	
 	console.error(err.stack);
 	
 	var ext = req.params.ext;	
-	console.log('\n\n ext : ' + ext );
+	//console.log('\n\n ext : ' + ext );
 	
 	var err_mess = err;
 	if (typeof err_mess == 'object') {

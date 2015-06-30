@@ -7,3 +7,4 @@ exclude_paths:
 - "client/api-docs/lib/**/*"
 - "client/api-docs/*.js"
 - "client/style/js/**/*"
+- "client/style/js/*.js"

@@ -52,7 +52,7 @@ function secureJSON(json) {
 	//console.log('\n\n secureJSON  ');
 
 	var secure_json = json;
-	if (typeof secure_json == 'object') {
+	if (typeof secure_json === 'object') {
 		secure_json = JSON.stringify(json);
 	}
 
@@ -117,7 +117,7 @@ function insertCrowd(req, res) {
                     var response_out = secureJSON(process_data);
 					res.setHeader('Content-Type', 'application/json');
 
-                    if (ext == 'xml') {
+                    if (ext === 'xml') {
                         response_out = js2xmlparser('api', response_out);
                         res.setHeader('Content-Type', 'text/xml');
                     }
@@ -201,7 +201,7 @@ function requestCrowd(req, res) {
                     var response_out = secureJSON(process_data);
 					res.setHeader('Content-Type', 'application/json');
 
-                    if (ext == 'xml') {
+                    if (ext === 'xml') {
                         response_out = js2xmlparser('api', response_out);
                         res.setHeader('Content-Type', 'text/xml');
                     }
@@ -261,7 +261,7 @@ function processSearch(json) {
 		    var total_pop = 0;
 		    
 	     	var match_array = [];
-	     	if(distribution_pattern.toLowerCase().indexOf("nation")!=-1){
+	     	if(distribution_pattern.toLowerCase().indexOf("nation")!==-1){
 	     		for (var k in state_pop_json.state_pop) {
 	     			match_array.push(k);
 		            total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
@@ -270,12 +270,12 @@ function processSearch(json) {
 	     	else {
 	     		for (var k in state_pop_json.state_pop) {
 					//console.log(k+","+JSON.stringify(state_pop_json.state_pop[k].pop));
-					if(distribution_pattern.indexOf(k)!=-1){
+					if(distribution_pattern.indexOf(k)!==-1){
 		            	match_array.push(k);
 		            	total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
 		           	}
 		           	
-		           	if(distribution_pattern.indexOf(state_pop_json.state_pop[k].name)!=-1){
+		           	if(distribution_pattern.indexOf(state_pop_json.state_pop[k].name)!==-1){
 		            	match_array.push(k);
 		            	total_pop = total_pop + parseFloat(state_pop_json.state_pop[k].pop);
 		           	}
@@ -319,51 +319,51 @@ function requestSearch(req, res) {
     var search = '';
     
     if (s_food) {
-        if (search != '') { search += '+AND+';}
+        if (search !== '') { search += '+AND+';}
         
         var food_search = s_food;
 
-        if(s_food == 'dairy'){
+        if(s_food === 'dairy'){
         	food_search = "cream+milk+butter+chocolate";
         }
-        else if(s_food == 'nuts'){
+        else if(s_food === 'nuts'){
         	food_search = "peanut+almonds+pistachios+pine+walnuts+cashews+hazelnuts+pecans";
         }
-        else if(s_food == 'dairy'){
+        else if(s_food === 'dairy'){
         	food_search = "cream+milk+butter+chocolate";
         }
-        else if(s_food == 'meat'){
+        else if(s_food === 'meat'){
         	food_search = "beef+chicken+pork";
         }
-        else if(s_food == 'seafood'){
+        else if(s_food === 'seafood'){
         	food_search = "oysters+fish+crabs+lobster";
         }
-        else if(s_food == 'vegetables'){
+        else if(s_food === 'vegetables'){
         	food_search = "salad+herbs+squash+asparagus+broccoli+pepper+eggplant+zucchini";
         }
-        else if(s_food == 'fruits'){
+        else if(s_food === 'fruits'){
         	food_search = "apples+oranges+pears+grapes+peaches+strawberries+melon+cantaloupe";
         }
 
         search += '(product_description:'+ food_search +')';
     }
     if (s_date) {
-        if (search != '') { search += '+AND+';}
+        if (search !== '') { search += '+AND+';}
        
         search += '(recall_initiation_date:['+ s_date +'-01-01+TO+'+ s_date +'-12-31])'; 
     }
 	else {
-		if (search != '') { search += '+AND+';}
+		if (search !== '') { search += '+AND+';}
 		
 		search += '(recall_initiation_date:[2010-01-01+TO+2015-12-31])'; 
 	}
     if (s_state) {
-        if (search != '') { search += '+AND+';}
+        if (search !== '') { search += '+AND+';}
         //search += '(state:'+ s_state +')';  
         search += '(distribution_pattern:'+ s_state +'+'+ state_pop_json.state_pop[s_state].name +')';  
     }
     if (s_class) {
-        if (search != '') { search += '+AND+';}
+        if (search !== '') { search += '+AND+';}
         
         var s_class_i = '';
         for (var i = 0; i < s_class; i++) {
@@ -373,7 +373,7 @@ function requestSearch(req, res) {
         search += '(classification:'+ s_class_i +')';                      
     }
 	if (s_status) {
-        if (search != '') { search += '+AND+';}       
+        if (search !== '') { search += '+AND+';}       
         
         search += '(status:'+ s_status +')';                      
     }
@@ -425,7 +425,7 @@ function requestSearch(req, res) {
 				var response_out = secureJSON(process_data);
 				res.setHeader('Content-Type', 'application/json');
 
-				if (ext == 'csv') {
+				if (ext === 'csv') {
                     
                     var csv_data = JSON.parse(response_out).results;
                     
@@ -473,7 +473,7 @@ function requestSearch(req, res) {
 				}
                 else {
 				
-					if (ext == 'xml') {
+					if (ext === 'xml') {
 						response_out = js2xmlparser('api', response_out);
 						res.setHeader('Content-Type', 'text/xml');
 					}
@@ -498,7 +498,7 @@ function requestSearch(req, res) {
 		responseError(req, res, err);
 		return;
 	});
-};
+}
 
 // **********************************************************
 // requestCounts
@@ -525,51 +525,51 @@ function requestCounts(req, res) {
 	var count = '';
     
     if (s_food) {
-        if (search != '') { search += '+AND+';}
+        if (search !== '') { search += '+AND+';}
         
         var food_search = s_food;
 
-        if(s_food == 'dairy'){
+        if(s_food === 'dairy'){
         	food_search = "cream+milk+butter+chocolate";
         }
-        else if(s_food == 'nuts'){
+        else if(s_food === 'nuts'){
         	food_search = "peanut+almonds+pistachios+pine+walnuts+cashews+hazelnuts+pecans";
         }
-        else if(s_food == 'dairy'){
+        else if(s_food === 'dairy'){
         	food_search = "cream+milk+butter+chocolate";
         }
-        else if(s_food == 'meat'){
+        else if(s_food === 'meat'){
         	food_search = "beef+chicken+pork";
         }
-        else if(s_food == 'seafood'){
+        else if(s_food === 'seafood'){
         	food_search = "oysters+fish+crabs+lobster";
         }
-        else if(s_food == 'vegetables'){
+        else if(s_food === 'vegetables'){
         	food_search = "salad+herbs+squash+asparagus+broccoli+pepper+eggplant+zucchini";
         }
-        else if(s_food == 'fruits'){
+        else if(s_food === 'fruits'){
         	food_search = "apples+oranges+pears+grapes+peaches+strawberries+melon+cantaloupe";
         }
 
         search += '(product_description:'+ food_search +')';
     }
     if (s_date) {
-        if (search != '') { search += '+AND+';}
+        if (search !== '') { search += '+AND+';}
        
         search += '(recall_initiation_date:['+ s_date +'-01-01+TO+'+ s_date +'-12-31])'; 
     }
 	else {
-		if (search != '') { search += '+AND+';}
+		if (search !== '') { search += '+AND+';}
 		
 		search += '(recall_initiation_date:[2010-01-01+TO+2015-12-31])'; 
 	}
     if (s_state) {
-        if (search != '') { search += '+AND+';}
+        if (search !== '') { search += '+AND+';}
         //search += '(state:'+ s_state +')';  
         search += '(distribution_pattern:'+ s_state +'+'+ state_pop_json.state_pop[s_state].name +')';  
     }
     if (s_class) {
-        if (search != '') { search += '+AND+';}
+        if (search !== '') { search += '+AND+';}
         
         var s_class_i = '';
         for (var i = 0; i < s_class; i++) {
@@ -579,15 +579,15 @@ function requestCounts(req, res) {
         search += '(classification:'+ s_class_i +')';                      
     }
 	if (s_status) {
-        if (search != '') { search += '+AND+';}       
+        if (search !== '') { search += '+AND+';}       
         
         search += '(status:'+ s_status +')';                      
     }
 
-    if (s_count == 'date'){
+    if (s_count === 'date'){
 		count = 'recall_initiation_date';                      
     }
-    else if (s_count == 'status') {
+    else if (s_count === 'status') {
     	count = 'status';
     }
     else {
@@ -637,7 +637,7 @@ function requestCounts(req, res) {
 				var response_out = secureJSON(process_data);
 				res.setHeader('Content-Type', 'application/json');
 
-				if (ext == 'csv') {
+				if (ext === 'csv') {
                     
                     var csv_data = JSON.parse(response_out).results;
                     
@@ -683,7 +683,7 @@ function requestCounts(req, res) {
 				}
                 else {
 				
-					if (ext == 'xml') {
+					if (ext === 'xml') {
 						response_out = js2xmlparser('api', response_out);
 						res.setHeader('Content-Type', 'text/xml');
 					}
@@ -708,7 +708,7 @@ function requestCounts(req, res) {
 		responseError(req, res, err);
 		return;
 	});
-};
+}
 
 function processCounts(json, type) {
 
@@ -832,7 +832,7 @@ function responseError(req, res, err) {
 	//console.log('\n\n ext : ' + ext );
 	
 	var err_mess = err;
-	if (typeof err_mess == 'object') {
+	if (typeof err_mess === 'object') {
 		err_mess = err.name +': '+ err.message;
 	}
 	
@@ -847,7 +847,7 @@ function responseError(req, res, err) {
 	var response_out = secureJSON(err_res);
 	res.setHeader('Content-Type', 'application/json');
 
-	if (ext == 'xml') {
+	if (ext === 'xml') {
 		response_out = js2xmlparser('api', response_out);
 		res.setHeader('Content-Type', 'text/xml');
 	}

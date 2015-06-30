@@ -17,6 +17,15 @@ var markers;
 var states;
 var ready = false;
 
+var q_food = '';
+var q_state = '';
+var q_date = '';
+var q_class = '';
+var q_status = '';
+
+var data_json;
+var selected_json;
+
 var style_off = {
     fillColor: '#ffffff',
     fillOpacity: 0.0,
@@ -96,7 +105,7 @@ $(function() {
 	});
 
 	$(document).keypress(function(e) {		
-		if (e.which == 13) {
+		if (e.which === 13) {
 			var search_input = $('#input-geo-location').val();
 			geocoder.query(search_input, searchMap);		
 		}
@@ -285,9 +294,7 @@ function setChartDate(data) {
 	}
 	
 	$('#chart-div-date').highcharts({
-		colors: 
-            ['#00539B']
-        ,
+		colors: ['#00539B'],
 		title: {
             text: 'Recall Dates',
         },
@@ -355,9 +362,7 @@ function setChartDate(data) {
 function setChartStatus(data) {
 
 	$('#chart-div-status').highcharts({
-		colors: 
-            ['#6699CC', '#99CCCC', '#323132']
-        ,
+		colors: ['#6699CC', '#99CCCC', '#323132'],
         chart: {
             type: 'bar',
 			plotBackgroundColor: null,
@@ -367,9 +372,6 @@ function setChartStatus(data) {
         title: {
             text: 'Recall Status'
         },
-		tooltip: {
-			pointFormat: '{series.name}: <b>{point.y:.0f}</b>'
-		},
 		tooltip: {
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
             pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
@@ -411,9 +413,7 @@ function setChartStatus(data) {
 function setChartClass(data) {
 
 	$('#chart-div-class').highcharts({
-        colors: 
-            ['#00539B', '#A3C658', '#E2C752']
-        ,
+        colors: ['#00539B', '#A3C658', '#E2C752'],
 		chart: {
 			plotBackgroundColor: null,
 			plotBorderWidth: null,
@@ -483,13 +483,13 @@ function highlightState(states_array, classification) {
 			var layer_state = layer.feature.properties.STUSPS;	
 			 
 			var high_style = style_highlight_1;
-			if (classification == 'Class I') {
+			if (classification === 'Class I') {
 				high_style = style_highlight_1;
 			}
-			else if (classification == 'Class II') {
+			else if (classification === 'Class II') {
 				high_style = style_highlight_2;
 			}
-			else if (classification == 'Class III') {
+			else if (classification === 'Class III') {
 				high_style = style_highlight_3;
 			}
 			
@@ -504,12 +504,6 @@ function highlightState(states_array, classification) {
 		});		
 	}
 }
-
-var q_food = '';
-var q_state = '';
-var q_date = '';
-var q_class = '';
-var q_status = '';
 
 $('#select_food').on('change', function() {
 	q_food = $('#select_food').val();
@@ -544,9 +538,6 @@ function changeSearch() {
 	loadCharts();	
 }
 
-var data_json;
-var selected_json;
-
 function loadMarkers() {
 		
 	var api_url = '/api/search.json?food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'&status='+q_status;
@@ -573,18 +564,18 @@ function loadMarkers() {
 
 function getIconColor(m_class) {
     var m_color = '#FAF75C';
-    if (m_class == 'Class I') { m_color = '#00539B'; }
-    if (m_class == 'Class II') { m_color = '#A3C658'; }
-    if (m_class == 'Class III') { m_color = '#E2C752'; }
+    if (m_class === 'Class I') { m_color = '#00539B'; }
+    if (m_class === 'Class II') { m_color = '#A3C658'; }
+    if (m_class === 'Class III') { m_color = '#E2C752'; }
     
     return m_color;
 }
 
 function getIconSymbol(m_status) {
     var m_symbol = 'circle-stroked';
-    if (m_status == 'Ongoing') { m_symbol = 'circle-stroked'; }
-    if (m_status == 'Terminated') { m_symbol = 'cross'; }
-    if (m_status == 'Completed') { m_symbol = 'circle'; }
+    if (m_status === 'Ongoing') { m_symbol = 'circle-stroked'; }
+    if (m_status === 'Terminated') { m_symbol = 'cross'; }
+    if (m_status === 'Completed') { m_symbol = 'circle'; }
     
     return m_symbol;
 }
@@ -612,7 +603,7 @@ function setMarkers() {
 
 				// set default recall
 				/*
-				if (i == data_json.results.length -1 ) {
+				if (i === data_json.results.length -1 ) {
 					//console.log('data_json.results : '+ JSON.stringify(data_json.results[i]) );
 					
 					m_size = 'large';					
@@ -631,7 +622,7 @@ function setMarkers() {
 				
 				var result_json = data_json.results[i];
 				
-				if ((m_lat != 0) && (m_lon != 0)) {
+				if ((m_lat !== 0) && (m_lon !== 0)) {
 				
 					//console.log('lat : '+ JSON.stringify(lat) );		
 					
@@ -773,15 +764,15 @@ function setDownloadLinks() {
 function setStatusIcon(status_i) {
 	$('#api-status').text(status_i);
 	
-	if (status_i == 'Ongoing') { 
+	if (status_i === 'Ongoing') { 
 		$('#status-icon-img').attr('src','/image/circle-stroked-18.png'); 
 		$('#api-status-span').prop('title', 'Ongoing - product recall is currently in progress').tooltip('fixTitle');
 	}
-    else if (status_i == 'Completed') { 
+    else if (status_i === 'Completed') { 
 		$('#status-icon-img').attr('src', '/image/circle-18.png' ); 
 		$('#api-status-span').prop('title', 'Completed - violative products have been retrieved/impounded').tooltip('fixTitle');
 	}
-    else if (status_i == 'Terminated') { 
+    else if (status_i === 'Terminated') { 
 		$('#status-icon-img').attr('src', '/image/cross-18.png' ); 
 		$('#api-status-span').prop('title', 'Terminated - reasonable efforts have been made to remove/correct the product').tooltip('fixTitle');
 	}
@@ -792,15 +783,15 @@ function setClassIcon(class_i) {
 	
 	$('#class-icon-i').removeClass( 'fda-blue fda-accent2 fda-accent3' );
 		
-    if (class_i == 'Class I') { 
+    if (class_i === 'Class I') { 
 		$('#class-icon-i').addClass( 'fda-blue' ); 
 		$('#api-classification-span').prop('title', 'Class I - dangerous product that could cause serious health problems or death').tooltip('fixTitle');
 	}
-    else if (class_i == 'Class II') { 
+    else if (class_i === 'Class II') { 
 		$('#class-icon-i').addClass( 'fda-accent2' ); 
 		$('#api-classification-span').prop('title', 'Class II - defective product that could cause temporary health problems').tooltip('fixTitle');
 	}
-    else if (class_i == 'Class III') { 
+    else if (class_i === 'Class III') { 
 		$('#class-icon-i').addClass( 'fda-accent3' ); 
 		$('#api-classification-span').prop('title', 'Class III - unlikely to cause health problems but that violates labeling/manufacturing standards').tooltip('fixTitle');
 	}	

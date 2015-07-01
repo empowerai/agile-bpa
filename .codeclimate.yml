@@ -1,9 +1,29 @@
-languages:
-  Ruby: true
-  JavaScript: true
-  PHP: true
-  Python: true
+engines:
+  eslint:
+    enabled: true
+  csslint:
+    enabled: true
+ratings: 
+  paths:
+  - "**"
 exclude_paths:
-- "client/api-docs/lib/**/*"
+- "*.png"
+- "*.svg"
+- "*.gif"
+- "*.jpg"
+- "image/*"
 - "client/api-docs/*.js"
-- "client/style/js/**/*"
+- "client/api-docs/css/*"
+- "client/api-docs/images/*"
+- "client/api-docs/lib/*"
+- "client/api-docs/lib/**/*"
+- "client/style/css/*"
+- "client/style/font-awesome/**/*"
+- "client/style/fonts/*"
+- "client/style/img/*"
+- "client/style/img/**/*"
+- "client/style/js/*"
+- "client/style/less/*"
+- "jcarousel.*"
+- "jquery.*"
+- "bootstrap.*"

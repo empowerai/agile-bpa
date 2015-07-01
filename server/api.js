@@ -145,7 +145,7 @@ function insertCrowd(req, res) {
         });
 
     }
-};
+}
 
 
 // **********************************************************
@@ -229,7 +229,7 @@ function requestCrowd(req, res) {
         });
 
     }
-};
+}
 
 // **********************************************************
 // processSearch
@@ -306,9 +306,6 @@ function requestSearch(req, res) {
 
 	var ext = req.params.ext;	
 	//console.log('\n\n ext : ' + ext );
-	
-	var query = req.query.q;
-	var filter = req.query.f;
     
     var s_food = req.query.food;
     var s_date = req.query.date;
@@ -509,9 +506,6 @@ function requestCounts(req, res) {
 
 	var ext = req.params.ext;	
 	//console.log('\n\n ext : ' + ext );
-	
-	var query = req.query.q;
-	var filter = req.query.f;
     
     var s_food = req.query.food;
     var s_date = req.query.date;
@@ -728,7 +722,7 @@ function processCounts(json, type) {
 
     //return_json.meta = process_json.meta;
 
-    if(type=='class'){
+    if(type === 'class'){
     	if(process_json.results){
 	    	for (var i = 0; i < process_json.results.length; i++) {
 	        
@@ -737,13 +731,13 @@ function processCounts(json, type) {
 		        //console.log('\n\n result_json. term: ' + result_json.term);
 		        //console.log('\n\n result_json  count: ' + result_json.count);
 				
-				if(result_json.term=='i'){
+				if(result_json.term === 'i'){
 					class1 = result_json.count;
 				}
-				else if(result_json.term=='ii'){
+				else if(result_json.term === 'ii'){
 					class2 = result_json.count;
 				}
-				else if(result_json.term=='iii'){
+				else if(result_json.term === 'iii'){
 					class3 = result_json.count;
 				}
 		    }
@@ -754,7 +748,7 @@ function processCounts(json, type) {
 			'class3': class3	
 		};
     }
-    else if(type=='status'){
+    else if(type === 'status'){
     	if(process_json.results){
 	    	for (var i = 0; i < process_json.results.length; i++) {
 	        
@@ -763,13 +757,13 @@ function processCounts(json, type) {
 		        //console.log('\n\n result_json. term: ' + result_json.term);
 		        //console.log('\n\n result_json  count: ' + result_json.count);
 				
-				if(result_json.term=='ongoing'){
+				if(result_json.term === 'ongoing'){
 					class1 = result_json.count;
 				}
-				else if(result_json.term=='terminated'){
+				else if(result_json.term === 'terminated'){
 					class2 = result_json.count;
 				}
-				else if(result_json.term=='completed'){
+				else if(result_json.term === 'completed'){
 					class3 = result_json.count;
 				}
 		    }
@@ -780,7 +774,7 @@ function processCounts(json, type) {
 			'completed': class3	
 		};
     }
-    else if(type=='date'){
+    else if(type === 'date'){
     	var date_array = [];
     	var count_array = [];
     	var date_count_array = [];

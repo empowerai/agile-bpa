@@ -91,7 +91,7 @@ $(function() {
 	geocoder = L.mapbox.geocoder('mapbox.places-v1');
 	
 	// current location
-	$('#btn-geo-current').click(function(event) {
+	$('#btn-geo-current').click(function(e) {
 		getCurrentLocation(false);
 		return false;
 	});
@@ -620,7 +620,7 @@ function setMarkers() {
 
                 //console.log('m_icon : '+ JSON.stringify(m_icon.options) );
 				
-				var result_json = data_json.results[i];
+				//var result_json = data_json.results[i];
 				
 				if ((m_lat !== 0) && (m_lon !== 0)) {
 				
@@ -818,7 +818,7 @@ function getCurrentLocation(load) {
 				setNationwide();
 			}
 			else {
-				alert('Current location not found.');
+				window.alert('Current location not found.');
 			}
 		}, {
 			timeout: 4000
@@ -829,7 +829,7 @@ function getCurrentLocation(load) {
 			setNationwide();
 		}
 		else {
-			alert('Current location not found.');
+			window.alert('Current location not found.');
 		}
 	}
 	return false;

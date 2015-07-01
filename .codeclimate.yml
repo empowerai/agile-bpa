@@ -3,16 +3,6 @@ engines:
     enabled: true
   csslint:
     enabled: true
-  coffeelint:
-    enabled: true
-  bundler-audit:
-    enabled: true
-  rubocop:
-    enabled: true
-  phpcodesniffer:
-    enabled: true
-  watson:
-    enabled: true
 ratings: 
   paths:
   - "**"

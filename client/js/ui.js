@@ -118,7 +118,7 @@ $(function() {
 	}).addTo(map);
 	 
 	// geocoder
-	geocoder = L.mapbox.geocoder('mapbox.places-v1');
+	//geocoder = L.mapbox.geocoder('mapbox.places-v1');
 	
 	// current location
 	$('#btn-geo-current').click(function(e) {
@@ -130,14 +130,17 @@ $(function() {
 		e.preventDefault();
 
 		var search_input = $('#input-geo-location').val();
-		geocoder.query(search_input, searchMap);		 
-
+		//geocoder.query(search_input, searchMap);	
+	
+		getGeocode(search_input);
 	});
 
 	$(document).keypress(function(e) {		
 		if (e.which === 13) {
 			var search_input = $('#input-geo-location').val();
-			geocoder.query(search_input, searchMap);		
+			//geocoder.query(search_input, searchMap);	
+			
+			getGeocode(search_input);
 		}
 	});
 	 
@@ -187,6 +190,91 @@ $(function() {
 	loadCharts();
 	
 });
+
+function getGeocode(location) {
+
+	var geocode_url = 'http://open.mapquestapi.com/nominatim/v1/search.php?format=json&limit=1&countrycode=us&q='+ encodeURIComponent(location);
+	//var geocode_url = 'http://open.mapquestapi.com/geocoding/v1/address?key=5mjb1wdyXV6GGijuCS93SMQQ1PkiDYZK&thumbMaps=false&maxResults=1&location='+ encodeURIComponent(location);
+	
+	console.log('geocode_url : '+ geocode_url );	
+	
+	$.ajax({
+		type: 'GET',
+		url: geocode_url,
+		dataType: 'json',
+		success: function(data) {
+
+			console.log('geocode_url data : '+ JSON.stringify(data) );	
+			
+			/*  MapQuest Open Geocoder
+			if (data.results[0].locations[0]) {
+			
+				var geo_lat = data.results[0].locations[0].latLng.lat;
+				var geo_lon = data.results[0].locations[0].latLng.lng;
+				
+				var geo_type = data.results[0].locations[0].geocodeQuality;
+				
+				var geo_zoom = 12;				
+				if ((geo_type === 'POINT') || (geo_type === 'ADDRESS') || (geo_type === 'INTERSECTION') || (geo_type === 'STREET')) {
+					geo_zoom = 15;
+				}
+				else if ((geo_type === 'ZIP') || (geo_type === 'ZIP_EXTENDED') || (geo_type === 'NEIGHBORHOOD')) {
+					geo_zoom = 13;
+				}
+				else if (geo_type === 'STATE') {
+					geo_zoom = 10;
+				}					
+				map.setView([geo_lat, geo_lon], geo_zoom);				
+			}
+			*/
+			// Nominatim Geocoder
+			if (data[0]) {						
+				
+				var geo_bounds = data[0].boundingbox;
+				
+				map.fitBounds([
+					[geo_bounds[0], geo_bounds[2]],
+					[geo_bounds[1], geo_bounds[3]]
+				]);
+				
+				/*
+				var geo_lat = data[0].lat;
+				var geo_lon = data[0].lon;
+				
+				var geo_type = data[0].type;
+				var geo_class = data[0].class;
+				
+				var geo_zoom = 12;				
+				if ((geo_class === 'amenity') || (geo_type === 'building') || (geo_type === 'shop')) {
+					geo_zoom = 15;
+				}	
+				else if ((geo_class === 'leisure') || (geo_type === 'historic')) {
+					geo_zoom = 14;
+				}
+				else if (geo_class === 'place') {
+					
+					if ((geo_type === 'houses') || (geo_type === 'postcode') || (geo_type === 'subdivision')) {
+						geo_zoom = 13;
+					}	
+					else if ((geo_type === 'regionstate') || (geo_type === 'state')) {
+						geo_zoom = 10;
+					}	
+				}	
+				
+				map.setView([geo_lat, geo_lon], geo_zoom);
+				*/				
+			}
+			else {
+				window.alert('Search results not found.');
+			}
+			
+		},
+		error: function (request, status, error) {
+			
+			window.alert('Search results not found.');
+		}
+	});	
+}
 
 function loadError() {
 	$('#text-div-selected').hide();
@@ -827,12 +915,9 @@ function setClassIcon(class_i) {
 	}	
 }
 
-function setNationwide() {
-		
+function setNationwide() {		
 	clearSelected();
-
 	map.setView([40, -97], 3);	
-
 }
 
 function getCurrentLocation(load) {

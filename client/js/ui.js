@@ -71,16 +71,16 @@ $(function() {
 		attribution: 'Tiles <a href="http://trc.gtrc.mapquest.com/web/products/open/map" target="_blank">courtesy</a> <a href="http://www.mapquest.com" target="_blank">MapQuest</a> | Imagery <a href="http://www.jpl.nasa.gov/" target="_blank">NASA</a>, <a href="http://www.fsa.usda.gov/" target="_blank">USDA</a>'
 	});		
 	var open_light = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-		attribution: 'Tiles <a href="https://cartodb.com/basemaps" target="_blank">courtesy</a> <a href="https://cartodb.com/" target="_blank">CartoDB</a>'
+		attribution: 'Tiles <a href="https://cartodb.com/basemaps" target="_blank">courtesy</a> <a href="https://cartodb.com/" target="_blank">CartoDB </a>'
 	});		
 	var open_dark = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
 		attribution: 'Tiles <a href="https://cartodb.com/basemaps" target="_blank">courtesy</a> <a href="https://cartodb.com/" target="_blank">CartoDB</a>'
 	});	
 	var open_watercolor = L.tileLayer('http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png', {
-		attribution: 'Tiles <a href="http://maps.stamen.com/" target="_blank">courtesy</a> <a href="http://stamen.com/" target="_blank">Stamen Design</a> '
+		attribution: 'Tiles <a href="http://maps.stamen.com/" target="_blank">courtesy</a> <a href="http://stamen.com/" target="_blank">Stamen </a> '
 	});		
 	var open_toner = L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
-		attribution: 'Tiles <a href="http://maps.stamen.com/" target="_blank">courtesy</a> <a href="http://stamen.com/" target="_blank">Stamen Design</a>'
+		attribution: 'Tiles <a href="http://maps.stamen.com/" target="_blank">courtesy</a> <a href="http://stamen.com/" target="_blank">Stamen</a>'
 	});		
 	
 	// setup map
@@ -90,12 +90,14 @@ $(function() {
 	})
 	.setView([40, -97], 3);
 	
+	// map attribution
 	//map.attributionControl.setPrefix('');
 	
 	var infoControl = L.mapbox.infoControl();
 	infoControl.addInfo('<a href="https://github.com/nci-ats/agile-bpa" target="_blank">Developed</a> by <a href="http://nciinc.com" target="_blank">NCI</a>');
 	infoControl.addInfo('Map &copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>');
 	infoControl.addInfo('Data by <a href="https://open.fda.gov/" target="_blank">FDA</a>, <a href="http://geonames.usgs.gov/" target="_blank">USGS</a>, <a href="http://www.census.gov/" target="_blank">Census</a>');
+	infoControl.addInfo('<a href="http://trc.gtrc.mapquest.com/web/products/open/nominatim" target="_blank">Search</a> by <a href="http://www.mapquest.com" target="_blank">MapQuest</a>');
 	map.addControl(infoControl);
 		
 	// map controls
@@ -117,9 +119,6 @@ $(function() {
 		position: 'topleft'
 	}).addTo(map);
 	 
-	// geocoder
-	//geocoder = L.mapbox.geocoder('mapbox.places-v1');
-	
 	// current location
 	$('#btn-geo-current').click(function(e) {
 		getCurrentLocation(false);
@@ -130,7 +129,6 @@ $(function() {
 		e.preventDefault();
 
 		var search_input = $('#input-geo-location').val();
-		//geocoder.query(search_input, searchMap);	
 	
 		getGeocode(search_input);
 	});
@@ -138,7 +136,6 @@ $(function() {
 	$(document).keypress(function(e) {		
 		if (e.which === 13) {
 			var search_input = $('#input-geo-location').val();
-			//geocoder.query(search_input, searchMap);	
 			
 			getGeocode(search_input);
 		}
@@ -184,8 +181,6 @@ $(function() {
 		.loadURL('/data/state.geojson')		
 		.on('ready', readyState);
 		
-	//console.log('states.features.length : '+ states.features.length);
-		
 	// load charts
 	loadCharts();
 	
@@ -194,9 +189,7 @@ $(function() {
 function getGeocode(location) {
 
 	var geocode_url = 'http://open.mapquestapi.com/nominatim/v1/search.php?format=json&limit=1&countrycode=us&q='+ encodeURIComponent(location);
-	//var geocode_url = 'http://open.mapquestapi.com/geocoding/v1/address?key=5mjb1wdyXV6GGijuCS93SMQQ1PkiDYZK&thumbMaps=false&maxResults=1&location='+ encodeURIComponent(location);
-	
-	console.log('geocode_url : '+ geocode_url );	
+	//console.log('geocode_url : '+ geocode_url );	
 	
 	$.ajax({
 		type: 'GET',
@@ -204,29 +197,8 @@ function getGeocode(location) {
 		dataType: 'json',
 		success: function(data) {
 
-			console.log('geocode_url data : '+ JSON.stringify(data) );	
-			
-			/*  MapQuest Open Geocoder
-			if (data.results[0].locations[0]) {
-			
-				var geo_lat = data.results[0].locations[0].latLng.lat;
-				var geo_lon = data.results[0].locations[0].latLng.lng;
-				
-				var geo_type = data.results[0].locations[0].geocodeQuality;
-				
-				var geo_zoom = 12;				
-				if ((geo_type === 'POINT') || (geo_type === 'ADDRESS') || (geo_type === 'INTERSECTION') || (geo_type === 'STREET')) {
-					geo_zoom = 15;
-				}
-				else if ((geo_type === 'ZIP') || (geo_type === 'ZIP_EXTENDED') || (geo_type === 'NEIGHBORHOOD')) {
-					geo_zoom = 13;
-				}
-				else if (geo_type === 'STATE') {
-					geo_zoom = 10;
-				}					
-				map.setView([geo_lat, geo_lon], geo_zoom);				
-			}
-			*/
+			//console.log('geocode_url data : '+ JSON.stringify(data) );	
+						
 			// Nominatim Geocoder
 			if (data[0]) {						
 				
@@ -235,39 +207,11 @@ function getGeocode(location) {
 				map.fitBounds([
 					[geo_bounds[0], geo_bounds[2]],
 					[geo_bounds[1], geo_bounds[3]]
-				]);
-				
-				/*
-				var geo_lat = data[0].lat;
-				var geo_lon = data[0].lon;
-				
-				var geo_type = data[0].type;
-				var geo_class = data[0].class;
-				
-				var geo_zoom = 12;				
-				if ((geo_class === 'amenity') || (geo_type === 'building') || (geo_type === 'shop')) {
-					geo_zoom = 15;
-				}	
-				else if ((geo_class === 'leisure') || (geo_type === 'historic')) {
-					geo_zoom = 14;
-				}
-				else if (geo_class === 'place') {
-					
-					if ((geo_type === 'houses') || (geo_type === 'postcode') || (geo_type === 'subdivision')) {
-						geo_zoom = 13;
-					}	
-					else if ((geo_type === 'regionstate') || (geo_type === 'state')) {
-						geo_zoom = 10;
-					}	
-				}	
-				
-				map.setView([geo_lat, geo_lon], geo_zoom);
-				*/				
+				]);				
 			}
 			else {
 				window.alert('Search results not found.');
-			}
-			
+			}			
 		},
 		error: function (request, status, error) {
 			

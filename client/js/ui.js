@@ -57,39 +57,68 @@ var style_highlight_3 = {
 };
 
 $(function() {
+		
+	// setup layers
+	var open_osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: 'Tiles <a href="http://wiki.openstreetmap.org/wiki/Tile_usage_policy" target="_blank">courtesy</a> <a href="https://www.openstreetmap.org/" target="_blank">OSM</a>'
+	});
+	var open_terrain = L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
+		subdomains: ['otile1', 'otile2', 'otile3', 'otile4'],
+		attribution: 'Tiles <a href="http://trc.gtrc.mapquest.com/web/products/open/map" target="_blank">courtesy</a> <a href="http://www.mapquest.com" target="_blank">MapQuest</a>'
+	});
+	var open_aerial = L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png', {
+		subdomains: ['otile1', 'otile2', 'otile3', 'otile4'],
+		attribution: 'Tiles <a href="http://trc.gtrc.mapquest.com/web/products/open/map" target="_blank">courtesy</a> <a href="http://www.mapquest.com" target="_blank">MapQuest</a> | Imagery <a href="http://www.jpl.nasa.gov/" target="_blank">NASA</a>, <a href="http://www.fsa.usda.gov/" target="_blank">USDA</a>'
+	});		
+	var open_light = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+		attribution: 'Tiles <a href="https://cartodb.com/basemaps" target="_blank">courtesy</a> <a href="https://cartodb.com/" target="_blank">CartoDB </a>'
+	});		
+	var open_dark = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+		attribution: 'Tiles <a href="https://cartodb.com/basemaps" target="_blank">courtesy</a> <a href="https://cartodb.com/" target="_blank">CartoDB</a>'
+	});	
+	var open_watercolor = L.tileLayer('http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png', {
+		attribution: 'Tiles <a href="http://maps.stamen.com/" target="_blank">courtesy</a> <a href="http://stamen.com/" target="_blank">Stamen </a> '
+	});		
+	var open_toner = L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+		attribution: 'Tiles <a href="http://maps.stamen.com/" target="_blank">courtesy</a> <a href="http://stamen.com/" target="_blank">Stamen</a>'
+	});		
 	
 	// setup map
-	L.mapbox.accessToken = 'pk.eyJ1IjoiY29tcHV0ZWNoIiwiYSI6ImMyMzI0YTkyYWNkODg5NjkzZjU3NTEzNjdiZmI3ZWViIn0.P_biJ0yDpChjDr9XccH5Bg';
-	map = L.mapbox.map('map', 'computech.j86bnb99', {
-		maxZoom: 19
+	map = L.mapbox.map('map', open_light, {
+		maxZoom: 15,
+		attributionControl: false
 	})
 	.setView([40, -97], 3);
 	
+	// map attribution
+	//map.attributionControl.setPrefix('');
+	
+	var infoControl = L.mapbox.infoControl();
+	infoControl.addInfo('<a href="https://github.com/nci-ats/agile-bpa" target="_blank">Developed</a> by <a href="http://nciinc.com" target="_blank">NCI</a>');
+	infoControl.addInfo('Map &copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>');
+	infoControl.addInfo('Data by <a href="https://open.fda.gov/" target="_blank">FDA</a>, <a href="http://geonames.usgs.gov/" target="_blank">USGS</a>, <a href="http://www.census.gov/" target="_blank">Census</a>');
+	infoControl.addInfo('<a href="http://trc.gtrc.mapquest.com/web/products/open/nominatim" target="_blank">Search</a> by <a href="http://www.mapquest.com" target="_blank">MapQuest</a>');
+	map.addControl(infoControl);
+		
 	// map controls
 	L.control.scale({
 		position: 'bottomleft'
 	}).addTo(map);
-	
-	map.attributionControl.addAttribution('<a href="http://nciinc.com">NCI Inc.</a>');
-	map.attributionControl.addAttribution('<a href="https://open.fda.gov/">FDA.</a>');
-	
-	var map_street = L.mapbox.tileLayer('computech.j86bnb99').addTo(map);
-	var map_sat = L.mapbox.tileLayer('computech.jh7ic2j0');
-	var map_topo = L.mapbox.tileLayer('computech.jh7ih1gk'); 
 
 	L.control.layers({
-		'Street': map_street.addTo(map),
-		'Satellite': map_sat,
-		'Terrain': map_topo
+		'Street': open_light.addTo(map),
+		//'Open Street Map': open_osm,
+		'Terrain': open_terrain,
+		'Satellite': open_aerial,		
+		'Watercolor': open_watercolor,
+		'Toner': open_toner,
+		'Dark': open_dark
 	}, 
 	{},
 	{
 		position: 'topleft'
 	}).addTo(map);
 	 
-	// geocoder
-	geocoder = L.mapbox.geocoder('mapbox.places-v1');
-	
 	// current location
 	$('#btn-geo-current').click(function(e) {
 		getCurrentLocation(false);
@@ -100,14 +129,15 @@ $(function() {
 		e.preventDefault();
 
 		var search_input = $('#input-geo-location').val();
-		geocoder.query(search_input, searchMap);		 
-
+	
+		getGeocode(search_input);
 	});
 
 	$(document).keypress(function(e) {		
 		if (e.which === 13) {
 			var search_input = $('#input-geo-location').val();
-			geocoder.query(search_input, searchMap);		
+			
+			getGeocode(search_input);
 		}
 	});
 	 
@@ -151,12 +181,44 @@ $(function() {
 		.loadURL('/data/state.geojson')		
 		.on('ready', readyState);
 		
-	//console.log('states.features.length : '+ states.features.length);
-		
 	// load charts
 	loadCharts();
 	
 });
+
+function getGeocode(location) {
+
+	var geocode_url = 'http://open.mapquestapi.com/nominatim/v1/search.php?format=json&limit=1&countrycode=us&q='+ encodeURIComponent(location);
+	//console.log('geocode_url : '+ geocode_url );	
+	
+	$.ajax({
+		type: 'GET',
+		url: geocode_url,
+		dataType: 'json',
+		success: function(data) {
+
+			//console.log('geocode_url data : '+ JSON.stringify(data) );	
+						
+			// Nominatim Geocoder
+			if (data[0]) {						
+				
+				var geo_bounds = data[0].boundingbox;
+				
+				map.fitBounds([
+					[geo_bounds[0], geo_bounds[2]],
+					[geo_bounds[1], geo_bounds[3]]
+				]);				
+			}
+			else {
+				window.alert('Search results not found.');
+			}			
+		},
+		error: function (request, status, error) {
+			
+			window.alert('Search results not found.');
+		}
+	});	
+}
 
 function loadError() {
 	$('#text-div-selected').hide();
@@ -797,12 +859,9 @@ function setClassIcon(class_i) {
 	}	
 }
 
-function setNationwide() {
-		
+function setNationwide() {		
 	clearSelected();
-
 	map.setView([40, -97], 3);	
-
 }
 
 function getCurrentLocation(load) {

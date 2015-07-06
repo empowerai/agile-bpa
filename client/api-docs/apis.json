@@ -1,18 +1,18 @@
 {
-    "apiVersion": "0.0.3",
+    "apiVersion": "0.0.4",
 	"basePath": "/api-docs",
 	"resourcePath": "/api",
     "apis": [
         {
-            "description": "FDA Food Recall - Search API",
+            "description": "Food Recall - Search API",
             "path": "/search.json"
         },
 		{
-            "description": "FDA Food Recall - Count API",
+            "description": "Food Recall - Count API",
             "path": "/count.json"
         },
         {
-            "description": "FDA Food Recall - Crowdsource API",
+            "description": "Food Recall - Crowdsource API",
             "path": "/crowd.json"
         }
     ],

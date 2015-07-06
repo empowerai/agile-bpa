@@ -24,7 +24,7 @@ header { color: #ffffff; background-color: #00539B; margin-bottom: 20px; padding
 header a { color: #ffffff; }
 header a:hover, header a:focus { color: #99CCCC; text-decoration: none;}
 .head-logo-div { padding: 2px; margin-top: 3px; }
-.head-logo { height: 50px; width: 115px;}
+.head-logo { height: 50px; }
 .head-title-div {float: left; padding-left: 10px; }
 .head-title { font-family: Merriweather,'Helvetica Neue',Arial,sans-serif !important; }
 .head-title:hover, .head-title:focus, .head-title:active { color: #ffffff !important; font-family: Merriweather,'Helvetica Neue',Arial,sans-serif !important; }

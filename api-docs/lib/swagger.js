@@ -11,7 +11,7 @@ log = function(){
   log.history = log.history || [];
   log.history.push(arguments);
   if(this.console){
-    console.log( Array.prototype.slice.call(arguments)[0] );
+    //console.log( Array.prototype.slice.call(arguments)[0] );
   }
 };
 
@@ -341,15 +341,24 @@ var SwaggerResource = function(resourceObj, api) {
   this.path = this.api.resourcePath != null ? this.api.resourcePath : resourceObj.path;
   this.description = resourceObj.description;
 
+  // use relative path
+  var url_arr = window.location.href.split("/");
+  var full_url = url_arr[0] + "//" + url_arr[2];
+  
   var parts = this.path.split("/");
   this.name = parts[parts.length - 1].replace('.{format}', '');
-  this.basePath = this.api.basePath;
+  
+  this.basePath = full_url;
+  this.api.basePath = this.api.basePath;
+  
   this.operations = {};
   this.operationsArray = [];
   this.modelsArray = [];
   this.models = {};
   this.rawModels = {};
   this.useJQuery = (typeof api.useJQuery !== 'undefined' ? api.useJQuery : null);
+  
+  //console.log('this.api.basePath : ' + this.api.basePath );
 
   if ((resourceObj.apis != null) && (this.api.resourcePath != null)) {
     this.addApiDeclaration(resourceObj);
@@ -360,8 +369,11 @@ var SwaggerResource = function(resourceObj, api) {
     if (this.path.substring(0, 4) === 'http') {
       this.url = this.path.replace('{format}', 'json');
     } else {
-      this.url = this.api.basePath + this.path.replace('{format}', 'json');
+      this.url = this.basePath + this.api.basePath + this.path.replace('{format}', 'json');
     }
+	
+	//console.log('this.url : ' + this.url );
+	
     this.api.progress('fetching resource ' + this.name + ': ' + this.url);
     obj = {
       url: this.url,
@@ -392,7 +404,7 @@ SwaggerResource.prototype.getAbsoluteBasePath = function (relativeBasePath) {
   url = this.api.basePath;
   pos = url.lastIndexOf(relativeBasePath);
   var parts = url.split("/");
-  var rootUrl = parts[0] + "//" + parts[2];
+  var rootUrl = parts[0] + "//" + parts[2];  
 
   if(relativeBasePath.indexOf("http") === 0)
     return relativeBasePath;
@@ -947,7 +959,19 @@ SwaggerOperation.prototype.encodePathParam = function(pathParam) {
 };
 
 SwaggerOperation.prototype.urlify = function(args) {
+  
+  // get relative path
+  var url_arr = window.location.href.split("/");
+  var full_url = url_arr[0] + "//" + url_arr[2];
+
+  if ((!this.resource.basePath) || (this.resource.basePath == '//undefined') || (this.resource.basePath == 'undefined') || (this.resource.basePath == '')) {
+	this.resource.basePath = full_url;
+  }
+  
   var url = this.resource.basePath + this.pathJson();
+  
+  //console.log('url ^ : ' + url ); 
+  
   var params = this.parameters;
   for(var i = 0; i < params.length; i ++){
     var param = params[i];
@@ -1165,7 +1189,7 @@ var SwaggerRequest = function(type, url, params, opts, successCallback, errorCal
       body = data;
     }
   }
-
+ 
   if (!((this.headers != null) && (this.headers.mock != null))) {
     obj = {
       url: this.url,
@@ -1459,6 +1483,7 @@ ShredHttpClient.prototype.execute = function(obj) {
   var cb = obj.on, res;
 
   var transform = function(response) {
+  
     var out = {
       headers: response._headers,
       url: response.request.url,

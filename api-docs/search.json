@@ -1,5 +1,5 @@
 {
-    "apiVersion": "1.0",
+    "apiVersion": "0.0.4",
     "apis": [
         {
             "operations": [
@@ -12,13 +12,12 @@
                                 "valueType": "LIST",
                                 "values": [
                                     "json",
-									"jsonp",
-                                    "geojson",
-                                    "xml"                                   
+                                    "xml",
+                                    "csv"                                
                                 ]
                             },
                             "dataType": "string",
-                            "description": "File format",
+                            "description": "file format",
                             "name": "file",
                             "paramType": "path",
                             "required": true
@@ -31,40 +30,123 @@
                             "required": false
                         },
                         {
-                            "dataType": "string",
-                            "description": "affected state",
+                            "allowableValues": {
+                                "valueType": "LIST",
+                                "values": [
+                                    "AL", 
+									"AK", 
+									"AZ", 
+									"AR", 
+									"CA", 
+									"CO", 
+									"CT", 
+									"DE", 
+									"DC", 
+									"FL", 
+									"GA", 
+									"HI", 
+									"ID", 
+									"IL", 
+									"IN", 
+									"IA", 
+									"KS", 
+									"KY", 
+									"LA", 
+									"ME", 
+									"MD", 
+									"MA", 
+									"MI", 
+									"MN", 
+									"MS", 
+									"MO", 
+									"MT", 
+									"NE", 
+									"NV", 
+									"NH", 
+									"NJ", 
+									"NM", 
+									"NY", 
+									"NC", 
+									"ND", 
+									"OH", 
+									"OK", 
+									"OR", 
+									"PA", 
+									"RI", 
+									"SC", 
+									"SD", 
+									"TN", 
+									"TX", 
+									"UT", 
+									"VT", 
+									"VA", 
+									"WA", 
+									"WV", 
+									"WI", 
+									"WY"                       
+                                ]
+                            },
+							"dataType": "string",
+                            "description": "affected states",
                             "name": "state",
                             "paramType": "query",
                             "required": false
                         },
                         {
-                            "dataType": "string",
+                            "allowableValues": {
+                                "valueType": "LIST",
+                                "values": [
+                                    "2015",
+                                    "2014",
+									"2013",
+									"2012",
+									"2011",
+                                    "2010"                                
+                                ]
+                            },
+							"dataType": "string",
                             "description": "recall initiation year",
-                            "name": "year",
+                            "name": "date",
                             "paramType": "query",
                             "required": false
                         },
                         {
-                            "dataType": "string",
-                            "description": "class of the recall",
+                            "allowableValues": {
+                                "valueType": "LIST",
+                                "values": [
+                                    "1",
+                                    "2",
+									"3"                              
+                                ]
+                            },
+							"dataType": "string",
+                            "description": "recall classification",
                             "name": "class",
                             "paramType": "query",
                             "required": false
                         },
                         {
-                            "dataType": "string",
-                            "description": "status of the recall [ongoing,completed,terminated]",
+                            "allowableValues": {
+                                "valueType": "LIST",
+                                "values": [
+                                    "ongoing",
+                                    "completed",
+									"terminated"                              
+                                ]
+                            },
+							"dataType": "string",
+                            "description": "recall status",
                             "name": "status",
                             "paramType": "query",
                             "required": false
                         }
                     ],
                     "produces": [
-                        "application/json",
-                        "application/javascript",
-                        "application/xml"
+                        "application/json",                        
+                        "text/xml",
+						"text/csv"
                     ],
-                    "summary": "Search API for FDA food reacll."
+                    "summary": "API to search food recalls."
                 }
             ],
             "path": "/api/search.{file}"
@@ -73,9 +155,9 @@
     "basePath": "/",
     "models": {},
     "produces": [
-        "application/json",
-        "application/javascript",
-        "application/xml"
+        "application/json",                        
+		"text/xml",
+		"text/csv"
     ],
     "resourcePath": "/api",
     "swaggerVersion": "1.2"

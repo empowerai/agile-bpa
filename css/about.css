@@ -1,0 +1,24 @@
+/*
+     __  ___  _____     _   _____  __    
+  /\ \ \/ __\ \_   \   /_\ /__   \/ _\   
+ /  \/ / /     / /\/  //_\\  / /\/\ \    
+/ /\  / /___/\/ /_   /  _  \/ /   _\ \   
+\_\ \/\____/\____/   \_/ \_/\/    \__/   
+                                         
+*/
+
+/* about.css */
+
+.about_h1 { color: ##FFFFFF; font-family: Merriweather,'Helvetica Neue',Arial,sans-serif !important; }
+
+.about_faq { color: #323132; }
+.about_faq_h1 { color: #00539B; font-family: Merriweather,'Helvetica Neue',Arial,sans-serif !important; }
+
+.faq_link { color: #323132; }
+.faq_link:hover, .faq_link:active, .faq_link:focus { color: #99CCCC; }
+
+.about_link { color: #ffffff; }
+.about_link:hover, .about_link:active, .about_link:focus { color: #99CCCC; }
+
+.panel-about { background: #6699CC; padding: 8px 14px; color: #ffffff; text-align: justify;}
+.panel-about hr {color: #ffffff; width:100%;}

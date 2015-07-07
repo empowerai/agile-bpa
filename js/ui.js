@@ -7,6 +7,8 @@
                                          
 */
 
+/* App developed for the Agile BPA by: NCI Information Systems, Inc. */ 
+
 // **********************************************************
 // ui.js
 
@@ -14,6 +16,15 @@ var map;
 var markers;
 var states;
 var ready = false;
+
+var q_food = '';
+var q_state = '';
+var q_date = '';
+var q_class = '';
+var q_status = '';
+
+var data_json;
+var selected_json;
 
 var style_off = {
     fillColor: '#ffffff',
@@ -46,74 +57,121 @@ var style_highlight_3 = {
 };
 
 $(function() {
+		
+	// setup layers
+	var open_osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: 'Tiles <a href="http://wiki.openstreetmap.org/wiki/Tile_usage_policy" target="_blank">courtesy</a> <a href="https://www.openstreetmap.org/" target="_blank">OSM</a>'
+	});
+	var open_terrain = L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
+		subdomains: ['otile1', 'otile2', 'otile3', 'otile4'],
+		attribution: 'Tiles <a href="http://trc.gtrc.mapquest.com/web/products/open/map" target="_blank">courtesy</a> <a href="http://www.mapquest.com" target="_blank">MapQuest</a>'
+	});
+	var open_aerial = L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png', {
+		subdomains: ['otile1', 'otile2', 'otile3', 'otile4'],
+		attribution: 'Tiles <a href="http://trc.gtrc.mapquest.com/web/products/open/map" target="_blank">courtesy</a> <a href="http://www.mapquest.com" target="_blank">MapQuest</a> | Imagery <a href="http://www.jpl.nasa.gov/" target="_blank">NASA</a>, <a href="http://www.fsa.usda.gov/" target="_blank">USDA</a>'
+	});		
+	var open_light = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+		attribution: 'Tiles <a href="https://cartodb.com/basemaps" target="_blank">courtesy</a> <a href="https://cartodb.com/" target="_blank">CartoDB </a>'
+	});		
+	var open_dark = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+		attribution: 'Tiles <a href="https://cartodb.com/basemaps" target="_blank">courtesy</a> <a href="https://cartodb.com/" target="_blank">CartoDB</a>'
+	});	
+	var open_watercolor = L.tileLayer('http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png', {
+		attribution: 'Tiles <a href="http://maps.stamen.com/" target="_blank">courtesy</a> <a href="http://stamen.com/" target="_blank">Stamen </a> '
+	});		
+	var open_toner = L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+		attribution: 'Tiles <a href="http://maps.stamen.com/" target="_blank">courtesy</a> <a href="http://stamen.com/" target="_blank">Stamen</a>'
+	});		
 	
 	// setup map
-	L.mapbox.accessToken = 'pk.eyJ1IjoiY29tcHV0ZWNoIiwiYSI6ImMyMzI0YTkyYWNkODg5NjkzZjU3NTEzNjdiZmI3ZWViIn0.P_biJ0yDpChjDr9XccH5Bg';
-	map = L.mapbox.map('map', 'computech.j86bnb99', {
-		maxZoom: 19
+	map = L.mapbox.map('map', open_light, {
+		maxZoom: 15,
+		attributionControl: false
 	})
 	.setView([40, -97], 3);
 	
+	// map attribution
+	//map.attributionControl.setPrefix('');
+	
+	var infoControl = L.mapbox.infoControl();
+	infoControl.addInfo('<a href="https://github.com/nci-ats/agile-bpa" target="_blank">Developed</a> by <a href="http://nciinc.com" target="_blank">NCI</a>');
+	infoControl.addInfo('Map &copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>');
+	infoControl.addInfo('Data by <a href="https://open.fda.gov/" target="_blank">FDA</a>, <a href="http://geonames.usgs.gov/" target="_blank">USGS</a>, <a href="http://www.census.gov/" target="_blank">Census</a>');
+	infoControl.addInfo('<a href="http://trc.gtrc.mapquest.com/web/products/open/nominatim" target="_blank">Search</a> by <a href="http://www.mapquest.com" target="_blank">MapQuest</a>');
+	map.addControl(infoControl);
+		
 	// map controls
 	L.control.scale({
 		position: 'bottomleft'
 	}).addTo(map);
-	
-	map.attributionControl.addAttribution('<a href="http://nciinc.com">NCI Inc.</a>');
-	
-	var map_street = L.mapbox.tileLayer('computech.j86bnb99').addTo(map);
-	var map_sat = L.mapbox.tileLayer('computech.jh7ic2j0');
-	var map_topo = L.mapbox.tileLayer('computech.jh7ih1gk'); 
 
 	L.control.layers({
-		'Street': map_street.addTo(map),
-		'Satellite': map_sat,
-		'Terrain': map_topo
+		'Street': open_light.addTo(map),
+		//'Open Street Map': open_osm,
+		'Terrain': open_terrain,
+		'Satellite': open_aerial,		
+		'Watercolor': open_watercolor,
+		'Toner': open_toner,
+		'Dark': open_dark
 	}, 
 	{},
 	{
 		position: 'topleft'
 	}).addTo(map);
 	 
-	// geocoder
-	geocoder = L.mapbox.geocoder('mapbox.places-v1');
-
-	
 	// current location
-	$('#btn-geo-current').click(function(event) {
+	$('#btn-geo-current').click(function(e) {
 		getCurrentLocation(false);
 		return false;
 	});
 	
-	$("#input-geo-search").on("click", function(e) {
+	$('#input-geo-search').on('click', function(e) {
 		e.preventDefault();
 
-		var search_input = $("#input-geo-location").val();
-		geocoder.query(search_input, searchMap);		 
-
+		var search_input = $('#input-geo-location').val();
+	
+		getGeocode(search_input);
 	});
 
 	$(document).keypress(function(e) {		
-		if (e.which == 13) {
-			var search_input = $("#input-geo-location").val();
-			geocoder.query(search_input, searchMap);		
+		if (e.which === 13) {
+			var search_input = $('#input-geo-location').val();
+			
+			getGeocode(search_input);
 		}
 	});
 	 
-	 
 	// nationwide
-	$("#btn-geo-nation").on("click", function() {
+	$('#btn-geo-nation').on('click', function() {
 		setNationwide();
 	});	
 	
 	// crowdsourced
-	$("#btn-crowd-post").on("click", function() {
-	
+	$('#btn-crowd-post').on('click', function() {	
 		postCrowd(selected_json.recall_number);
 	});	
 	
 	// get current location
 	//getCurrentLocation(true);	
+	
+	// legend
+	$('.btn-geo-legend').click(function(){ 
+        $(this).hide();
+        $('.legend').show('fast');
+    });
+
+    $('.btn-geo-legend-close').click(function() { 
+        $('.legend').hide('fast');
+        $('.btn-geo-legend').show();
+    });
+	
+	// tooltips
+	$('[data-toggle="tooltip"]').tooltip(); 
+	
+	// download
+	$( '#download-data' ).click(function() {
+		$( '#download-links' ).toggle();
+	});
 
 	// load markers
 	loadMarkers();
@@ -123,17 +181,49 @@ $(function() {
 		.loadURL('/data/state.geojson')		
 		.on('ready', readyState);
 		
-	//console.log('states.features.length : '+ states.features.length);
-		
 	// load charts
 	loadCharts();
 	
 });
 
+function getGeocode(location) {
+
+	var geocode_url = 'http://open.mapquestapi.com/nominatim/v1/search.php?format=json&limit=1&countrycode=us&q='+ encodeURIComponent(location);
+	//console.log('geocode_url : '+ geocode_url );	
+	
+	$.ajax({
+		type: 'GET',
+		url: geocode_url,
+		dataType: 'json',
+		success: function(data) {
+
+			//console.log('geocode_url data : '+ JSON.stringify(data) );	
+						
+			// Nominatim Geocoder
+			if (data[0]) {						
+				
+				var geo_bounds = data[0].boundingbox;
+				
+				map.fitBounds([
+					[geo_bounds[0], geo_bounds[2]],
+					[geo_bounds[1], geo_bounds[3]]
+				]);				
+			}
+			else {
+				window.alert('Search results not found.');
+			}			
+		},
+		error: function (request, status, error) {
+			
+			window.alert('Search results not found.');
+		}
+	});	
+}
+
 function loadError() {
-	$("#text-div-selected").hide();
-	$("#text-div-national").hide();
-	$("#text-div-noresults").show();
+	$('#text-div-selected').hide();
+	$('#text-div-national').hide();
+	$('#text-div-noresults').show();
 }
 
 function searchMap(err, data) {
@@ -151,18 +241,18 @@ function searchMap(err, data) {
 function getCrowd(recall) {
 	
 	var crowd_url = '/api/crowd.json?recall='+recall;	
-	console.log('crowd_url : '+ crowd_url);	
+	//console.log('crowd_url : '+ crowd_url);	
 	$.ajax({
 		type: 'GET',
 		url: crowd_url,
 		dataType: 'json',
 		success: function(data) {
 
-			console.log('get data : '+ JSON.stringify(data) );	
-			$("#api_population_crowd").text(data.results.recall_crowd_count);			
+			//console.log('get data : '+ JSON.stringify(data) );	
+			$('#api_population_crowd').text(data.results.recall_crowd_count);			
 		},
 		error: function (request, status, error) {
-			console.log(request.responseText);
+			//console.log(request.responseText);
 			loadError();
 		}
 	});	
@@ -171,18 +261,27 @@ function getCrowd(recall) {
 function postCrowd(recall) {
 	
 	var crowd_url = '/api/crowd.json?recall='+recall;	
-	console.log('crowd_url : '+ crowd_url);	
+	//console.log('crowd_url : '+ crowd_url);	
 	$.ajax({
 		type: 'POST',
 		url: crowd_url,
 		dataType: 'json',
 		success: function(data) {
 
-			console.log('postdata : '+ JSON.stringify(data) );	
-			$("#api_population_crowd").text(data.results.recall_crowd_count);			
+			//console.log('postdata : '+ JSON.stringify(data) );	
+			$('#api_population_crowd').text(data.results.recall_crowd_count);
+			
+			//$('#api_population_crowd').css('font-size', '16px');
+			$('.recall-users').css('color', '#E2C752');
+			
+			$('.recall-users').animate({			
+				//fontSize: '13px',
+				color: '#ffffff'
+			}, 2000 );
+			
 		},
 		error: function (request, status, error) {
-			console.log(request.responseText);
+			//console.log(request.responseText);
 			loadError();
 		}
 	});	
@@ -191,7 +290,7 @@ function postCrowd(recall) {
 function loadCharts() {
 	
 	var class_url = '/api/count.json?count=class&food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'&status='+q_status;	
-	console.log('class_url : '+ class_url);	
+	//console.log('class_url : '+ class_url);	
 	$.ajax({
 		type: 'GET',
 		url: class_url,
@@ -202,30 +301,30 @@ function loadCharts() {
 			setChartClass(data);
 		},
 		error: function (request, status, error) {
-			console.log(request.responseText);
+			//console.log(request.responseText);
 			loadError();
 		}
 	});
 	
 	var status_url = '/api/count.json?count=status&food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'&status='+q_status;	
-	console.log('status_url : '+ status_url);	
+	//console.log('status_url : '+ status_url);	
 	$.ajax({
 		type: 'GET',
 		url: status_url,
 		dataType: 'json',
 		success: function(data) {
 
-			console.log('data : '+ JSON.stringify(data) );			
+			//console.log('data : '+ JSON.stringify(data) );			
 			setChartStatus(data);
 		},
 		error: function (request, status, error) {
-			console.log(request.responseText);
+			//console.log(request.responseText);
 			loadError();
 		}
 	});
 	
 	var date_url = '/api/count.json?count=date&food='+q_food+'&state='+q_state+'&date='+q_date+'&class='+q_class+'&status='+q_status;	
-	console.log('date_url : '+ date_url);	
+	//console.log('date_url : '+ date_url);	
 	$.ajax({
 		type: 'GET',
 		url: date_url,
@@ -236,7 +335,7 @@ function loadCharts() {
 			setChartDate(data);
 		},
 		error: function (request, status, error) {
-			console.log(request.responseText);
+			//console.log(request.responseText);
 			loadError();
 		}
 	});
@@ -257,7 +356,7 @@ function setChartDate(data) {
 	}
 	
 	$('#chart-div-date').highcharts({
-		
+		colors: ['#00539B'],
 		title: {
             text: 'Recall Dates',
         },
@@ -265,7 +364,7 @@ function setChartDate(data) {
             zoomType: 'x'
         },
 		credits: {
-			enabled: false
+			enabled: true
 		},
         xAxis: {
             type: 'datetime',
@@ -285,16 +384,36 @@ function setChartDate(data) {
             }]
         },
 		plotOptions: {
-            spline: {
+            area: {
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1.5
+                    },
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
                 marker: {
-                    enabled: true
-                }
+                    radius: 2
+                },
+                lineWidth: 1,
+                states: {
+                    hover: {
+                        lineWidth: 1
+                    }
+                },
+                threshold: null
             }
         },
         tooltip: {
 
         },
         series: [{
+            type: 'area',
             name: 'Recalls',
             data: date_arr
         }]	
@@ -305,7 +424,8 @@ function setChartDate(data) {
 function setChartStatus(data) {
 
 	$('#chart-div-status').highcharts({
-		chart: {
+		colors: ['#6699CC', '#99CCCC', '#323132'],
+        chart: {
             type: 'bar',
 			plotBackgroundColor: null,
 			plotBorderWidth: null,
@@ -314,9 +434,6 @@ function setChartStatus(data) {
         title: {
             text: 'Recall Status'
         },
-		tooltip: {
-			pointFormat: '{series.name}: <b>{point.y:.0f}</b>'
-		},
 		tooltip: {
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
             pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
@@ -332,7 +449,7 @@ function setChartStatus(data) {
             }
         },
 		credits: {
-			enabled: false
+			enabled: true
 		},
         xAxis: {
             categories: ['']
@@ -358,6 +475,7 @@ function setChartStatus(data) {
 function setChartClass(data) {
 
 	$('#chart-div-class').highcharts({
+        colors: ['#00539B', '#A3C658', '#E2C752'],
 		chart: {
 			plotBackgroundColor: null,
 			plotBorderWidth: null,
@@ -368,7 +486,7 @@ function setChartClass(data) {
 			enabled: false
 		},
 		title: {
-			text: 'Recall Classification'
+			text: 'Recall Severity'
 		},
 		tooltip: {
 			pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -384,17 +502,17 @@ function setChartClass(data) {
 			}
 		},
 		series: [{
-			name: "Recalls",
+			name: 'Recalls',
 			colorByPoint: true,
 			innerSize: '50%',
 			data: [{
-				name: "Class I",
+				name: 'Class I',
 				y: data.results.class1
 			}, {
-				name: "Class II",
+				name: 'Class II',
 				y: data.results.class2
 			}, {
-				name: "Class III",
+				name: 'Class III',
 				y: data.results.class3
 			}]
 		}]
@@ -408,9 +526,9 @@ function readyState() {
 
 function clearSelected() {
 
-	$("#text-div-selected").hide();
-	$("#text-div-national").show();
-	$("#text-div-noresults").hide();
+	$('#text-div-selected').hide();
+	$('#text-div-national').show();
+	$('#text-div-noresults').hide();
 	
 	if (ready) {
 		states.setStyle(style_off);
@@ -418,8 +536,7 @@ function clearSelected() {
 }
 
 function highlightState(states_array, classification) {
-	//console.log('states.features.length : '+ states.features.length);
-	//console.log('states : '+ JSON.stringify(states) );
+
 	if (ready) {
 		states.setStyle(style_off);
 		
@@ -428,13 +545,13 @@ function highlightState(states_array, classification) {
 			var layer_state = layer.feature.properties.STUSPS;	
 			 
 			var high_style = style_highlight_1;
-			if (classification == "Class I") {
+			if (classification === 'Class I') {
 				high_style = style_highlight_1;
 			}
-			else if (classification == "Class II") {
+			else if (classification === 'Class II') {
 				high_style = style_highlight_2;
 			}
-			else if (classification == "Class III") {
+			else if (classification === 'Class III') {
 				high_style = style_highlight_3;
 			}
 			
@@ -450,49 +567,38 @@ function highlightState(states_array, classification) {
 	}
 }
 
-var q_food = '';
-var q_state = '';
-var q_date = '';
-var q_class = '';
-var q_status = '';
-
-$("#select_food").on("change", function() {
-	q_food = $("#select_food").val();
-	clearSelected();
-	loadMarkers();	
-	loadCharts();
+$('#select_food').on('change', function() {
+	q_food = $('#select_food').val();
+	changeSearch();
 });	
 
-$("#select_state").on("change", function() {
-	q_state = $("#select_state").val();
-	clearSelected();
-	loadMarkers();	
-	loadCharts();	
+$('#select_state').on('change', function() {
+	q_state = $('#select_state').val();
+	changeSearch();	
 });	
 
-$("#select_date").on("change", function() {
-	q_date = $("#select_date").val();
-	clearSelected();
-	loadMarkers();	
-	loadCharts();
+$('#select_date').on('change', function() {
+	q_date = $('#select_date').val();
+	changeSearch();
 });	
 
-$("#select_class").on("change", function() {
-	q_class = $("#select_class").val();
-	clearSelected();
-	loadMarkers();	
-	loadCharts();
+$('#select_class').on('change', function() {
+	q_class = $('#select_class').val();
+	changeSearch();
 });
 
-$("#select_status").on("change", function() {
-	q_status = $("#select_status").val();
-	clearSelected();
-	loadMarkers();	
-	loadCharts();
-});		
+$('#select_status').on('change', function() {
+	q_status = $('#select_status').val();
+	changeSearch();
+});
 
-var data_json;
-var selected_json;
+function changeSearch() {
+	
+	clearSelected();
+	setDownloadLinks();
+	loadMarkers();	
+	loadCharts();	
+}
 
 function loadMarkers() {
 		
@@ -512,7 +618,7 @@ function loadMarkers() {
 			setMarkers();
 		},
 		error: function (request, status, error) {
-			console.log(request.responseText);
+			//console.log(request.responseText);
 			loadError();
 		}
 	});
@@ -520,41 +626,31 @@ function loadMarkers() {
 
 function getIconColor(m_class) {
     var m_color = '#FAF75C';
-    if (m_class == 'Class I') { m_color = '#00539B'; }
-    if (m_class == 'Class II') { m_color = '#A3C658'; }
-    if (m_class == 'Class III') { m_color = '#E2C752'; }
+    if (m_class === 'Class I') { m_color = '#00539B'; }
+    if (m_class === 'Class II') { m_color = '#A3C658'; }
+    if (m_class === 'Class III') { m_color = '#E2C752'; }
     
     return m_color;
 }
 
 function getIconSymbol(m_status) {
     var m_symbol = 'circle-stroked';
-    if (m_status == 'Ongoing') { m_symbol = 'circle-stroked'; }
-    if (m_status == 'Terminated') { m_symbol = 'cross'; }
-    if (m_status == 'Completed') { m_symbol = 'circle'; }
+    if (m_status === 'Ongoing') { m_symbol = 'circle-stroked'; }
+    if (m_status === 'Terminated') { m_symbol = 'cross'; }
+    if (m_status === 'Completed') { m_symbol = 'circle'; }
     
     return m_symbol;
 }
 
-
 function setMarkers() {
-	
-	//console.log('data_json.results : '+ JSON.stringify(data_json.results) );
-	
 	
 	if (markers) {
 		map.removeLayer(markers);
 	}
 	
-	//map.removeLayer(markers);
-	//markers = L.layerGroup();
-	
 	markers = L.mapbox.featureLayer();
-	//markers.addLayer(marker);
-	//markerGroup.removeLayer(marker);
 	
-	if (data_json.results) {
-	
+	if (data_json.results) {	
 		
 		for (var i = 0; i < data_json.results.length; i++) {
 		
@@ -565,17 +661,30 @@ function setMarkers() {
                 var m_class = data_json.results[i].classification;
                 var m_status = data_json.results[i].status;
                 
+				var m_size = 'medium';
+
+				// set default recall
+				/*
+				if (i === data_json.results.length -1 ) {
+					//console.log('data_json.results : '+ JSON.stringify(data_json.results[i]) );
+					
+					m_size = 'large';					
+					selected_json = data_json.results[i];					
+					selectResult();						
+				}
+				*/
+				
                 var m_icon = L.mapbox.marker.icon({
                     'marker-color': getIconColor(m_class),
-                    'marker-size': 'medium',
+                    'marker-size': m_size,
                     'marker-symbol': getIconSymbol(m_status)
                 });
-                                
+
                 //console.log('m_icon : '+ JSON.stringify(m_icon.options) );
 				
-				var result_json = data_json.results[i];
+				//var result_json = data_json.results[i];
 				
-				if ((m_lat != 0) && (m_lon != 0)) {
+				if ((m_lat !== 0) && (m_lon !== 0)) {
 				
 					//console.log('lat : '+ JSON.stringify(lat) );		
 					
@@ -593,13 +702,9 @@ function setMarkers() {
                             //console.log('c_status : '+ c_status );	
                             
                             markers.eachLayer(function(marker) {
-
-                                //console.log('marker !!!!!!! : '+ JSON.stringify(marker.options.icon.options) );
-                                
-                                var reset_marker = marker.options.icon.options;
-                                
-                                //console.log('reset_marker !!!!!!! : '+ JSON.stringify(reset_marker) );
-                                
+                               
+                                var reset_marker = marker.options.icon.options;                                
+                               
                                 reset_marker.iconSize = [30,70];
                                 reset_marker.iconAnchor = [15,35];
                                 reset_marker.popupAnchor = [0,-35];
@@ -616,7 +721,7 @@ function setMarkers() {
                                 'marker-symbol': getIconSymbol(c_status)
                             }));
                             
-							clickMarkers();							
+							selectResult();							
 					
 						});
                     
@@ -631,8 +736,7 @@ function setMarkers() {
 			}
 		}
 		
-		markers.addTo(map);
-		
+		markers.addTo(map);		
 	}
 }
 
@@ -643,48 +747,121 @@ function commaSeparateNumber(val){
 	return val;
 }
 
-function clickMarkers() {
+function selectResult() {
 	
 	//console.log('selected_json : '+ JSON.stringify(selected_json) );	
 	
-	$("#text-div-selected").show();
-	$("#text-div-national").hide();
-	$("#text-div-noresults").hide();	
+	$('#text-div-selected').show();
+	$('#text-div-national').hide();
+	$('#text-div-noresults').hide();	
 	
-	$("#api_recall_number").text(selected_json.recall_number);
-	$("#api_recalling_firm").text(selected_json.recalling_firm);
-	$("#api_product_description").text(selected_json.product_description);
-	$("#api_reason_for_recall").text(selected_json.reason_for_recall);
-	$("#api_status").text(selected_json.status);
-	$("#api_classification").text(selected_json.classification);
-	$("#api_distribution_pattern").text(selected_json.distribution_pattern);
-	$("#api_product_quantity").text(selected_json.product_quantity);
+	$('#api_recall_number').text(selected_json.recall_number);
+	$('#api_recalling_firm').text(selected_json.recalling_firm);
+	$('#api_product_description').text(selected_json.product_description);
+	$('#api_reason_for_recall').text(selected_json.reason_for_recall);
+	
+	$('#api_distribution_pattern').text(selected_json.distribution_pattern);
+	$('#api_product_quantity').text(selected_json.product_quantity);
 	
 	var date_init = selected_json.recall_initiation_date;
-	var date_format = new Date(date_init.substring(0,4)+"-"+date_init.substring(4,6)+"-"+date_init.substring(6,8));
+	var date_format = new Date(date_init.substring(0,4)+'-'+date_init.substring(4,6)+'-'+date_init.substring(6,8));
 	
-	$("#api_recall_initiation_date").text(date_format.toLocaleDateString());
-	$("#api_report_date").text(selected_json.report_date);
-	$("#api_population_census").text(commaSeparateNumber(selected_json.affected_population_census));
+	$('#api_recall_initiation_date').text(date_format.toLocaleDateString());
+	$('#api_report_date').text(selected_json.report_date);
+	$('#api_population_census').text(commaSeparateNumber(selected_json.affected_population_census));
 	
 	var pop_perc = (selected_json.affected_population_census / 322405453) * 100;
-	console.log('pop_perc : '+ pop_perc );	
+	//console.log('pop_perc : '+ pop_perc );	
 	
-	$("#api_population_percent").text( ( Math.round(pop_perc * 100) / 100) );
+	$('#api_population_percent').text( ( Math.round(pop_perc * 100) / 100) );
 	
 	highlightState(selected_json.affected_state, selected_json.classification);
 	
 	getCrowd(selected_json.recall_number);
-	
-	//$("#api_crowdsource").text(selected_json.api_recall_initiation_date);
+    
+	setStatusIcon(selected_json.status);
+	setClassIcon(selected_json.classification);
+		
+	//$('#api_crowdsource').text(selected_json.api_recall_initiation_date);
 }
 
-function setNationwide() {
-	map.setView([40, -97], 3);
+function setDownloadLinks() {
 	
-	clearSelected();	
+	var download_qs = '';
+	
+	if (q_food) {
+		if (download_qs) { download_qs += '&'; }
+		else { download_qs += '?'; }
+		download_qs += 'food='+q_food;
+	}
+	if (q_state) {
+		if (download_qs) { download_qs += '&'; }
+		else { download_qs += '?'; }
+		download_qs += 'state='+q_state;
+	}
+	if (q_date) {
+		if (download_qs) { download_qs += '&'; }
+		else { download_qs += '?'; }
+		download_qs += 'date='+q_date;
+	}
+	if (q_class) {
+		if (download_qs) { download_qs += '&'; }
+		else { download_qs += '?'; }
+		download_qs += 'class='+q_class;
+	}
+	if (q_status) {
+		if (download_qs) { download_qs += '&'; }
+		else { download_qs += '?'; }
+		download_qs += 'status='+q_status;
+	}
+	
+	//console.log('download_qs : ' + download_qs);
+	
+	$('#download-json-link').attr('href', '/api/search.json'+ download_qs);
+	$('#download-xml-link').attr('href', '/api/search.xml'+ download_qs);
+	$('#download-csv-link').attr('href', '/api/search.csv'+ download_qs);
+	
+}
 
-	//$("#text-div-national").show();	
+function setStatusIcon(status_i) {
+	$('#api-status').text(status_i);
+	
+	if (status_i === 'Ongoing') { 
+		$('#status-icon-img').attr('src','/image/circle-stroked-18.png'); 
+		$('#api-status-span').prop('title', 'Ongoing - product recall is currently in progress').tooltip('fixTitle');
+	}
+    else if (status_i === 'Completed') { 
+		$('#status-icon-img').attr('src', '/image/circle-18.png' ); 
+		$('#api-status-span').prop('title', 'Completed - violative products have been retrieved/impounded').tooltip('fixTitle');
+	}
+    else if (status_i === 'Terminated') { 
+		$('#status-icon-img').attr('src', '/image/cross-18.png' ); 
+		$('#api-status-span').prop('title', 'Terminated - reasonable efforts have been made to remove/correct the product').tooltip('fixTitle');
+	}
+}
+
+function setClassIcon(class_i) {
+	$('#api-classification').text(class_i);
+	
+	$('#class-icon-i').removeClass( 'fda-blue fda-accent2 fda-accent3' );
+		
+    if (class_i === 'Class I') { 
+		$('#class-icon-i').addClass( 'fda-blue' ); 
+		$('#api-classification-span').prop('title', 'Class I - dangerous product that could cause serious health problems or death').tooltip('fixTitle');
+	}
+    else if (class_i === 'Class II') { 
+		$('#class-icon-i').addClass( 'fda-accent2' ); 
+		$('#api-classification-span').prop('title', 'Class II - defective product that could cause temporary health problems').tooltip('fixTitle');
+	}
+    else if (class_i === 'Class III') { 
+		$('#class-icon-i').addClass( 'fda-accent3' ); 
+		$('#api-classification-span').prop('title', 'Class III - unlikely to cause health problems but that violates labeling/manufacturing standards').tooltip('fixTitle');
+	}	
+}
+
+function setNationwide() {		
+	clearSelected();
+	map.setView([40, -97], 3);	
 }
 
 function getCurrentLocation(load) {
@@ -700,7 +877,7 @@ function getCurrentLocation(load) {
 				setNationwide();
 			}
 			else {
-				alert('Current location not found.');
+				window.alert('Current location not found.');
 			}
 		}, {
 			timeout: 4000
@@ -711,22 +888,8 @@ function getCurrentLocation(load) {
 			setNationwide();
 		}
 		else {
-			alert('Current location not found.');
+			window.alert('Current location not found.');
 		}
 	}
 	return false;
 }
-
-
-
-
-
-
-
-
-
-
-
-
- 
-

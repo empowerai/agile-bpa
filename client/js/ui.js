@@ -364,7 +364,7 @@ function setChartDate(data) {
             zoomType: 'x'
         },
 		credits: {
-			enabled: false
+			enabled: true
 		},
         xAxis: {
             type: 'datetime',
@@ -449,7 +449,7 @@ function setChartStatus(data) {
             }
         },
 		credits: {
-			enabled: false
+			enabled: true
 		},
         xAxis: {
             categories: ['']

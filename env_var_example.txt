@@ -1,0 +1,14 @@
+# Windows
+set NODE_APP_PORT=8000
+set NODE_FDA_URL=https://api.fda.gov/food/enforcement.json
+set NODE_FDA_KEY=FDAKEY
+set NODE_DB_URL=postgres://USER:PASSWORD@HOST:5432/DATABASE
+
+#Mac/Linux
+export NODE_APP_PORT=8000
+export NODE_FDA_URL=https://api.fda.gov/food/enforcement.json
+export NODE_FDA_KEY=FDAKEY
+export NODE_DB_URL=postgres://USER:PASSWORD@HOST:5432/DATABASE
+
+# Command Line
+NODE_APP_PORT=8000 NODE_FDA_URL=https://api.fda.gov/food/enforcement.json NODE_FDA_KEY=FDAKEY NODE_DB_URL=postgres://USER:PASSWORD@HOST:5432/DATABASE node app.js

@@ -1,5 +1,5 @@
 {
-    "apiVersion": "0.0.3",
+    "apiVersion": "0.0.4",
     "apis": [
         {
             "operations": [
@@ -33,7 +33,7 @@
                         "application/json",                        
                         "text/xml"
                     ],
-                    "summary": "API to GET the crowdsource feedback of a FDA food recall."
+                    "summary": "API to GET the crowdsource feedback of a food recall."
                 },
                 {
                     "method": "POST",
@@ -65,7 +65,7 @@
                         "application/json",                        
                         "text/xml"
                     ],
-                    "summary": "API to POST the crowdsource input of a FDA food recall."
+                    "summary": "API to POST the crowdsource input of a food recall."
                 }
             ],
             "path": "/api/crowd.{file}"

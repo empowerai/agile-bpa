@@ -1,5 +1,5 @@
 {
-    "apiVersion": "0.0.3",
+    "apiVersion": "0.0.4",
     "apis": [
         {
             "operations": [
@@ -161,7 +161,7 @@
                         "text/xml",
 						"text/csv"
                     ],
-                    "summary": "API to GET the count of FDA food recalls."
+                    "summary": "API to GET the count of food recalls."
                 }
             ],
             "path": "/api/count.{file}"

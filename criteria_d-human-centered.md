@@ -24,7 +24,7 @@ During early team meetings, [protosketching](https://18f.gsa.gov/2015/01/06/prot
 
 **Usability Testing:** 
 
-Sometimes users don’t know or find it hard to explain their needs. So we watched and listened to our users using the early version of the functional prototype to create a [usability report](https://github.com/nci-ats/agile-bpa/blob/docs/attachments/FDA-Recall-App---Usability-Test-Report.pdf). What we learned from this usability testing exercise vastly improved the quality of design decisions and helped us build the right experience.
+Sometimes users don’t know or find it hard to explain their needs. So we watched and listened to our users using the early version of the functional prototype to create a [usability report](https://github.com/nci-ats/agile-bpa/blob/docs/attachments/Recall-App-Usability-Test-Report.pdf). What we learned from this usability testing exercise vastly improved the quality of design decisions and helped us build the right experience.
 
 **Accessibility Testing:** 
 
@@ -33,7 +33,7 @@ It was also very important that the application was accessible to all users. The
 **References:**
 * https://docs.google.com/a/computechinc.com/forms/d/1jn40uz9T9lDcQyWl6jqPNNP4qGuKfIIZ6V3q0FZpXmQ/viewform
 * https://18f.gsa.gov/2015/01/06/protosketch/
-* https://github.com/nci-ats/agile-bpa/blob/docs/attachments/FDA-Recall-App---Usability-Test-Report.pdf
+* https://github.com/nci-ats/agile-bpa/blob/docs/attachments/Recall-App-Usability-Test-Report.pdf
 * https://github.com/nci-ats/agile-bpa/blob/docs/attachments/FDA-Recall-Impact_VPAT.pdf
 * https://github.com/nci-ats/agile-bpa/blob/docs/attachments/NCI-BPA_A11y_Report.pdf
 

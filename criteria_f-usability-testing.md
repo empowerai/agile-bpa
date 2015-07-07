@@ -2,7 +2,6 @@
 
 #### _Performed usability tests with people._
 
-
 **Usability Test Report**
 
 Three test participants were given typical tasks to complete using the app to create a [Usability Test Report](https://github.com/nci-ats/agile-bpa/blob/docs/attachments/FDA-Recall-App---Usability-Test-Report.pdf). Usability experts observed, listened, and prepared this usability test report with recommendations to remediate the usability issues found during the session. The application was revised by the developers based on the recommendations and tested again with the users.

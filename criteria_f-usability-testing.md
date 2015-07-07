@@ -4,7 +4,7 @@
 
 **Usability Test Report**
 
-Three test participants were given typical tasks to complete using the app to create a [Usability Test Report](https://github.com/nci-ats/agile-bpa/blob/docs/attachments/FDA-Recall-App---Usability-Test-Report.pdf). Usability experts observed, listened, and prepared this usability test report with recommendations to remediate the usability issues found during the session. The application was revised by the developers based on the recommendations and tested again with the users.
+Three test participants were given typical tasks to complete using the app to create a [Usability Test Report](https://github.com/nci-ats/agile-bpa/blob/docs/attachments/Recall-App-Usability-Test-Report.pdf). Usability experts observed, listened, and prepared this usability test report with recommendations to remediate the usability issues found during the session. The application was revised by the developers based on the recommendations and tested again with the users.
 
 **Manual Accessibility Assessment Report**
 
@@ -16,7 +16,7 @@ It is NCI standard to prepare a [Voluntary Product Accessibility Template (VPAT)
 
 
 **References:**
-* https://github.com/nci-ats/agile-bpa/blob/docs/attachments/FDA-Recall-App---Usability-Test-Report.pdf
+* https://github.com/nci-ats/agile-bpa/blob/docs/attachments/Recall-App-Usability-Test-Report.pdf
 * https://github.com/nci-ats/agile-bpa/blob/docs/attachments/NCI-BPA_A11y_Report.pdf
 * https://github.com/nci-ats/agile-bpa/blob/docs/attachments/FDA-Recall-Impact_VPAT.pdf
 

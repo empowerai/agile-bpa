@@ -13,7 +13,7 @@ The FDA Food Recall Impact App (FRIA) was built using tools and methods our team
 
 Bootstrapping FRIA was straightforward - as typical client development activity, we often spin up multidisciplinary teams, environments in AWS, and supporting SaaS tools. Below we share our agile ecosystem and technologies which let us to iteratively realize and deploy FRIA capability rapidly for the product owner and users.
 
-![alt text](https://github.com/brianfunk/test-md/blob/master/attachments/Food-Recall-Impact-Map-Header.png "Food Recall Impact Map Header")
+![alt text](https://raw.githubusercontent.com/nci-ats/agile-bpa/docs/attachments/Food-Recall-Impact-Map-Header.png "Food Recall Impact Map Header")
 
 ####Getting to Minimal Viable Product and Beyond
 
@@ -21,7 +21,7 @@ We scoped a data driven food recall application, with an objective to achieve Mi
 
 To provide food recall information to the public, the FRIA leverages interactive maps with data mashups from several federal agencies, facilitating interactive queries, open data through JSON APIs, and focuses on high usability driven through a FRIA-specific style guide.
 
-![alt text](https://github.com/brianfunk/test-md/blob/master/attachments/Food-Recall-Impact-Map.png "Food Recall Impact Map")
+![alt text](https://raw.githubusercontent.com/nci-ats/agile-bpa/docs/attachments/Food-Recall-Impact-Map.png "Food Recall Impact Map")
 
 ####Agile Ecosystem - Process & Methods
 

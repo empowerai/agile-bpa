@@ -30,10 +30,6 @@ The prioritized backlog seen below represents the items that the development tea
 
 **References:**
 * https://www.atlassian.com/software/jira
-* https://raw.githubusercontent.com/nci-ats/agile-bpa/docs/attachments/Screen-Shot-2015-07-06-at-4.56.25-PM.png
-* https://raw.githubusercontent.com/nci-ats/agile-bpa/docs/attachments/screen-1.png
-* https://raw.githubusercontent.com/nci-ats/agile-bpa/docs/attachments/g5.png
-* https://raw.githubusercontent.com/nci-ats/agile-bpa/docs/attachments/g1.png
 
 ### NCI - Food Recall Impact App (FRIA)
 

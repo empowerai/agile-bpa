@@ -36,6 +36,6 @@ http://creativecommons.org/licenses/by/3.0/
 ####Web Map:
 Web map uses the free and open source Mapbox.js JavaScript library which is based on Leaflet.js.  Both Mapbox.js and Leaflet.js are open source licensed under the BSD 2-Clause License.
 https://www.mapbox.com/help/mapboxjs-tos/
-https://github.com/Leaflet/Leaflet/blob/master/LICENSE\
+https://github.com/Leaflet/Leaflet/blob/master/LICENSE
 
 ### NCI - Food Recall Impact App (FRIA)

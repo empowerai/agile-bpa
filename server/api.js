@@ -60,6 +60,8 @@ function secureJSON(json) {
 	return secure_json;
 }
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 // **********************************************************
 // insertCrowd
 
@@ -378,7 +380,7 @@ function requestSearch(req, res) {
     //console.log('\n\n search : ' + search ); 
 	
 	var request_fda = config_fda_url +'?api_key='+ config_fda_key +'&limit=100&search='+ search;
-	//console.log('\n\n request_fda : ' + request_fda );	
+	console.log('\n\n request_fda : ' + request_fda );	
 	
 	https.get(request_fda, function (http_res) {
 		var data = '';	
@@ -592,7 +594,7 @@ function requestCounts(req, res) {
 	//console.log('\n\n search : ' + search ); 
 	
 	var request_fda = config_fda_url +'?api_key='+ config_fda_key +'&limit=500&count='+ count +'&search='+ search;
-	//console.log('\n\n request_fda : ' + request_fda );	
+	console.log('\n\n request_fda : ' + request_fda );	
 	
 	https.get(request_fda, function (http_res) {
 		var data = '';	
